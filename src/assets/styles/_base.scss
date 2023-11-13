@@ -1,0 +1,43 @@
+$font-size: 16px;
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  font-family: $font-satoshi;
+  font-size: $font-size;
+  font-weight: 400;
+  color: $dark-primary;
+}
+
+.container {
+  min-width: 390px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+a:visited {
+  color: black;
+}
+
+button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-family: $font-satoshi;
+  font-size: $font-size;
+  cursor: pointer;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
