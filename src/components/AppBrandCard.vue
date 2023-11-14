@@ -1,8 +1,8 @@
 <template>
   <div class="brand-card">
-    <img :src="iconPath" alt="Icon" class="brand-card-icon" />
-    <h4 class="brand-card-heading">{{ title }}</h4>
-    <p class="brand-card-desciption">{{ description }}</p>
+    <img :src="iconPath" alt="Icon" class="brand-card__icon" />
+    <h4 class="brand-card__heading">{{ title }}</h4>
+    <p class="brand-card__desciption">{{ description }}</p>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ defineProps({
   padding: 36px 24px;
   background-color: $light-gray;
 
-  &-heading {
+  &__heading {
     margin-top: 12px;
     margin-bottom: 12px;
   }

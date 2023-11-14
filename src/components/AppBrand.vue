@@ -4,11 +4,11 @@
       <h3 class="brand-heading">What makes our brand different</h3>
       <ul class="brand-list">
         <li class="brand-item" v-for="card of cards" :key="card.id">
-          <HomeBrandCard
+          <AppBrandCard
             :title="card.title"
             :description="card.desciption"
             :icon-path="card.icon"
-          ></HomeBrandCard>
+          ></AppBrandCard>
         </li>
       </ul>
     </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import HomeBrandCard from './HomeBrandCard.vue'
+import AppBrandCard from './AppBrandCard.vue'
 
 const cards = [
   {

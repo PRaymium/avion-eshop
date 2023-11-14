@@ -1,7 +1,8 @@
 <script setup>
 import AppHeader from '../components/AppHeader.vue'
 import HomeHero from '../components/HomeHero.vue'
-import HomeBrand from '../components/HomeBrand.vue'
+import AppBrand from '../components/AppBrand.vue'
+import AppProducts from '../components/AppProducts.vue'
 </script>
 
 <template>
@@ -11,7 +12,10 @@ import HomeBrand from '../components/HomeBrand.vue'
       <HomeHero />
     </section>
     <section class="section-brand">
-      <HomeBrand />
+      <AppBrand />
+    </section>
+    <section class="section-products">
+      <AppProducts />
     </section>
   </main>
 </template>
