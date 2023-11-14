@@ -3,6 +3,7 @@ import AppHeader from '../components/AppHeader.vue'
 import HomeHero from '../components/HomeHero.vue'
 import AppBrand from '../components/AppBrand.vue'
 import AppProducts from '../components/AppProducts.vue'
+import AppFeature from '../components/AppFeature.vue'
 </script>
 
 <template>
@@ -16,6 +17,9 @@ import AppProducts from '../components/AppProducts.vue'
     </section>
     <section class="section-products">
       <AppProducts />
+    </section>
+    <section class="section-feature">
+      <AppFeature />
     </section>
   </main>
 </template>
