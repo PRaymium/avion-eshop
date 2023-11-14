@@ -14,8 +14,10 @@
           ></AppProductsCard>
         </li>
       </ul>
-      <AppButton class="products-btn" button-type="secondary"
-        >View collection</AppButton
+      <a
+        href="#"
+        class="btn btn_secondary btn_medium btn_w100-link products-link"
+        >View collection</a
       >
     </div>
   </div>
@@ -23,7 +25,6 @@
 
 <script setup>
 import AppProductsCard from './AppProductsCard.vue'
-import AppButton from './AppButton.vue'
 
 defineProps({
   title: {
@@ -80,8 +81,7 @@ const products = [
     gap: 20px 16px;
   }
 
-  &-btn {
-    width: 100%;
+  &-link {
     margin-top: 40px;
   }
 }

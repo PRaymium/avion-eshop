@@ -9,8 +9,8 @@
           With our new collection, view over 400 bespoke pieces from homeware
           through to furniture today
         </p>
-        <AppButton class="hero-btn" button-type="secondary"
-          >View collection</AppButton
+        <a href="#" class="btn btn_secondary btn_medium btn_w100-link hero-link"
+          >View collection</a
         >
       </div>
     </div>
@@ -22,9 +22,7 @@
   </div>
 </template>
 
-<script setup>
-import AppButton from '@/components/AppButton.vue'
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .hero {
@@ -36,8 +34,7 @@ import AppButton from '@/components/AppButton.vue'
     line-height: normal;
   }
 
-  &-btn {
-    width: 100%;
+  &-link {
     margin-top: 32px;
   }
 

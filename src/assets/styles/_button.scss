@@ -1,0 +1,83 @@
+button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-family: $font-satoshi;
+  font-size: $font-size;
+  cursor: pointer;
+}
+
+.btn {
+  transition: 0.1s ease-in-out;
+
+  &_primary {
+    color: $white;
+    background-color: $dark-primary;
+
+    &:hover {
+      filter: contrast(1.14);
+    }
+  }
+
+  &_secondary {
+    color: $dark-primary;
+    background-color: $light-gray;
+
+    &:hover {
+      background-color: $border-gray;
+    }
+  }
+
+  &_white {
+    color: $dark-primary;
+    background-color: $white;
+
+    &:hover {
+      background-color: $light-gray;
+    }
+  }
+
+  &_opaque {
+    color: $white;
+    background-color: rgba($color: #f9f9f9, $alpha: 0.15);
+
+    &:hover {
+      background-color: rgba($color: #f9f9f9, $alpha: 0.3);
+    }
+  }
+
+  &_ghost {
+    color: $dark-primary;
+    background-color: transparent;
+
+    &:hover {
+      background-color: $border-gray;
+    }
+  }
+
+  &_medium {
+    padding: 16px 32px;
+  }
+
+  &_small {
+    padding: 12px 24px;
+  }
+
+  &_w100 {
+    width: 100%;
+
+    &-link {
+      display: block;
+      box-sizing: border-box;
+      text-align: center;
+    }
+  }
+
+  &:focus {
+    outline: 1px solid $primary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
