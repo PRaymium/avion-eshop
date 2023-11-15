@@ -36,21 +36,22 @@ defineProps({
     padding-left: 32px;
     border: none;
 
-    &--secondary {
-      color: $white;
-      background-color: rgba($color: $white, $alpha: 0.15);
-
-      &::placeholder {
-        color: $white;
-      }
+    &::placeholder {
+      opacity: 0.2;
     }
 
     &:focus {
       outline: 1px solid currentColor;
     }
 
-    &::placeholder {
-      opacity: 0.2;
+    &--secondary {
+      color: $white;
+      background-color: rgba($color: $white, $alpha: 0.15);
+
+      &::placeholder {
+        color: $white;
+        opacity: 1;
+      }
     }
   }
 

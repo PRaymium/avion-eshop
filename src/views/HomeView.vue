@@ -5,6 +5,7 @@ import AppBrand from '../components/AppBrand.vue'
 import AppProducts from '../components/AppProducts.vue'
 import AppFeature from '../components/AppFeature.vue'
 import AppJoin from '../components/AppJoin.vue'
+import AppFooter from '../components/AppFooter.vue'
 </script>
 
 <template>
@@ -26,6 +27,7 @@ import AppJoin from '../components/AppJoin.vue'
       <AppJoin />
     </section>
   </main>
+  <AppFooter />
 </template>
 
 <style lang="scss" scoped></style>
