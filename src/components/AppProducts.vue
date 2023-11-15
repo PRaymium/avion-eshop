@@ -37,28 +37,28 @@ const products = [
   {
     id: 1,
     title: 'Rustic Vase Set',
-    img: 'src/assets/img/products/product-1.jpg',
+    img: 'img/products/product-1.jpg',
     link: '',
     price: 155
   },
   {
     id: 2,
     title: 'The Lucy Lamp',
-    img: 'src/assets/img/products/product-2.jpg',
+    img: 'img/products/product-2.jpg',
     link: '',
     price: 399
   },
   {
     id: 3,
     title: 'The Silky Vase',
-    img: 'src/assets/img/products/product-3.jpg',
+    img: 'img/products/product-3.jpg',
     link: '',
     price: 125
   },
   {
     id: 4,
     title: 'The Dandy chair',
-    img: 'src/assets/img/products/product-4.jpg',
+    img: 'img/products/product-4.jpg',
     link: '',
     price: 250
   }

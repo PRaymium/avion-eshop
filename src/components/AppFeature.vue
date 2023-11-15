@@ -11,11 +11,7 @@
           >View collection</a
         >
       </div>
-      <img
-        src="src/assets/img/feature.jpg"
-        alt="modern interior"
-        class="feature-img"
-      />
+      <img src="img/feature.jpg" alt="modern interior" class="feature-img" />
     </div>
   </div>
 </template>

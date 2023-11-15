@@ -14,11 +14,7 @@
         >
       </div>
     </div>
-    <img
-      src="@/assets/img/hero-sm.jpg"
-      alt="Modern interior"
-      class="hero-img"
-    />
+    <img src="img/hero-sm.jpg" alt="Modern interior" class="hero-img" />
   </div>
 </template>
 
