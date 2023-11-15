@@ -4,6 +4,7 @@ import HomeHero from '../components/HomeHero.vue'
 import AppBrand from '../components/AppBrand.vue'
 import AppProducts from '../components/AppProducts.vue'
 import AppFeature from '../components/AppFeature.vue'
+import AppJoin from '../components/AppJoin.vue'
 </script>
 
 <template>
@@ -20,6 +21,9 @@ import AppFeature from '../components/AppFeature.vue'
     </section>
     <section class="section-feature">
       <AppFeature />
+    </section>
+    <section class="section-join">
+      <AppJoin />
     </section>
   </main>
 </template>
