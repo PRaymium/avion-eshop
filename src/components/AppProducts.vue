@@ -14,10 +14,12 @@
           ></AppProductsCard>
         </li>
       </ul>
-      <a
-        href="#"
-        class="btn btn_secondary btn_medium btn_w100-link products-link"
-        >View collection</a
+      <ButtonLink
+        type="link"
+        style-type="secondary"
+        :is-wide="true"
+        class="products-link"
+        >View collection</ButtonLink
       >
     </div>
   </div>
@@ -25,6 +27,7 @@
 
 <script setup>
 import AppProductsCard from './AppProductsCard.vue'
+import ButtonLink from './UI/ButtonLink.vue'
 
 defineProps({
   title: {

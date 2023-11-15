@@ -7,8 +7,12 @@
           A global brand with local beginnings, our story begain in a small
           studio in South London in early 2014
         </p>
-        <a href="#" class="btn btn_opaque btn_medium btn_w100-link feature-btn"
-          >View collection</a
+        <ButtonLink
+          type="link"
+          style-type="opaque"
+          :is-wide="true"
+          class="feature-btn"
+          >View collection</ButtonLink
         >
       </div>
       <img src="img/feature.jpg" alt="modern interior" class="feature-img" />
@@ -16,7 +20,9 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import ButtonLink from './UI/ButtonLink.vue'
+</script>
 
 <style lang="scss" scoped>
 .feature {

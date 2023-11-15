@@ -9,8 +9,12 @@
           With our new collection, view over 400 bespoke pieces from homeware
           through to furniture today
         </p>
-        <a href="#" class="btn btn_secondary btn_medium btn_w100-link hero-link"
-          >View collection</a
+        <ButtonLink
+          type="link"
+          style-type="secondary"
+          :is-wide="true"
+          class="hero-link"
+          >View collection</ButtonLink
         >
       </div>
     </div>
@@ -18,7 +22,9 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import ButtonLink from './UI/ButtonLink.vue'
+</script>
 
 <style lang="scss" scoped>
 .hero {
