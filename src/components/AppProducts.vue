@@ -70,8 +70,6 @@ const products = [
 
 <style lang="scss" scoped>
 .products {
-  padding: 25px 0;
-
   &-heading {
     margin-bottom: 36px;
     font-size: 20px;

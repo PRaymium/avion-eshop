@@ -40,5 +40,10 @@ defineProps({
     margin-top: 24px;
     margin-bottom: 8px;
   }
+
+  &__price {
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
 }
 </style>

@@ -161,6 +161,9 @@ const lists = {
   }
 
   &-copyright {
+    margin-top: 20px;
+    margin-bottom: 0px;
+
     text-align: center;
   }
 }

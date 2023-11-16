@@ -1,21 +1,23 @@
 <template>
   <div class="feature">
-    <div class="container feature-container">
-      <div class="feature-info">
-        <h2 class="feature-heading">It started with a small idea</h2>
-        <p class="p-small">
-          A global brand with local beginnings, our story begain in a small
-          studio in South London in early 2014
-        </p>
-        <ButtonLink
-          type="link"
-          style-type="opaque"
-          :is-wide="true"
-          class="feature-btn"
-          >View collection</ButtonLink
-        >
+    <div class="container">
+      <div class="feature__container">
+        <div class="feature-info">
+          <h2 class="feature-heading">It started with a small idea</h2>
+          <p class="p-small">
+            A global brand with local beginnings, our story begain in a small
+            studio in South London in early 2014
+          </p>
+          <ButtonLink
+            type="link"
+            style-type="opaque"
+            :is-wide="true"
+            class="feature-btn"
+            >View collection</ButtonLink
+          >
+        </div>
+        <img src="img/feature.jpg" alt="modern interior" class="feature-img" />
       </div>
-      <img src="img/feature.jpg" alt="modern interior" class="feature-img" />
     </div>
   </div>
 </template>
@@ -26,9 +28,7 @@ import ButtonLink from './UI/ButtonLink.vue'
 
 <style lang="scss" scoped>
 .feature {
-  padding: 32px 0;
-
-  &-container {
+  &__container {
     display: flex;
     flex-direction: column;
     gap: 24px;

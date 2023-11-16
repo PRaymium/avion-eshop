@@ -1,22 +1,24 @@
 <template>
   <div class="join">
-    <div class="container">
-      <h2 class="join-heading">Join the club and get the benefits</h2>
-      <p class="p-small">
-        Sign up for our newsletter and receive exclusive offers on new ranges,
-        sales, pop up stores and more
-      </p>
-      <ul class="join-list">
-        <li class="join-item" v-for="(benefit, idx) of benefits" :key="idx">
-          <span class="join-item__icon">
-            <IconCheckmark class="join-item__icon-svg" />
-          </span>
-          <p class="p-medium join-item__text">
-            {{ benefit }}
-          </p>
-        </li>
-      </ul>
-      <EmailSignUp class="join-form" />
+    <div class="join__container">
+      <div class="container">
+        <h2 class="join-heading">Join the club and get the benefits</h2>
+        <p class="p-small">
+          Sign up for our newsletter and receive exclusive offers on new ranges,
+          sales, pop up stores and more
+        </p>
+        <ul class="join-list">
+          <li class="join-item" v-for="(benefit, idx) of benefits" :key="idx">
+            <span class="join-item__icon">
+              <IconCheckmark class="join-item__icon-svg" />
+            </span>
+            <p class="p-medium join-item__text">
+              {{ benefit }}
+            </p>
+          </li>
+        </ul>
+        <EmailSignUp class="join-form" />
+      </div>
     </div>
   </div>
 </template>
@@ -30,9 +32,12 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
 
 <style lang="scss" scoped>
 .join {
-  padding: 24px 0 32px 0;
   color: $white;
-  background: url('img/join-bg.jpg') 40% 70% no-repeat;
+
+  &__container {
+    padding: 24px 0 32px 0;
+    background: url('img/join-bg.jpg') 40% 70% no-repeat;
+  }
 
   &-heading {
     margin-bottom: 12px;
@@ -53,6 +58,10 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
     &__icon {
       display: flex;
       align-items: center;
+    }
+
+    &__text {
+      margin: 0;
     }
   }
 

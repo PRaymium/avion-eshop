@@ -51,8 +51,6 @@ const cards = [
 
 <style lang="scss" scoped>
 .brand {
-  padding: 50px 0;
-
   &-heading {
     margin-bottom: 36px;
     font-size: 20px;

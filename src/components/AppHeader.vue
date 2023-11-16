@@ -1,16 +1,18 @@
 <template>
   <header class="header">
-    <div class="container header-container">
-      <div class="header-logo">
-        <a href="#" class="header-logo__link">Avion</a>
-      </div>
-      <div class="header-right">
-        <button class="header-btn header-search-toggle">
-          <IconSearch />
-        </button>
-        <button class="header-btn header-menu-toggle">
-          <IconBurgerMenu />
-        </button>
+    <div class="container">
+      <div class="header__container">
+        <div class="header-logo">
+          <a href="#" class="header-logo__link">Avion</a>
+        </div>
+        <div class="header-right">
+          <button class="header-btn header-search-toggle">
+            <IconSearch />
+          </button>
+          <button class="header-btn header-menu-toggle">
+            <IconBurgerMenu />
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -23,18 +25,15 @@ import IconBurgerMenu from '@/components/icons/IconBurgerMenu.vue'
 
 <style lang="scss">
 .header {
-  padding: 20px 0;
-
-  &-container {
+  &__container {
+    padding: 20px 0px;
     display: flex;
     justify-content: space-between;
   }
 
-  &-logo {
-    &__link {
-      font-family: $font-clash-display;
-      font-size: 24px;
-    }
+  &-logo__link {
+    font-family: $font-clash-display;
+    font-size: 24px;
   }
 
   &-right {

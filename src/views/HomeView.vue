@@ -30,4 +30,24 @@ import AppFooter from '../components/AppFooter.vue'
   <AppFooter />
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.section-hero {
+  margin-top: 50px;
+}
+
+.section-brand {
+  margin-top: 50px;
+}
+
+.section-products {
+  margin-top: 75px;
+}
+
+.section-feature {
+  margin-top: 60px;
+}
+
+.section-join {
+  margin-top: 30px;
+}
+</style>

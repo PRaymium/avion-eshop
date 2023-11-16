@@ -34,5 +34,9 @@ defineProps({
     margin-top: 12px;
     margin-bottom: 12px;
   }
+
+  &__desciption {
+    margin-bottom: 0;
+  }
 }
 </style>

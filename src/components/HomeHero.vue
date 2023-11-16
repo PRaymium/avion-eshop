@@ -28,8 +28,6 @@ import ButtonLink from './UI/ButtonLink.vue'
 
 <style lang="scss" scoped>
 .hero {
-  padding-top: 47px;
-
   &-heading {
     margin-bottom: 12px;
     font-size: 24px;
@@ -41,7 +39,7 @@ import ButtonLink from './UI/ButtonLink.vue'
   }
 
   &-img {
-    padding-top: 32px;
+    margin-top: 32px;
   }
 }
 </style>
