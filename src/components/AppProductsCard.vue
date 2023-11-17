@@ -1,11 +1,11 @@
 <template>
   <div class="products-card">
-    <a :href="link" class="product-card__link">
+    <router-link :to="link" class="products-card__link">
       <img :src="imgPath" :alt="title" class="products-card__img" />
-    </a>
-    <a :href="link" class="product-card__link">
+    </router-link>
+    <router-link :to="link" class="products-card__link">
       <h4 class="products-card__heading">{{ title }}</h4>
-    </a>
+    </router-link>
     <p class="products-card__price">£{{ price }}</p>
   </div>
 </template>
@@ -44,6 +44,10 @@ defineProps({
   &__price {
     margin-top: 8px;
     margin-bottom: 0;
+  }
+
+  &__link {
+    color: $dark-primary;
   }
 }
 </style>
