@@ -33,6 +33,10 @@ import AppFooter from '../components/AppFooter.vue'
 <style lang="scss" scoped>
 .section-hero {
   margin-top: 50px;
+
+  @media screen and (min-width: $md) {
+    margin-top: 0;
+  }
 }
 
 .section-brand {
