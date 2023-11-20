@@ -18,6 +18,10 @@ body {
 
 .container {
   padding: 0 $container-padding;
+
+  @media screen and (min-width: $md) {
+    padding: 0 $container-padding-md;
+  }
 }
 
 a {
@@ -38,4 +42,8 @@ button {
   font-family: $font-satoshi;
   font-size: $font-size;
   cursor: pointer;
+}
+
+img {
+  display: block;
 }
