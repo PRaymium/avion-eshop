@@ -54,12 +54,20 @@ const cards = [
   &-heading {
     margin-bottom: 36px;
     font-size: 20px;
+
+    @media screen and (min-width: $lg) {
+      text-align: center;
+    }
   }
 
   &-list {
     display: flex;
     flex-direction: column;
     gap: 25px;
+
+    @media screen and (min-width: $lg) {
+      flex-direction: row;
+    }
   }
 }
 </style>

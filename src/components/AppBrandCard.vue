@@ -28,7 +28,12 @@ defineProps({
 <style lang="scss" scoped>
 .brand-card {
   padding: 36px 24px;
+  box-sizing: border-box;
   background-color: $light-gray;
+
+  @media screen and (min-width: $lg) {
+    padding: 48px;
+  }
 
   &__heading {
     margin-top: 12px;

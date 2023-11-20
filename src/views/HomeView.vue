@@ -41,6 +41,10 @@ import AppFooter from '../components/AppFooter.vue'
 
 .section-brand {
   margin-top: 50px;
+
+  @media screen and (min-width: $lg) {
+    margin-top: 80px;
+  }
 }
 
 .section-products {
