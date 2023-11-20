@@ -7,7 +7,7 @@
             <h2 class="hero-content__heading">
               Luxury homeware for people who love timeless design quality
             </h2>
-            <p class="p-medium">
+            <p class="hero-content__description">
               With our new collection, view over 400 bespoke pieces from
               homeware through to furniture today
             </p>
@@ -96,6 +96,12 @@ import { breakpoints } from '../breakpoints'
       margin-bottom: 12px;
       font-size: 24px;
       line-height: normal;
+    }
+
+    &__description {
+      @media screen and (min-width: $xl) {
+        font-size: $body-font-lg;
+      }
     }
 
     &__link {

@@ -4,7 +4,7 @@
       <div class="feature__container">
         <div class="feature-info">
           <h2 class="feature-heading">It started with a small idea</h2>
-          <p class="p-small">
+          <p class="feature-description">
             A global brand with local beginnings, our story begain in a small
             studio in South London in early 2014
           </p>
@@ -43,6 +43,10 @@ import ButtonLink from './UI/ButtonLink.vue'
   &-heading {
     margin-bottom: 12px;
     font-size: 20px;
+  }
+
+  &-description {
+    font-size: $body-font-sm;
   }
 
   &-btn {

@@ -10,7 +10,7 @@
               v-for="(item, idx) of list.items"
               :key="idx"
             >
-              <router-link :to="item.link" class="p-small footer-link">{{
+              <router-link :to="item.link" class="footer-link">{{
                 item.name
               }}</router-link>
             </li>
@@ -25,7 +25,7 @@
         ></EmailSignUp>
       </div>
       <hr class="footer-hr" />
-      <p class="p-small footer-copyright">Copyright 2023 Avion LTD</p>
+      <p class="footer-copyright">Copyright 2023 Avion LTD</p>
     </div>
   </footer>
 </template>
@@ -142,6 +142,7 @@ const lists = {
   }
 
   &-link {
+    font-size: $body-font-sm;
     color: inherit;
   }
 
@@ -163,8 +164,8 @@ const lists = {
   &-copyright {
     margin-top: 20px;
     margin-bottom: 0px;
-
     text-align: center;
+    font-size: $body-font-sm;
   }
 }
 </style>

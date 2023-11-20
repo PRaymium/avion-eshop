@@ -3,7 +3,7 @@
     <div class="join__container">
       <div class="container">
         <h2 class="join-heading">Join the club and get the benefits</h2>
-        <p class="p-small">
+        <p class="join-description">
           Sign up for our newsletter and receive exclusive offers on new ranges,
           sales, pop up stores and more
         </p>
@@ -12,7 +12,7 @@
             <span class="join-item__icon">
               <IconCheckmark class="join-item__icon-svg" />
             </span>
-            <p class="p-medium join-item__text">
+            <p class="join-item__text">
               {{ benefit }}
             </p>
           </li>
@@ -44,6 +44,10 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
     font-size: 24px;
   }
 
+  &-description {
+    font-size: $body-font-sm;
+  }
+
   &-list {
     display: flex;
     flex-direction: column;
@@ -62,6 +66,7 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
 
     &__text {
       margin: 0;
+      font-size: $body-font-md;
     }
   }
 
