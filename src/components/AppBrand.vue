@@ -53,7 +53,6 @@ const cards = [
 .brand {
   &-heading {
     margin-bottom: 36px;
-    font-size: 20px;
 
     @media screen and (min-width: $lg) {
       text-align: center;
