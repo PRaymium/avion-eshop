@@ -48,6 +48,7 @@ import { breakpoints } from '../breakpoints'
       align-items: center;
       width: 100%;
       height: 50vw;
+      max-height: 700px;
       padding: 0 $container-padding-md;
       box-sizing: border-box;
       background-image: url(img/hero-768w.jpg);
@@ -67,13 +68,11 @@ import { breakpoints } from '../breakpoints'
 
   &-content {
     @media screen and (min-width: $md) {
+      display: flex;
       width: 50%;
-      height: 80%;
+      min-height: 60%;
+      max-height: 90%;
       background-color: $white;
-    }
-
-    @media screen and (min-width: $lg) {
-      height: 60%;
     }
 
     &__container {
@@ -83,7 +82,6 @@ import { breakpoints } from '../breakpoints'
         display: flex;
         flex-direction: column;
         padding: 20px 25px;
-        height: 100%;
       }
 
       @media screen and (min-width: $lg) {
@@ -93,12 +91,17 @@ import { breakpoints } from '../breakpoints'
 
     &__heading {
       margin-bottom: 12px;
-      font-size: 24px;
+      font-size: normal;
       line-height: normal;
+
+      @media screen and (min-width: $lg) {
+        margin-bottom: 20px;
+      }
     }
 
     &__description {
-      @media screen and (min-width: $xl) {
+      @media screen and (min-width: $lg) {
+        margin-top: 0;
         font-size: $body-font-size-lg;
       }
     }
@@ -108,7 +111,12 @@ import { breakpoints } from '../breakpoints'
 
       @media screen and (min-width: $md) {
         align-self: flex-start;
-        justify-self: flex-start;
+        width: auto;
+        margin-top: auto;
+      }
+
+      @media screen and (min-width: $md) {
+        align-self: flex-start;
         width: auto;
         margin-top: auto;
       }
