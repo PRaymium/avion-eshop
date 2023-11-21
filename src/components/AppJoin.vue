@@ -45,7 +45,7 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
   }
 
   &-description {
-    font-size: $body-font-sm;
+    font-size: $body-font-size-sm;
   }
 
   &-list {
@@ -66,7 +66,7 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
 
     &__text {
       margin: 0;
-      font-size: $body-font-md;
+      font-size: $body-font-size-md;
     }
   }
 

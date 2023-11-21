@@ -19,12 +19,20 @@ $font-satoshi: 'Satoshi';
 $font-clash-display: 'ClashDisplay';
 
 //base font size
-$font-size: 16px;
+$body-font-size: 16px;
+
+//headings font size
+$h1-font-size: 36px;
+$h2-font-size: 32px;
+$h3-font-size: 24px;
+$h4-font-size: 20px;
+$h5-font-size: 16px;
+$h6-font-size: 14px;
 
 //body font sizes
-$body-font-sm: 14px;
-$body-font-md: 16px;
-$body-font-lg: 18px;
+$body-font-size-sm: 14px;
+$body-font-size-md: 16px;
+$body-font-size-lg: 18px;
 
 //container padding
 $container-padding: 24px;

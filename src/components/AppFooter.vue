@@ -142,7 +142,7 @@ const lists = {
   }
 
   &-link {
-    font-size: $body-font-sm;
+    font-size: $body-font-size-sm;
     color: inherit;
   }
 
@@ -165,7 +165,7 @@ const lists = {
     margin-top: 20px;
     margin-bottom: 0px;
     text-align: center;
-    font-size: $body-font-sm;
+    font-size: $body-font-size-sm;
   }
 }
 </style>

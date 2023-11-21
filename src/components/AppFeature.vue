@@ -46,7 +46,7 @@ import ButtonLink from './UI/ButtonLink.vue'
   }
 
   &-description {
-    font-size: $body-font-sm;
+    font-size: $body-font-size-sm;
   }
 
   &-btn {

@@ -99,7 +99,7 @@ import { breakpoints } from '../breakpoints'
 
     &__description {
       @media screen and (min-width: $xl) {
-        font-size: $body-font-lg;
+        font-size: $body-font-size-lg;
       }
     }
 
