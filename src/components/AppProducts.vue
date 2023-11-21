@@ -6,12 +6,12 @@
       </h2>
       <ul class="products-list">
         <li class="products-item" v-for="product of products" :key="product.id">
-          <AppProductsCard
+          <AppProductCard
+            :id="product.id"
             :title="product.title"
             :price="product.price"
-            :img-path="product.img"
             :link="product.link"
-          ></AppProductsCard>
+          ></AppProductCard>
         </li>
       </ul>
       <ButtonLink
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import AppProductsCard from './AppProductsCard.vue'
+import AppProductCard from './AppProductCard.vue'
 import ButtonLink from './UI/ButtonLink.vue'
 
 defineProps({
@@ -40,28 +40,24 @@ const products = [
   {
     id: 1,
     title: 'Rustic Vase Set',
-    img: 'img/products/product-1.jpg',
     link: '',
     price: 155
   },
   {
     id: 2,
     title: 'The Lucy Lamp',
-    img: 'img/products/product-2.jpg',
     link: '',
     price: 399
   },
   {
     id: 3,
     title: 'The Silky Vase',
-    img: 'img/products/product-3.jpg',
     link: '',
     price: 125
   },
   {
     id: 4,
     title: 'The Dandy chair',
-    img: 'img/products/product-4.jpg',
     link: '',
     price: 250
   }
@@ -70,7 +66,10 @@ const products = [
 
 <style lang="scss" scoped>
 .products {
+  text-align: center;
+
   &-heading {
+    text-align: left;
     margin-bottom: 36px;
     font-size: 20px;
   }
@@ -80,10 +79,29 @@ const products = [
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px 16px;
+
+    @media screen and (min-width: $md) {
+      gap: 20px;
+    }
+  }
+
+  &-item {
+    text-align: left;
+    flex-basis: calc(50% - 32px); //32px = &-list gap * 2
+    flex-grow: 1;
+
+    @media screen and (min-width: $md) {
+      flex-basis: calc(25% - 40px); //40px &-list gap * 2
+    }
   }
 
   &-link {
     margin-top: 40px;
+
+    @media screen and (min-width: $md) {
+      width: auto;
+      margin: 48px auto 0 auto;
+    }
   }
 }
 </style>
