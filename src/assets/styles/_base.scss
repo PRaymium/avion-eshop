@@ -22,6 +22,10 @@ body {
   @media screen and (min-width: $md) {
     padding: 0 $container-padding-md;
   }
+
+  @media screen and (min-width: $xl) {
+    padding: 0 $container-padding-xl;
+  }
 }
 
 a {

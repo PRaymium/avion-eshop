@@ -60,9 +60,8 @@ import { breakpoints } from '../breakpoints'
     }
 
     @media screen and (min-width: $xl) {
+      padding: 0 $container-padding-xl;
       background-image: url(img/hero.jpg);
-
-      background-size: cover;
     }
   }
 
