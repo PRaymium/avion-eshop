@@ -24,9 +24,9 @@
       <picture>
         <source
           :media="`(max-width: ${breakpoints.xs}px)`"
-          srcset="img/hero-390w.jpg"
+          srcset="img/hero/hero-390w.jpg"
         />
-        <img class="hero-img" src="img/hero-640w.jpg" alt="" />
+        <img class="hero-img" src="img/hero/hero-640w.jpg" alt="" />
       </picture>
     </div>
   </div>
@@ -51,18 +51,18 @@ import { breakpoints } from '../breakpoints'
       max-height: 700px;
       padding: 0 $container-padding-md;
       box-sizing: border-box;
-      background-image: url(img/hero-768w.jpg);
+      background-image: url(img/hero/hero-768w.jpg);
       background-repeat: no-repeat;
       background-size: cover;
     }
 
     @media screen and (min-width: $lg) {
-      background-image: url(img/hero-1024w.jpg);
+      background-image: url(img/hero/hero-1024w.jpg);
     }
 
     @media screen and (min-width: $xl) {
       padding: 0 $container-padding-xl;
-      background-image: url(img/hero.jpg);
+      background-image: url(img/hero/hero.jpg);
     }
   }
 
