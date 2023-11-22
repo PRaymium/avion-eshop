@@ -37,7 +37,7 @@ defineProps({
     border: none;
 
     &::placeholder {
-      opacity: 0.2;
+      opacity: 0.5;
     }
 
     &:focus {
