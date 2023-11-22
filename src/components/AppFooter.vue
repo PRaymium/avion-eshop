@@ -1,37 +1,62 @@
 <template>
   <footer class="footer">
     <div class="container">
-      <div class="footer-lists">
-        <div class="footer-list" v-for="list of lists" :key="list.title">
-          <h5 class="footer-heading">{{ list.title }}</h5>
-          <ul class="footer-list__ul">
-            <li
-              class="footer-list__li"
-              v-for="(item, idx) of list.items"
-              :key="idx"
-            >
-              <router-link :to="item.link" class="footer-link">{{
-                item.name
-              }}</router-link>
-            </li>
-          </ul>
+      <div class="footer-content">
+        <div class="footer-lists">
+          <div class="footer-list" v-for="list of lists" :key="list.title">
+            <h5 class="footer-heading">{{ list.title }}</h5>
+            <ul class="footer-list__ul">
+              <li
+                class="footer-list__li"
+                v-for="(item, idx) of list.items"
+                :key="idx"
+              >
+                <router-link :to="item.link" class="footer-link">{{
+                  item.name
+                }}</router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-join">
+          <h5 class="footer-join__heading">Join our mailing list</h5>
+          <EmailSignUp
+            style-type="secondary"
+            class="footer-join__mail"
+          ></EmailSignUp>
         </div>
       </div>
-      <div class="footer-join">
-        <h5 class="footer-heading">Join our mailing list</h5>
-        <EmailSignUp
-          style-type="secondary"
-          class="footer-join__mail"
-        ></EmailSignUp>
-      </div>
+
       <hr class="footer-hr" />
-      <p class="footer-copyright">Copyright 2023 Avion LTD</p>
+      <div class="footer-info">
+        <p class="footer-copyright">Copyright 2023 Avion LTD</p>
+        <ul class="footer-social">
+          <li
+            class="footer-social-item"
+            v-for="(item, idx) of social"
+            :key="idx"
+          >
+            <a :href="item.link" class="footer-social-link">
+              <component
+                :is="item.iconComponent"
+                class="footer-social-icon"
+              ></component>
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   </footer>
 </template>
 
 <script setup>
 import EmailSignUp from './UI/EmailSignUp.vue'
+import IconLinkedin from './icons/IconLinkedin.vue'
+import IconFacebook from './icons/IconFacebook.vue'
+import IconInstagram from './icons/IconInstagram.vue'
+import IconSkype from './icons/IconSkype.vue'
+import IconTwitter from './icons/IconTwitter.vue'
+import IconPinterest from './icons/IconPinterest.vue'
 
 const lists = {
   categories: {
@@ -116,6 +141,33 @@ const lists = {
     ]
   }
 }
+
+const social = [
+  {
+    iconComponent: IconLinkedin,
+    link: '#'
+  },
+  {
+    iconComponent: IconFacebook,
+    link: '#'
+  },
+  {
+    iconComponent: IconInstagram,
+    link: '#'
+  },
+  {
+    iconComponent: IconSkype,
+    link: '#'
+  },
+  {
+    iconComponent: IconTwitter,
+    link: '#'
+  },
+  {
+    iconComponent: IconPinterest,
+    link: '#'
+  }
+]
 </script>
 
 <style lang="scss">
@@ -123,6 +175,16 @@ const lists = {
   padding: 40px 0 20px 0;
   background-color: $dark-primary;
   color: $white;
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (min-width: $lg) {
+      flex-direction: row;
+      column-gap: 50px;
+    }
+  }
 
   &-lists {
     display: flex;
@@ -149,6 +211,11 @@ const lists = {
   &-join {
     margin-top: 40px;
 
+    @media screen and (min-width: $lg) {
+      margin-top: 0;
+      flex-grow: 1;
+    }
+
     &__mail {
       margin-top: 16px;
     }
@@ -161,11 +228,41 @@ const lists = {
     border: none;
   }
 
-  &-copyright {
+  &-info {
+    display: flex;
+    justify-content: center;
     margin-top: 20px;
-    margin-bottom: 0px;
+
+    @media screen and (min-width: $md) {
+      margin-top: 25px;
+
+      justify-content: space-between;
+    }
+  }
+
+  &-copyright {
+    margin: 0;
     text-align: center;
     font-size: $body-font-size-sm;
+  }
+
+  &-social {
+    display: none;
+
+    @media screen and (min-width: $md) {
+      display: flex;
+      gap: 24px;
+    }
+
+    &-item {
+      display: flex;
+    }
+
+    &-link {
+      &:hover {
+        border-bottom: 1px solid $white;
+      }
+    }
   }
 }
 </style>
