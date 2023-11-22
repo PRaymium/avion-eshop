@@ -22,7 +22,7 @@
           <h5 class="footer-join__heading">Join our mailing list</h5>
           <EmailSignUp
             style-type="secondary"
-            class="footer-join__mail"
+            class="footer-join__input"
           ></EmailSignUp>
         </div>
       </div>
@@ -190,6 +190,11 @@ const social = [
     display: flex;
     gap: 40px 100px;
     flex-wrap: wrap;
+
+    @media screen and (min-width: $lg) {
+      flex: 1 1 50%;
+      column-gap: 70px;
+    }
   }
 
   &-list {
@@ -213,10 +218,10 @@ const social = [
 
     @media screen and (min-width: $lg) {
       margin-top: 0;
-      flex-grow: 1;
+      flex: 1 1 50%;
     }
 
-    &__mail {
+    &__input {
       margin-top: 16px;
     }
   }
@@ -235,7 +240,6 @@ const social = [
 
     @media screen and (min-width: $md) {
       margin-top: 25px;
-
       justify-content: space-between;
     }
   }
