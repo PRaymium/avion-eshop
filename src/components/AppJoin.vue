@@ -33,19 +33,40 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
 <style lang="scss" scoped>
 .join {
   color: $white;
+  background-image: url('img/join/join-bg-390w.jpg');
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @media screen and (min-width: $md) {
+    background-image: url('img/join/join-bg-768w.jpg');
+  }
+
+  @media screen and (min-width: $lg) {
+    background-image: url('img/join/join-bg-1280w.jpg');
+  }
 
   &__container {
     padding: 24px 0 32px 0;
-    background: url('img/join-bg.jpg') 40% 70% no-repeat;
+
+    @media screen and (min-width: $md) {
+      margin: 0 auto;
+      padding: 100px 0 85px 0;
+      width: 65%;
+      text-align: center;
+    }
   }
 
   &-heading {
     margin-bottom: 12px;
-    font-size: 24px;
   }
 
   &-description {
     font-size: $body-font-size-sm;
+
+    @media screen and (min-width: $lg) {
+      font-size: $body-font-size-lg;
+    }
   }
 
   &-list {
@@ -53,6 +74,12 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
     flex-direction: column;
     row-gap: 8px;
     margin-top: 20px;
+
+    @media screen and (min-width: $md) {
+      flex-direction: row;
+      justify-content: space-around;
+      margin-top: 30px;
+    }
   }
 
   &-item {
@@ -72,6 +99,13 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
 
   &-form {
     margin-top: 28px;
+
+    @media screen and (min-width: $md) {
+      margin-top: 40px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 95%;
+    }
   }
 }
 </style>

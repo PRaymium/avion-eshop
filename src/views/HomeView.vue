@@ -65,5 +65,9 @@ import AppFooter from '../components/AppFooter.vue'
 
 .section-join {
   margin-top: 30px;
+
+  @media screen and (min-width: $md) {
+    margin-top: 60px;
+  }
 }
 </style>

@@ -8,7 +8,7 @@
     <ButtonLink
       class="form-email__btn"
       :style-type="styleType === 'primary' ? 'primary' : 'white'"
-      >Sign Up</ButtonLink
+      >Sign up</ButtonLink
     >
   </form>
 </template>
