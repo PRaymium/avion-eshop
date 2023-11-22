@@ -10,7 +10,11 @@
         <ul class="join-list">
           <li class="join-item" v-for="(benefit, idx) of benefits" :key="idx">
             <span class="join-item__icon">
-              <IconCheckmark class="join-item__icon-svg" />
+              <IconCheckmark
+                style-type="filled"
+                :size="16"
+                class="join-item__icon-svg"
+              />
             </span>
             <p class="join-item__text">
               {{ benefit }}

@@ -1,6 +1,6 @@
 <template>
   <div class="brand-card">
-    <img :src="iconPath" alt="Icon" class="brand-card__icon" />
+    <component :is="iconComponent" class="brand-card__icon"></component>
     <h4 class="brand-card__heading">{{ title }}</h4>
     <p class="brand-card__desciption">{{ description }}</p>
   </div>
@@ -18,8 +18,8 @@ defineProps({
     required: true
   },
 
-  iconPath: {
-    type: String,
+  iconComponent: {
+    type: Object,
     required: true
   }
 })
