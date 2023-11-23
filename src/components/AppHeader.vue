@@ -83,6 +83,11 @@ const navItems = [
 
 <style lang="scss">
 .header {
+  &-btn-list {
+    display: flex;
+    column-gap: 20px;
+  }
+
   &-row {
     display: flex;
     padding: 20px 0px;
@@ -136,11 +141,6 @@ const navItems = [
         display: flex;
       }
     }
-  }
-
-  &-btn-list {
-    display: flex;
-    column-gap: 20px;
   }
 
   &-logo__link {
