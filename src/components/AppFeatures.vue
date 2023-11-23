@@ -1,14 +1,14 @@
 <template>
-  <div class="brand">
+  <div class="features">
     <div class="container">
-      <h3 class="brand-heading">What makes our brand different</h3>
-      <ul class="brand-list">
-        <li class="brand-item" v-for="card of cards" :key="card.id">
-          <AppBrandCard
+      <h3 class="features-heading">What makes our brand different</h3>
+      <ul class="features-list">
+        <li class="features-item" v-for="card of cards" :key="card.id">
+          <AppFeaturesCard
             :title="card.title"
             :description="card.desciption"
             :icon-component="card.icon"
-          ></AppBrandCard>
+          ></AppFeaturesCard>
         </li>
       </ul>
     </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import AppBrandCard from './AppBrandCard.vue'
+import AppFeaturesCard from './AppFeaturesCard.vue'
 import IconDelivery from './icons/IconDelivery.vue'
 import IconCheckmark from './icons/IconCheckmark.vue'
 import IconPurchase from './icons/IconPurchase.vue'
@@ -54,7 +54,7 @@ const cards = [
 </script>
 
 <style lang="scss" scoped>
-.brand {
+.features {
   &-heading {
     margin-bottom: 36px;
 

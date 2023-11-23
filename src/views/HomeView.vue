@@ -1,9 +1,9 @@
 <script setup>
 import AppHeader from '../components/AppHeader.vue'
-import HomeHero from '../components/HomeHero.vue'
-import AppBrand from '../components/AppBrand.vue'
+import AppHero from '../components/AppHero.vue'
+import AppFeatures from '../components/AppFeatures.vue'
 import AppProducts from '../components/AppProducts.vue'
-import AppFeature from '../components/AppFeature.vue'
+import AppHero2 from '../components/AppHero2.vue'
 import AppJoin from '../components/AppJoin.vue'
 import AppFooter from '../components/AppFooter.vue'
 </script>
@@ -12,16 +12,16 @@ import AppFooter from '../components/AppFooter.vue'
   <AppHeader />
   <main class="main">
     <section class="section-hero">
-      <HomeHero />
+      <AppHero />
     </section>
-    <section class="section-brand">
-      <AppBrand />
+    <section class="section-features">
+      <AppFeatures />
     </section>
     <section class="section-products">
       <AppProducts />
     </section>
-    <section class="section-feature">
-      <AppFeature />
+    <section class="section-hero2">
+      <AppHero2 />
     </section>
     <section class="section-join">
       <AppJoin />
@@ -39,7 +39,7 @@ import AppFooter from '../components/AppFooter.vue'
   }
 }
 
-.section-brand {
+.section-features {
   margin-top: 50px;
 
   @media screen and (min-width: $lg) {
@@ -55,7 +55,7 @@ import AppFooter from '../components/AppFooter.vue'
   }
 }
 
-.section-feature {
+.section-hero2 {
   margin-top: 60px;
 
   @media screen and (min-width: $md) {

@@ -1,7 +1,7 @@
 <template>
   <div class="join">
-    <div class="join__container">
-      <div class="container">
+    <div class="container">
+      <div class="join__container">
         <h2 class="join-heading">Join the club and get the benefits</h2>
         <p class="join-description">
           Sign up for our newsletter and receive exclusive offers on new ranges,

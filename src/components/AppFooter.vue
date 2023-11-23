@@ -4,7 +4,7 @@
       <div class="footer-content">
         <div class="footer-lists">
           <div class="footer-list" v-for="list of lists" :key="list.title">
-            <h5 class="footer-heading">{{ list.title }}</h5>
+            <h5 class="footer-list__heading">{{ list.title }}</h5>
             <ul class="footer-list__ul">
               <li
                 class="footer-list__li"
@@ -36,7 +36,7 @@
             v-for="(item, idx) of social"
             :key="idx"
           >
-            <a :href="item.link" class="footer-social-link">
+            <a :href="item.link" class="footer-social-item__link">
               <component
                 :is="item.iconComponent"
                 class="footer-social-icon"
@@ -260,11 +260,11 @@ const social = [
 
     &-item {
       display: flex;
-    }
 
-    &-link {
-      &:hover {
-        border-bottom: 1px solid $white;
+      &__link {
+        &:hover {
+          border-bottom: 1px solid $white;
+        }
       }
     }
   }

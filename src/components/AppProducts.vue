@@ -6,12 +6,12 @@
       </h2>
       <ul class="products-list">
         <li class="products-item" v-for="product of products" :key="product.id">
-          <AppProductCard
+          <AppProductsCard
             :id="product.id"
             :title="product.title"
             :price="product.price"
             :link="product.link"
-          ></AppProductCard>
+          ></AppProductsCard>
         </li>
       </ul>
       <ButtonLink
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import AppProductCard from './AppProductCard.vue'
+import AppProductsCard from './AppProductsCard.vue'
 import ButtonLink from './UI/ButtonLink.vue'
 
 defineProps({

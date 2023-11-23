@@ -1,8 +1,8 @@
 <template>
   <header class="header">
     <div class="container">
-      <div class="header-row header-row--top">
-        <div class="header-left header-btn-list">
+      <div class="header-row header-row-top">
+        <div class="header-row-top__left header-btn-list">
           <button class="header-btn header-btn--search">
             <IconSearch />
           </button>
@@ -10,12 +10,12 @@
             <IconBurgerMenu />
           </button>
         </div>
-        <div class="header-center">
+        <div class="header-row-top__center">
           <div class="header-logo">
             <router-link to="/" class="header-logo__link">Avion</router-link>
           </div>
         </div>
-        <div class="header-right header-btn-list">
+        <div class="header-row-top__right header-btn-list">
           <button class="header-btn header-btn--cart">
             <IconShopcart />
           </button>
@@ -24,7 +24,7 @@
           </button>
         </div>
       </div>
-      <div class="header-row header-row--bottom">
+      <div class="header-row header-row-bottom">
         <nav class="header-nav">
           <ul class="header-nav__list">
             <li
@@ -83,20 +83,43 @@ const navItems = [
 
 <style lang="scss">
 .header {
-  &__container {
-    justify-content: space-between;
-  }
-
   &-row {
     display: flex;
     padding: 20px 0px;
 
-    &--top {
+    &-top {
       justify-content: space-between;
 
       & > * {
         width: 33.333%;
         text-align: center;
+      }
+
+      &__left {
+        justify-content: end;
+
+        @media screen and (min-width: $md) {
+          justify-content: start;
+        }
+      }
+
+      &__center {
+        order: -1;
+        text-align: left;
+
+        @media screen and (min-width: $md) {
+          order: 0;
+          text-align: center;
+        }
+      }
+
+      &__right {
+        display: none;
+        justify-content: end;
+
+        @media screen and (min-width: $md) {
+          display: flex;
+        }
       }
 
       @media screen and (min-width: $md) {
@@ -105,7 +128,7 @@ const navItems = [
       }
     }
 
-    &--bottom {
+    &-bottom {
       display: none;
       justify-content: center;
 
@@ -118,33 +141,6 @@ const navItems = [
   &-btn-list {
     display: flex;
     column-gap: 20px;
-  }
-
-  &-left {
-    justify-content: end;
-
-    @media screen and (min-width: $md) {
-      justify-content: start;
-    }
-  }
-
-  &-center {
-    order: -1;
-    text-align: left;
-
-    @media screen and (min-width: $md) {
-      order: 0;
-      text-align: center;
-    }
-  }
-
-  &-right {
-    display: none;
-    justify-content: end;
-
-    @media screen and (min-width: $md) {
-      display: flex;
-    }
   }
 
   &-logo__link {

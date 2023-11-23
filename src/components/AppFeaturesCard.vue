@@ -1,8 +1,8 @@
 <template>
-  <div class="brand-card">
-    <component :is="iconComponent" class="brand-card__icon"></component>
-    <h4 class="brand-card__heading">{{ title }}</h4>
-    <p class="brand-card__desciption">{{ description }}</p>
+  <div class="features-card">
+    <component :is="iconComponent" class="features-card__icon"></component>
+    <h4 class="features-card__heading">{{ title }}</h4>
+    <p class="features-card__desciption">{{ description }}</p>
   </div>
 </template>
 
@@ -26,7 +26,7 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
-.brand-card {
+.features-card {
   padding: 36px 24px;
   box-sizing: border-box;
   background-color: $light-gray;
