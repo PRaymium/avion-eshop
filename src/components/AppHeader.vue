@@ -6,7 +6,11 @@
           <button class="header-btn header-btn--search">
             <IconSearch />
           </button>
-          <button class="header-btn header-btn--toggle">
+          <button
+            class="header-btn header-btn--toggle"
+            aria-controls="menu"
+            @click="menuIsHide = !menuIsHide"
+          >
             <IconBurgerMenu />
           </button>
         </div>
@@ -25,19 +29,35 @@
         </div>
       </div>
       <div class="header-row header-row-bottom">
-        <nav class="header-nav">
-          <ul class="header-nav__list">
-            <li
-              class="header-nav__item"
-              v-for="(item, idx) of navItems"
-              :key="idx"
-            >
-              <router-link class="header-nav__link" :to="item.link">{{
-                item.title
-              }}</router-link>
-            </li>
-          </ul>
-        </nav>
+        <div
+          :class="[
+            'header-collapse-menu',
+            { 'header-collapse-menu--hide': menuIsHide }
+          ]"
+          id="menu"
+          :aria-hidden="menuIsHide"
+        >
+          <button
+            class="header-collapse-menu__close"
+            aria-controls="menu"
+            @click="menuIsHide = !menuIsHide"
+          >
+            X
+          </button>
+          <nav class="header-nav">
+            <ul class="header-nav__list">
+              <li
+                class="header-nav__item"
+                v-for="(item, idx) of navItems"
+                :key="idx"
+              >
+                <router-link class="header-nav__link" :to="item.link">{{
+                  item.title
+                }}</router-link>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   </header>
@@ -48,6 +68,7 @@ import IconSearch from './icons/IconSearch.vue'
 import IconBurgerMenu from './icons/IconBurgerMenu.vue'
 import IconUser from './icons/IconUser.vue'
 import IconShopcart from './icons/IconShopcart.vue'
+import { ref } from 'vue'
 
 const navItems = [
   {
@@ -79,6 +100,8 @@ const navItems = [
     link: '/'
   }
 ]
+
+const menuIsHide = ref(true)
 </script>
 
 <style lang="scss">
@@ -134,11 +157,12 @@ const navItems = [
     }
 
     &-bottom {
-      display: none;
+      display: flex;
       justify-content: center;
+      padding: 0;
 
       @media screen and (min-width: $md) {
-        display: flex;
+        padding: 20px 0;
       }
     }
   }
@@ -157,10 +181,66 @@ const navItems = [
     }
   }
 
+  &-collapse-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 24px;
+    font-size: $body-font-size-lg;
+    background-color: $white;
+    transform: translateX(0);
+    transition: transform 0.15s ease-in-out;
+    overflow-y: scroll;
+    visibility: visible;
+
+    &--hide {
+      visibility: hidden;
+      transform: translateX(100%);
+    }
+
+    @media screen and (min-width: $sm) {
+      padding: 20px 48px;
+    }
+
+    @media screen and (min-width: $md) {
+      position: static;
+      flex-direction: row;
+      padding: 0;
+      font-size: $body-font-size-md;
+      transform: translateX(0);
+      overflow-y: hidden;
+      visibility: visible;
+    }
+
+    &__close {
+      align-self: flex-end;
+      width: 1.5em;
+      height: 1.5em;
+      font-size: 20px;
+      background-color: $border-dark;
+      border-radius: 7px;
+
+      @media screen and (min-width: $md) {
+        display: none;
+      }
+    }
+  }
+
   &-nav {
     &__list {
       display: flex;
-      column-gap: 45px;
+      flex-direction: column;
+      flex-wrap: wrap;
+      column-gap: 25px;
+      row-gap: 20px;
+
+      @media screen and (min-width: $md) {
+        flex-direction: row;
+      }
     }
 
     &__link {

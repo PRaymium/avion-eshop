@@ -1,7 +1,7 @@
 <template>
   <form action="#" class="form-email">
     <input
-      type="mail"
+      type="email"
       placeholder="your@email.com"
       :class="['form-email__input', `form-email__input--${styleType}`]"
     />
