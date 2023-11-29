@@ -5,7 +5,7 @@
       'btn',
       `btn--${styleType}`,
       `btn--${size}`,
-      { 'btn--w100': isWide }
+      { 'btn--wide': isWide }
     ]"
     :disabled="isDisabled"
   >
@@ -18,7 +18,7 @@
       'btn',
       `btn--${styleType}`,
       `btn--${size}`,
-      { 'btn--w100': isWide }
+      { 'btn--wide': isWide }
     ]"
   >
     <slot></slot>
@@ -130,8 +130,11 @@ defineProps({
     padding: 12px 24px;
   }
 
-  &--w100 {
+  &--wide {
     width: 100%;
+    @media screen and (min-width: $md) {
+      width: auto;
+    }
   }
 
   &:focus {

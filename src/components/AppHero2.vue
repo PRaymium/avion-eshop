@@ -84,7 +84,6 @@ import { breakpoints } from '../breakpoints'
       margin-top: 56px;
 
       @media screen and (min-width: $md) {
-        width: auto;
         margin-top: auto;
         align-self: flex-start;
       }

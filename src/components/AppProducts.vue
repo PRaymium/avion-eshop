@@ -99,7 +99,6 @@ const products = [
     margin-top: 40px;
 
     @media screen and (min-width: $md) {
-      width: auto;
       margin: 48px auto 0 auto;
     }
   }
