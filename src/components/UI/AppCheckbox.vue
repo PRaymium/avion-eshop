@@ -32,7 +32,7 @@ defineProps({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .custom-checkbox {
   &__input {
     position: absolute;

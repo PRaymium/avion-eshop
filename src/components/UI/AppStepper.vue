@@ -79,7 +79,7 @@ function changeCount(action) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .stepper {
   display: inline-flex;
   box-sizing: border-box;
