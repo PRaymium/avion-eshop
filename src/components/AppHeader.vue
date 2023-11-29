@@ -6,13 +6,6 @@
           <button class="header-btn header-btn--search">
             <IconSearch />
           </button>
-          <button
-            class="header-btn header-btn--toggle"
-            aria-controls="menu"
-            @click="menuIsHide = !menuIsHide"
-          >
-            <IconBurgerMenu />
-          </button>
         </div>
         <div class="header-row-top__center">
           <div class="header-logo">
@@ -25,6 +18,13 @@
           </button>
           <button class="header-btn header-btn--user">
             <IconUser />
+          </button>
+          <button
+            class="header-btn header-btn--toggle"
+            aria-controls="menu"
+            @click="menuIsHide = !menuIsHide"
+          >
+            <IconBurgerMenu />
           </button>
         </div>
       </div>
@@ -117,10 +117,13 @@ const menuIsHide = ref(true)
 
     &-top {
       justify-content: space-between;
+      column-gap: 20px;
 
       & > * {
-        width: 33.333%;
-        text-align: center;
+        @media screen and (min-width: $md) {
+          width: 33.333%;
+          text-align: center;
+        }
       }
 
       &__left {
@@ -134,6 +137,7 @@ const menuIsHide = ref(true)
       &__center {
         order: -1;
         text-align: left;
+        flex-grow: 1;
 
         @media screen and (min-width: $md) {
           order: 0;
@@ -142,12 +146,8 @@ const menuIsHide = ref(true)
       }
 
       &__right {
-        display: none;
+        display: flex;
         justify-content: end;
-
-        @media screen and (min-width: $md) {
-          display: flex;
-        }
       }
 
       @media screen and (min-width: $md) {
@@ -190,7 +190,7 @@ const menuIsHide = ref(true)
     display: flex;
     flex-direction: column;
     padding: 20px 24px;
-    font-size: $body-font-size-lg;
+    font-size: $nav-menu-font-size;
     background-color: $white;
     transform: translateX(0);
     transition: transform 0.15s ease-in-out;
@@ -218,9 +218,9 @@ const menuIsHide = ref(true)
 
     &__close {
       align-self: flex-end;
-      width: 1.5em;
-      height: 1.5em;
-      font-size: 20px;
+      width: 1.4em;
+      height: 1.4em;
+      font-size: $nav-menu-font-size;
       background-color: $border-dark;
       border-radius: 7px;
 
