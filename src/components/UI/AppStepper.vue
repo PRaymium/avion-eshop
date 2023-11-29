@@ -1,7 +1,19 @@
 <template>
-  <div class="stepper">
+  <div
+    :class="[
+      'stepper',
+      {
+        'stepper--white': styleType === 'white',
+        'stepper--wide': isWideOnMobile
+      }
+    ]"
+  >
     <button
-      class="stepper-item stepper-btn"
+      :class="[
+        'stepper-item',
+        'stepper-btn',
+        { 'stepper-btn--wide': isWideOnMobile }
+      ]"
       aria-label="decrease count"
       @click="changeCount('decrease')"
       :disabled="!isEnabledDecrease"
@@ -12,7 +24,11 @@
       {{ count }}
     </div>
     <button
-      class="stepper-item stepper-btn"
+      :class="[
+        'stepper-item',
+        'stepper-btn',
+        { 'stepper-btn--wide': isWideOnMobile }
+      ]"
       aria-label="increase count"
       @click="changeCount('increase')"
       :disabled="!isEnabledIncrease"
@@ -55,6 +71,19 @@ const props = defineProps({
     validator(value) {
       return value >= 1
     }
+  },
+
+  styleType: {
+    type: String,
+    default: 'gray',
+    validator(value) {
+      return ['gray', 'white'].includes(value)
+    }
+  },
+
+  isWideOnMobile: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -108,6 +137,22 @@ function changeCount(action) {
 
     &:active {
       background-color: rgba($color: #000000, $alpha: 0.4);
+    }
+
+    &--wide {
+      @media screen and (max-width: ($md - 1)) {
+        flex-grow: 1;
+      }
+    }
+  }
+
+  &--white {
+    background-color: $white;
+  }
+
+  &--wide {
+    @media screen and (max-width: ($md - 1)) {
+      width: 100%;
     }
   }
 }
