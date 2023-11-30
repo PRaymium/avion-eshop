@@ -10,7 +10,7 @@
         <ButtonLink
           type="link"
           style-type="opaque"
-          :is-wide="true"
+          :is-wide-on-mobile="true"
           class="hero-info__btn"
           >View collection</ButtonLink
         >

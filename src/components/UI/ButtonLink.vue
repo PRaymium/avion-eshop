@@ -5,7 +5,7 @@
       'btn',
       `btn--${styleType}`,
       `btn--${size}`,
-      { 'btn--wide': isWide }
+      { 'btn--wide': isWideOnMobile }
     ]"
     :disabled="isDisabled"
   >
@@ -18,7 +18,7 @@
       'btn',
       `btn--${styleType}`,
       `btn--${size}`,
-      { 'btn--wide': isWide }
+      { 'btn--wide': isWideOnMobile }
     ]"
   >
     <slot></slot>
@@ -58,7 +58,7 @@ defineProps({
     }
   },
 
-  isWide: {
+  isWideOnMobile: {
     type: Boolean,
     default: false
   },

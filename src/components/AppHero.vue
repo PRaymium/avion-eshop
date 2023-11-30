@@ -13,7 +13,7 @@
           <ButtonLink
             type="link"
             style-type="secondary"
-            :is-wide="true"
+            :is-wide-on-mobile="true"
             class="hero-content__link"
             >View collection</ButtonLink
           >
