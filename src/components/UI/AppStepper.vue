@@ -83,7 +83,7 @@ const props = defineProps({
 
   isWideOnMobile: {
     type: Boolean,
-    default: true
+    default: false
   }
 })
 
