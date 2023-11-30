@@ -56,10 +56,13 @@
                 <span class="product-info-controls-amount__title">Amount</span>
                 <AppStepper
                   style-type="white"
+                  :is-wide-on-mobile="true"
                   class="product-info-controls-amount__stepper"
                 ></AppStepper>
               </div>
-              <ButtonLink :is-wide="true" class="product-info-controls-add"
+              <ButtonLink
+                :is-wide-on-mobile="true"
+                class="product-info-controls-add"
                 >Add to cart
               </ButtonLink>
             </div>
@@ -83,13 +86,57 @@ import { breakpoints } from '../breakpoints'
       padding: 0;
     }
   }
+
+  &--product-info-padding {
+    @media screen and (min-width: $md) {
+      padding: 0;
+    }
+  }
 }
 
 .product {
   background: $light-gray;
 
+  &__container {
+    @media screen and (min-width: $md) {
+      display: flex;
+      align-items: center;
+      padding: 30px 0;
+      column-gap: 30px;
+    }
+
+    @media screen and (min-width: $lg) {
+      padding: 50px 0;
+      column-gap: 65px;
+    }
+  }
+
+  &-picture {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-width: $xs;
+    height: 100vw;
+    min-height: $xs;
+    overflow: hidden;
+    flex: 1 1 50%;
+
+    @media screen and (min-width: $md) {
+      width: auto;
+      min-width: auto;
+      height: auto;
+      max-height: 660px;
+    }
+
+    &__img {
+      width: 100%;
+    }
+  }
+
   &-info {
     padding: 30px 0;
+    flex: 1 1 50%;
 
     &-heading {
       border-bottom: 1px solid $border-gray;
@@ -97,23 +144,54 @@ import { breakpoints } from '../breakpoints'
       &__name {
         margin-bottom: 0;
       }
+
+      &__price {
+        font-size: 20px;
+
+        @media screen and (min-width: $md) {
+          margin-bottom: 25px;
+        }
+
+        @media screen and (min-width: $lg) {
+          flex: 0 0 auto;
+          font-size: 24px;
+        }
+      }
     }
 
     &-description {
       margin-top: 28px;
 
+      @media screen and (min-width: $md) {
+        margin-top: 24px;
+      }
+
       &__info {
         font-size: $body-font-size-sm;
+
+        @media screen and (min-width: $md) {
+          margin-top: 14px;
+          font-size: $body-font-size-md;
+        }
       }
     }
 
     &-dimensions {
       margin-top: 28px;
 
+      @media screen and (min-width: $md) {
+        margin-top: 36px;
+      }
+
       &__title {
         display: block;
         padding-bottom: 12px;
         border-bottom: 1px solid $border-gray;
+
+        @media screen and (min-width: $md) {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
       }
 
       &__list {
@@ -121,11 +199,19 @@ import { breakpoints } from '../breakpoints'
         justify-content: space-between;
         margin-top: 16px;
         font-size: $body-font-size-sm;
+
+        @media screen and (min-width: $md) {
+          margin-top: 24px;
+        }
       }
 
       &__item-value {
         margin-top: 15px;
         margin-bottom: 0;
+
+        @media screen and (min-width: $md) {
+          font-size: $body-font-size-md;
+        }
       }
 
       &__separator {
@@ -138,17 +224,49 @@ import { breakpoints } from '../breakpoints'
     &-controls {
       margin-top: 32px;
 
+      @media screen and (min-width: $md) {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 50px;
+        flex-wrap: wrap;
+        row-gap: 16px;
+      }
+
       &-amount {
         display: flex;
         flex-direction: column;
 
+        @media screen and (min-width: $md) {
+          flex-direction: row;
+          align-items: center;
+          column-gap: 20px;
+          flex: 1 1 40%;
+        }
+
+        @media screen and (min-width: $lg) {
+          flex: 0 0 auto;
+        }
+
         &__stepper {
           margin-top: 12px;
+
+          @media screen and (min-width: $md) {
+            margin-top: 0;
+          }
         }
       }
 
       &-add {
         margin-top: 16px;
+
+        @media screen and (min-width: $md) {
+          margin-top: 0;
+          flex: 1 1 60%;
+        }
+
+        @media screen and (min-width: $lg) {
+          flex: 0 0 auto;
+        }
       }
     }
   }
