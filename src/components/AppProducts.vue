@@ -2,7 +2,7 @@
   <div class="products">
     <div class="container">
       <h2 v-if="title" class="products-heading">
-        What makes our brand different
+        {{ title }}
       </h2>
       <ul class="products-list">
         <li class="products-item" v-for="product of products" :key="product.id">
@@ -70,8 +70,11 @@ const products = [
 
   &-heading {
     text-align: left;
-    margin-bottom: 36px;
-    font-size: 20px;
+    margin-bottom: 20px;
+
+    @media screen and (min-width: $lg) {
+      margin-bottom: 35px;
+    }
   }
 
   &-list {
