@@ -196,6 +196,7 @@ const menuIsHide = ref(true)
     transition: transform 0.15s ease-in-out;
     overflow-y: scroll;
     visibility: visible;
+    z-index: 5;
 
     &--hide {
       visibility: hidden;
