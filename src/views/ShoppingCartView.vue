@@ -2,64 +2,94 @@
   <AppHeader />
   <main class="main">
     <div class="cart">
-      <div class="container">
+      <div class="container container--paddings">
         <div class="cart__container">
           <h1 class="cart__heading">Your shopping cart</h1>
           <div class="cart-items">
-            <div class="cart-items__titles cart-items--column-aligment">
-              <span class="cart-items__row-title">Product </span>
-              <span class="cart-items__row-title">Amount</span>
-              <span class="cart-items__row-title">Total</span>
+            <div class="cart-items__titles">
+              <div class="cart-items__main-column">
+                <span class="cart-items__titles-item">Product </span>
+              </div>
+              <div class="cart-items__second-column">
+                <span class="cart-items__titles-item">Amount </span>
+              </div>
+              <div
+                class="cart-items__second-column cart-items__second-column--right-align"
+              >
+                <span class="cart-items__titles-item">Total </span>
+              </div>
             </div>
             <ul class="cart-items__list">
-              <li class="cart-item" v-for="item of cart" :key="item.id">
-                <div class="cart-item__left">
-                  <router-link :to="item.link" class="cart-item__img-link">
-                    <picture class="cart-item__picture">
+              <li class="cart-items__item" v-for="item of cart" :key="item.id">
+                <div
+                  class="cart-items__item-column-product cart-items__main-column"
+                >
+                  <router-link
+                    :to="item.link"
+                    class="cart-items__item-img-link"
+                  >
+                    <picture class="cart-items__item-picture">
                       <img
-                        class="cart-item__img"
+                        class="cart-items__item-img"
                         :src="`${IMG_PATH}/product-${item.id}-160w.jpg`"
                         :alt="item.title"
                       />
                     </picture>
                   </router-link>
-                </div>
-                <div class="cart-item__right">
-                  <div class="cart-item__info">
-                    <h2 class="cart-item__title">{{ item.title }}</h2>
-                    <p class="cart-item__description">{{ item.desciption }}</p>
-                    <span class="cart-item__price">{{ '£' + item.price }}</span>
+                  <div class="cart-items__item-info">
+                    <h2 class="cart-items__item-title">{{ item.title }}</h2>
+                    <p class="cart-items__item-description">
+                      {{ item.desciption }}
+                    </p>
+                    <span class="cart-items__item-price">{{
+                      '£' + item.price
+                    }}</span>
+                    <AppStepper
+                      class="cart-items__item-stepper cart-items__item-stepper--mobile"
+                      :start="item.count"
+                      @change="(value) => (item.count = value)"
+                    />
                   </div>
+                </div>
+                <div
+                  class="cart-items__item-column-amount cart-items__second-column"
+                >
                   <AppStepper
-                    class="cart-item__stepper"
+                    class="cart-items__item-stepper"
                     :start="item.count"
                     @change="(value) => (item.count = value)"
                   />
-                  <span class="cart-item__total">{{
+                </div>
+                <div
+                  class="cart-items__item-column-total cart-items__second-column cart-items__second-column--right-align"
+                >
+                  <span class="cart-items__item-total">{{
                     '£' + item.price * item.count
                   }}</span>
                 </div>
               </li>
             </ul>
-          </div>
-          <div class="cart-pricing-info">
-            <span class="cart-pricing-info__note"
-              >Taxes and shipping are calculated at checkout</span
-            >
-            <div class="cart-pricing-info__total">
-              <span class="cart-pricing-info__total-title">Subtotal</span>
-              <span class="cart-pricing-info__total-value">{{
-                '£' + totalCartPrice
-              }}</span>
+            <div class="cart-items__summary">
+              <span class="cart-items__summary-note"
+                >Taxes and shipping are calculated at checkout</span
+              >
+              <div class="cart-items__summary-total">
+                <span class="cart-items__summary-total-title">Subtotal</span>
+                <span class="cart-items__summary-total-value">{{
+                  '£' + totalCartPrice
+                }}</span>
+              </div>
+            </div>
+            <div class="cart-items__checkout">
+              <ButtonLink
+                class="cart-items__checkout-link"
+                type="link"
+                link="/"
+                :is-wide-on-mobile="true"
+                >Go to checkout
+              </ButtonLink>
             </div>
           </div>
-          <ButtonLink
-            class="cart-link"
-            type="link"
-            link="/"
-            :is-wide-on-mobile="true"
-            >Go to checkout
-          </ButtonLink>
         </div>
       </div>
     </div>
@@ -71,8 +101,8 @@
 import AppHeader from '../components/AppHeader.vue'
 import AppFooter from '../components/AppFooter.vue'
 import AppStepper from '../components/UI/AppStepper.vue'
-import { reactive, computed } from 'vue'
 import ButtonLink from '../components/UI/ButtonLink.vue'
+import { reactive, computed } from 'vue'
 
 const IMG_PATH = 'img/products'
 
@@ -101,12 +131,31 @@ const totalCartPrice = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+.container--paddings {
+  padding-top: 35px;
+  padding-bottom: 50px;
+
+  @media screen and (min-width: $md) {
+    padding-top: 85px;
+    padding-bottom: 85px;
+  }
+}
+
 .cart {
-  //background-color: $light-gray;
+  @media screen and (min-width: $md) {
+    background-color: $light-gray;
+  }
 
   &__container {
-    margin: 35px 0 50px 0;
-    //background-color: $white;
+    @media screen and (min-width: $md) {
+      padding: 20px 30px;
+      background-color: $white;
+    }
+
+    @media screen and (min-width: $lg) {
+      padding: 50px 60px;
+      background-color: $white;
+    }
   }
 
   &__heading {
@@ -116,111 +165,176 @@ const totalCartPrice = computed(() => {
   }
 
   &-items {
+    &__main-column {
+      @media screen and (min-width: $md) {
+        flex: 1 0 60%;
+      }
+    }
+
+    &__second-column {
+      @media screen and (min-width: $md) {
+        flex: 1 1 20%;
+      }
+
+      &--right-align {
+        text-align: right;
+      }
+    }
+
     &__titles {
       display: none;
+      margin-bottom: 15px;
+
+      @media screen and (min-width: $md) {
+        display: flex;
+        column-gap: 20px;
+      }
     }
 
     &__list {
       display: flex;
       flex-direction: column;
       row-gap: 35px;
+      padding-top: 25px;
       padding-bottom: 35px;
+      border-top: 1px solid $border-gray;
       border-bottom: 1px solid $border-gray;
     }
-  }
 
-  &-item {
-    display: flex;
-    column-gap: 20px;
-    //height: 160px;
-
-    @media screen and (min-width: $md) {
-      column-gap: 25px;
-    }
-
-    &__left {
-      //width: 130px;
-    }
-
-    &__right {
+    &__item {
       display: flex;
-      flex-direction: column;
-      column-gap: 5px;
-    }
-
-    &__img-link {
-      display: block;
-      width: 130px;
-    }
-
-    &__img {
-      width: 100%;
-      height: 100%;
-    }
-
-    &__title {
-      margin: 0;
-      font-size: 16px;
+      //height: 160px;
 
       @media screen and (min-width: $md) {
-        font-size: 20px;
+        column-gap: 20px;
       }
-    }
 
-    &__description {
-      margin: 8px 0;
-      font-size: $body-font-size-sm;
-    }
+      &-column {
+        &-product {
+          display: flex;
+          column-gap: 20px;
+        }
 
-    &__price {
-      font-size: $body-font-size-md;
+        &-amount {
+          display: none;
 
-      @media screen and (min-width: $md) {
-        font-size: $body-font-size-lg;
+          @media screen and (min-width: $md) {
+            display: block;
+          }
+        }
+
+        &-total {
+          display: none;
+
+          @media screen and (min-width: $md) {
+            display: block;
+          }
+        }
       }
-    }
 
-    &__stepper {
-      margin-top: auto;
-    }
+      &-img-link {
+        display: block;
+        flex-shrink: 0;
+        width: 130px;
+      }
 
-    &__total {
-      display: none;
-    }
-  }
+      &-img {
+        width: 100%;
+        height: 100%;
+      }
 
-  &-pricing-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    row-gap: 10px;
-    margin-top: 20px;
-    color: $primary;
+      &-info {
+        display: flex;
+        flex-direction: column;
 
-    &__note {
-      font-size: $body-font-size-sm;
-    }
-
-    &__total {
-      display: flex;
-      column-gap: 16px;
-      align-items: center;
-      font-family: $font-clash-display;
-      order: -1;
+        @media screen and (min-width: $md) {
+          justify-content: center;
+        }
+      }
 
       &-title {
-        font-size: 20px;
-        color: $primary;
+        margin: 0;
+        font-size: 16px;
+
+        @media screen and (min-width: $md) {
+          font-size: 20px;
+        }
       }
 
-      &-value {
-        font-size: 24px;
+      &-description {
+        margin: 8px 0;
+        font-size: $body-font-size-sm;
+      }
+
+      &-price {
+        font-size: $body-font-size-md;
+
+        @media screen and (min-width: $md) {
+          font-size: $body-font-size-lg;
+        }
+      }
+
+      &-stepper {
+        margin-top: auto;
+        align-self: flex-start;
+
+        &--mobile {
+          @media screen and (min-width: $md) {
+            display: none;
+          }
+        }
       }
     }
-  }
 
-  &-link {
-    margin-top: 35px;
+    &__summary {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      row-gap: 10px;
+      margin-top: 20px;
+      color: $primary;
+
+      @media screen and (min-width: $md) {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      &-note {
+        font-size: $body-font-size-sm;
+      }
+
+      &-total {
+        display: flex;
+        column-gap: 16px;
+        align-items: center;
+        font-family: $font-clash-display;
+        order: -1;
+
+        @media screen and (min-width: $md) {
+          order: 0;
+        }
+
+        &-title {
+          font-size: 20px;
+          color: $primary;
+        }
+
+        &-value {
+          font-size: 24px;
+        }
+      }
+    }
+
+    &__checkout {
+      margin-top: 35px;
+
+      @media screen and (min-width: $md) {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 15px;
+      }
+    }
   }
 }
 </style>

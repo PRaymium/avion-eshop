@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 const props = defineProps({
   start: {
     type: Number,
@@ -100,6 +100,13 @@ const isEnabledDecrease = computed(() => {
 const isEnabledIncrease = computed(() => {
   return count.value != props.max
 })
+
+watch(
+  () => props.start,
+  (newVal) => {
+    count.value = newVal
+  }
+)
 
 function changeCount(action) {
   if (action === 'increase') count.value++
