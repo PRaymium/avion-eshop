@@ -37,7 +37,10 @@
                     </picture>
                   </router-link>
                   <div class="cart-items__item-info">
-                    <h2 class="cart-items__item-title">{{ item.title }}</h2>
+                    <router-link :to="item.link" class="cart-items__item-link">
+                      <h2 class="cart-items__item-title">{{ item.title }}</h2>
+                    </router-link>
+
                     <p class="cart-items__item-description">
                       {{ item.desciption }}
                     </p>
@@ -112,7 +115,7 @@ const cart = reactive([
     title: 'Graystone vase',
     desciption: 'A timeless ceramic vase with a tri color grey glaze.',
     price: 85,
-    link: '#',
+    link: '',
     count: 2
   },
   {
@@ -120,7 +123,7 @@ const cart = reactive([
     title: 'The Dandy Chair',
     desciption: 'A timeless design, with premium materials features ... ',
     price: 250,
-    link: '#',
+    link: '',
     count: 1
   }
 ])

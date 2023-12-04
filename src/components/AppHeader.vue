@@ -13,12 +13,12 @@
           </div>
         </div>
         <div class="header-row-top__right header-btn-list">
-          <button class="header-btn header-btn--cart">
-            <IconShopcart />
-          </button>
-          <button class="header-btn header-btn--user">
+          <router-link to="cart" class="header-btn header-btn--cart">
+            <IconShopcart
+          /></router-link>
+          <router-link to="/" class="header-btn header-btn--user">
             <IconUser />
-          </button>
+          </router-link>
           <button
             class="header-btn header-btn--toggle"
             aria-controls="menu"
@@ -118,6 +118,7 @@ const menuIsHide = ref(true)
     &-top {
       justify-content: space-between;
       column-gap: 20px;
+      align-items: center;
 
       & > * {
         @media screen and (min-width: $md) {
