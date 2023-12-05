@@ -1,32 +1,32 @@
 <template>
   <button
     v-if="type === 'button'"
-    :class="[
-      'btn',
-      `btn--${styleType}`,
-      `btn--${size}`,
-      { 'btn--wide': isWideOnMobile }
-    ]"
-    :disabled="isDisabled"
+    :class="buttonsClass"
+    :disabled="props.isDisabled"
+    @click="toggleActive"
   >
     <slot></slot>
+    <span v-if="iconVisible" class="btn__icon">
+      <svg
+        :class="iconSvgClass"
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <path :class="iconPathClass" d="M18 9L12 16.5L6 9H18Z" fill="#2A254B" />
+      </svg>
+    </span>
   </button>
-  <router-link
-    v-else
-    :to="link"
-    :class="[
-      'btn',
-      `btn--${styleType}`,
-      `btn--${size}`,
-      { 'btn--wide': isWideOnMobile }
-    ]"
-  >
+  <router-link v-else :to="link" :class="buttonsClass">
     <slot></slot>
   </router-link>
 </template>
 
 <script setup>
-defineProps({
+import { ref, computed } from 'vue'
+const props = defineProps({
   type: {
     type: String,
     default: 'button',
@@ -66,16 +66,67 @@ defineProps({
   isDisabled: {
     type: Boolean,
     default: false
+  },
+
+  iconVisible: {
+    type: Boolean,
+    default: false
   }
 })
+
+const isActive = ref(false)
+
+const buttonsClass = computed(() => ({
+  btn: true,
+  [`btn--${props.styleType}`]: true,
+  [`btn--${props.size}`]: true,
+  'btn--wide': props.isWideOnMobile
+}))
+
+const iconSvgClass = computed(() => ({
+  'btn__icon-svg': true,
+  'btn__icon-svg--active': isActive.value
+}))
+
+const iconPathClass = computed(() => ({
+  'btn__icon-path--light': true,
+  'btn__icon-path--dark': props.styleType != 'secondary' || 'white'
+}))
+
+function toggleActive() {
+  isActive.value = !isActive.value
+}
 </script>
 
 <style lang="scss" scoped>
 .btn {
-  display: inline-block;
+  display: inline-flex;
   box-sizing: border-box;
-  text-align: center;
+  justify-content: center;
   transition: 0.1s ease-in-out;
+
+  &__icon {
+    display: inline-flex;
+    height: 100%;
+    align-items: center;
+
+    &-svg {
+      flex: 0 0 100%;
+      &--active {
+        transform: rotate(180deg);
+      }
+    }
+
+    &-path {
+      &--dark {
+        fill: $dark-primary;
+      }
+
+      &--light {
+        fill: $white;
+      }
+    }
+  }
 
   &--primary {
     color: $white;
@@ -124,10 +175,12 @@ defineProps({
 
   &--medium {
     padding: 16px 32px;
+    column-gap: 12px;
   }
 
   &--small {
     padding: 12px 24px;
+    column-gap: 8px;
   }
 
   &--wide {
