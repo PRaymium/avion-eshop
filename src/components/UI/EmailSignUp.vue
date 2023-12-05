@@ -1,8 +1,10 @@
 <template>
-  <form action="#" class="form-email">
+  <form action="#" class="form-email" name="email-form">
     <input
       type="email"
+      name="email"
       placeholder="your@email.com"
+      autocomplete="true"
       :class="['form-email__input', `form-email__input--${styleType}`]"
     />
     <ButtonLink
