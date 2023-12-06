@@ -235,11 +235,14 @@ const social = [
 
   &-info {
     display: flex;
-    justify-content: center;
+    flex-direction: column-reverse;
+    align-items: center;
     margin-top: 20px;
+    row-gap: 15px;
 
     @media screen and (min-width: $md) {
       margin-top: 25px;
+      flex-direction: row;
       justify-content: space-between;
     }
   }
@@ -251,12 +254,8 @@ const social = [
   }
 
   &-social {
-    display: none;
-
-    @media screen and (min-width: $md) {
-      display: flex;
-      gap: 24px;
-    }
+    display: flex;
+    gap: 24px;
 
     &-item {
       display: flex;
