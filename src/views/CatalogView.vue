@@ -9,9 +9,40 @@
       </div>
       <div class="catalog-main">
         <div class="container catalog-main__container">
-          <div class="catalog-filters">Фильтры</div>
+          <div class="catalog-filters">
+            <ul
+              class="catalog-filters-list"
+              v-for="list of filters"
+              :key="list.id"
+            >
+              <li class="catalog-filters-list__title">
+                {{ list.title }}
+              </li>
+              <li
+                class="catalog-filters-list__item"
+                v-for="listItem of list.items"
+                :key="listItem.id"
+              >
+                <AppCheckbox
+                  :label="listItem.name"
+                  :name="listItem.name"
+                  @change="filterChangeHandler($event, list.id, listItem.id)"
+                />
+              </li>
+            </ul>
+          </div>
           <div class="catalog-items">
-            <div class="catalog-items__top">Сортировка</div>
+            <div class="catalog-items__top">
+              <div class="catalog-sorting">
+                <span class="catalog-sorting__title">Sorting by:</span>
+                <AppSelect
+                  class="catalog-sorting__select"
+                  :options="itemsArrayForSorting"
+                  :default-id="selectedSortId"
+                  @input="sortInputHandler"
+                />
+              </div>
+            </div>
             <ul class="catalog-items__list">
               <li class="catalog-item">
                 <!-- <router-link :to="item.link" class="catalog-item__img-link">
@@ -218,8 +249,11 @@
 <script setup>
 import AppHeader from '../components/AppHeader.vue'
 import AppFooter from '../components/AppFooter.vue'
-import { breakpoints } from '../breakpoints'
 import ButtonLink from '../components/UI/ButtonLink.vue'
+import AppCheckbox from '../components/UI/AppCheckbox.vue'
+import { breakpoints } from '../breakpoints'
+import AppSelect from '../components/UI/AppSelect.vue'
+import { ref, computed, onMounted } from 'vue'
 
 const IMG_PATH = 'img/products'
 // const products = [
@@ -248,6 +282,145 @@ const IMG_PATH = 'img/products'
 //     price: 250
 //   }
 // ]
+
+const filters = ref([
+  {
+    id: 1,
+    title: 'Product type',
+    items: [
+      {
+        id: 1,
+        name: 'Furniture'
+      },
+      {
+        id: 2,
+        name: 'Homeware'
+      },
+      {
+        id: 3,
+        name: 'Sofas'
+      },
+      {
+        id: 4,
+        name: 'Light fittings'
+      },
+      {
+        id: 5,
+        name: 'Accessories'
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: 'Price',
+    items: [
+      {
+        id: 1,
+        name: '0 - 100'
+      },
+      {
+        id: 2,
+        name: '101 - 250'
+      },
+      {
+        id: 3,
+        name: '250 +'
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: 'Designer',
+    items: [
+      {
+        id: 1,
+        name: 'Robert Smith'
+      },
+      {
+        id: 2,
+        name: 'Liam Gallagher'
+      },
+      {
+        id: 3,
+        name: 'Biggie Smalls'
+      },
+      {
+        id: 4,
+        name: 'Thom Yorke'
+      }
+    ]
+  }
+])
+
+const selectedFilters = ref([])
+
+const sorting = ref([
+  {
+    id: 1,
+    name: 'Name (A-Z)',
+    value: 'name',
+    type: 'asc'
+  },
+  {
+    id: 2,
+    name: 'Name (Z-A)',
+    value: 'name',
+    type: 'desc'
+  },
+  {
+    id: 3,
+    name: 'Price (Low to High)',
+    value: 'price',
+    type: 'asc'
+  },
+  {
+    id: 4,
+    name: 'Price (High to Low)',
+    value: 'price',
+    type: 'desc'
+  },
+  {
+    id: 5,
+    name: 'Added date (to Older)',
+    value: 'added date',
+    type: 'asc'
+  },
+  {
+    id: 6,
+    name: 'Added date (to Newest)',
+    value: 'added date',
+    type: 'desc'
+  }
+])
+
+const selectedSortId = ref(1)
+
+const itemsArrayForSorting = computed(() => {
+  return sorting.value.map(({ id, name }) => ({
+    id,
+    name
+  }))
+})
+
+function filterChangeHandler(state, listId, itemId) {
+  console.log(state, listId, itemId)
+  const filterList = selectedFilters.value.find((list) => list.id === listId)
+  if (state) filterList.selectedItemsIds.push(itemId)
+  else {
+    const itemIdx = filterList.selectedItemsIds.indexOf(itemId)
+    filterList.selectedItemsIds.splice(itemIdx, 1)
+  }
+}
+
+function sortInputHandler(id) {
+  selectedSortId.value = id
+}
+
+onMounted(() => {
+  filters.value.forEach(({ id }) =>
+    selectedFilters.value.push({ id, selectedItemsIds: [] })
+  )
+})
 </script>
 
 <style lang="scss" scoped>
@@ -261,7 +434,7 @@ const IMG_PATH = 'img/products'
     background-size: cover;
     background-repeat: no-repeat;
 
-    @media screen and (min-width: $xs) {
+    @media screen and (min-width: $sm) {
       background-position: 50% 0%;
       background-image: url('img/catalog-view/header-768w.jpg');
     }
@@ -286,6 +459,7 @@ const IMG_PATH = 'img/products'
     display: flex;
     padding-top: 30px;
     padding-bottom: 30px;
+    column-gap: 20px;
 
     @media screen and (min-width: $md) {
       padding-top: 35px;
@@ -300,6 +474,35 @@ const IMG_PATH = 'img/products'
       display: block;
       width: 25%;
     }
+
+    &-list {
+      font-size: 16px;
+      &:not(:last-child) {
+        margin-bottom: 50px;
+      }
+
+      &__title {
+        margin-bottom: 20px;
+        font-family: $font-clash-display;
+        line-height: 140%;
+      }
+
+      &__item {
+        &:not(:last-child) {
+          margin-bottom: 12px;
+        }
+      }
+    }
+  }
+
+  &-sorting {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+
+    &__title {
+      font-size: $body-font-size-sm;
+    }
   }
 
   $column-gap: 16px;
@@ -307,6 +510,11 @@ const IMG_PATH = 'img/products'
   &-items {
     @media screen and (min-width: $md) {
       width: 75%;
+    }
+
+    &__top {
+      display: flex;
+      justify-content: flex-end;
     }
 
     &__list {
@@ -335,6 +543,10 @@ const IMG_PATH = 'img/products'
   &-item {
     flex-grow: 1;
     max-width: calc((100% - $column-gap) / 2);
+
+    @media screen and (min-width: $sm) {
+      max-width: calc((100% - $column-gap * 2) / 3);
+    }
 
     @media screen and (min-width: $md) {
       max-width: calc((100% - $column-gap * 2) / 3);
