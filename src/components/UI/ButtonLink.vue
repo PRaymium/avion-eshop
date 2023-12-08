@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 const props = defineProps({
   type: {
     type: String,
@@ -71,10 +71,15 @@ const props = defineProps({
   iconVisible: {
     type: Boolean,
     default: false
+  },
+
+  iconIsActive: {
+    type: Boolean,
+    default: false
   }
 })
 
-const isActive = ref(false)
+const iconIsActive = ref(props.iconIsActive)
 
 const buttonsClass = computed(() => ({
   btn: true,
@@ -85,17 +90,24 @@ const buttonsClass = computed(() => ({
 
 const iconSvgClass = computed(() => ({
   'btn__icon-svg': true,
-  'btn__icon-svg--active': isActive.value
+  'btn__icon-svg--active': iconIsActive.value
 }))
 
 const iconPathClass = computed(() => ({
-  'btn__icon-path--light': true,
-  'btn__icon-path--dark': props.styleType != 'secondary' || 'white'
+  'btn__icon-path': true,
+  'btn__icon-path--dark': props.styleType !== ('primary' || 'opaque')
 }))
 
 function toggleActive() {
-  isActive.value = !isActive.value
+  iconIsActive.value = !iconIsActive.value
 }
+
+watch(
+  () => props.iconIsActive,
+  (newVal) => {
+    iconIsActive.value = newVal
+  }
+)
 </script>
 
 <style lang="scss" scoped>
@@ -103,6 +115,7 @@ function toggleActive() {
   display: inline-flex;
   box-sizing: border-box;
   justify-content: center;
+  align-items: center;
   transition: 0.1s ease-in-out;
 
   &__icon {
@@ -118,12 +131,10 @@ function toggleActive() {
     }
 
     &-path {
+      fill: $white;
+
       &--dark {
         fill: $dark-primary;
-      }
-
-      &--light {
-        fill: $white;
       }
     }
   }
