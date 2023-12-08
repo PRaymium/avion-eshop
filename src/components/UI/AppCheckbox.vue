@@ -3,18 +3,19 @@
     <input
       type="checkbox"
       class="custom-checkbox__input"
-      :id="`checkbox-${name}`"
-      :name="name"
-      :disabled="isDisabled"
+      :id="`checkbox-${props.name}`"
+      :name="props.name"
+      :disabled="props.isDisabled"
+      @change="emit('change', $event.target.checked)"
     />
-    <label class="custom-checkbox__label" :for="`checkbox-${name}`">{{
-      label
+    <label class="custom-checkbox__label" :for="`checkbox-${props.name}`">{{
+      props.label
     }}</label>
   </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   label: {
     type: String,
     required: true
@@ -29,6 +30,10 @@ defineProps({
     type: Boolean,
     default: false
   }
+})
+
+const emit = defineEmits({
+  change: null
 })
 </script>
 
