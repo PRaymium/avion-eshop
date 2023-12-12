@@ -55,3 +55,8 @@ button {
 img {
   display: block;
 }
+
+img,
+picture {
+  max-width: 100%;
+}
