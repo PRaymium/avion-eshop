@@ -9,36 +9,110 @@
       </div>
       <div class="catalog-main">
         <div class="container catalog-main__container">
-          <div class="catalog-filters">
+          <div class="catalog-filters" v-if="mq.mdPlus">
             <ul
               class="catalog-filters-list"
-              v-for="list of filters"
-              :key="list.id"
+              v-for="filter of filtersWithMeta.filters"
+              :key="filter.id"
+              aria-label="Filters"
             >
               <li class="catalog-filters-list__title">
-                {{ list.title }}
+                {{ filter.title }}
               </li>
               <li
                 class="catalog-filters-list__item"
-                v-for="listItem of list.items"
-                :key="listItem.id"
+                v-for="item of filter.items"
+                :key="item.id"
               >
                 <AppCheckbox
-                  :label="listItem.name"
-                  :name="listItem.name"
-                  @change="filterChangeHandler($event, list.id, listItem.id)"
+                  :label="item.name"
+                  :name="item.name"
+                  :is-checked="item.isChecked"
+                  @change="filterChangeHandler($event, item)"
                 />
               </li>
             </ul>
           </div>
           <div class="catalog-items">
             <div class="catalog-items__top">
+              <div class="catalog-filters-dropdown" v-if="!mq.mdPlus">
+                <ButtonLink
+                  :class="[
+                    'catalog-filters-dropdown__btn',
+                    { open: filtersWithMeta.dropdownIsOpen }
+                  ]"
+                  style-type="secondary"
+                  size="small"
+                  :icon-visible="true"
+                  :icon-is-active="filtersWithMeta.dropdownIsOpen"
+                  :aria-expanded="filtersWithMeta.dropdownIsOpen"
+                  :aria-controls="filtersWithMeta.controlId"
+                  @click="
+                    filtersWithMeta.dropdownIsOpen =
+                      !filtersWithMeta.dropdownIsOpen
+                  "
+                  >Filters</ButtonLink
+                >
+                <ul
+                  :class="[
+                    'catalog-filters-dropdown__list',
+                    'catalog-filters-dropdown__list--menu',
+                    { hidden: !filtersWithMeta.dropdownIsOpen }
+                  ]"
+                  :id="filtersWithMeta.controlId"
+                >
+                  <li
+                    class="catalog-filters-dropdown__list-item"
+                    v-for="filter of filtersWithMeta.filters"
+                    :key="filter.id"
+                  >
+                    <ButtonLink
+                      :class="[
+                        'catalog-filters-dropdown__btn',
+                        'catalog-filters-dropdown__btn--item',
+                        { open: filter.isOpen }
+                      ]"
+                      style-type="secondary"
+                      size="small"
+                      :icon-visible="true"
+                      :icon-is-active="filter.isOpen"
+                      :aria-expanded="filter.isOpen"
+                      :aria-controls="filter.controlId"
+                      @click="filter.isOpen = !filter.isOpen"
+                      >{{ filter.title }}</ButtonLink
+                    >
+                    <ul
+                      :class="[
+                        'catalog-filters-dropdown__list',
+                        { hidden: !filter.isOpen }
+                      ]"
+                      :id="filter.controlId"
+                    >
+                      <li
+                        class="catalog-filters-dropdown__list-item"
+                        v-for="item of filter.items"
+                        :key="item.id"
+                      >
+                        <AppCheckbox
+                          class="catalog-filters-dropdown__list-item-element"
+                          :label="item.name"
+                          :name="item.name"
+                          :is-checked="item.isChecked"
+                          @change="filterChangeHandler($event, item)"
+                        />
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
               <div class="catalog-sorting">
                 <span class="catalog-sorting__title">Sorting by:</span>
                 <AppSelect
                   class="catalog-sorting__select"
                   :options="itemsArrayForSorting"
                   :default-id="selectedSortId"
+                  :constant-header="!mq.mdPlus ? 'Sorting' : ''"
+                  aria-label="Sorting"
                   @input="sortInputHandler"
                 />
               </div>
@@ -251,9 +325,12 @@ import AppHeader from '../components/AppHeader.vue'
 import AppFooter from '../components/AppFooter.vue'
 import ButtonLink from '../components/UI/ButtonLink.vue'
 import AppCheckbox from '../components/UI/AppCheckbox.vue'
-import { breakpoints } from '../breakpoints'
 import AppSelect from '../components/UI/AppSelect.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, inject } from 'vue'
+import { breakpoints } from '../breakpoints'
+import { uuid } from 'vue3-uuid'
+
+const mq = inject('mq')
 
 const IMG_PATH = 'img/products'
 // const products = [
@@ -352,7 +429,35 @@ const filters = ref([
   }
 ])
 
-const selectedFilters = ref([])
+const filtersWithMeta = ref({
+  dropdownIsOpen: false,
+  controlId: uuid.v4(),
+  filters: filters.value.map((filter) => {
+    return {
+      isOpen: false,
+      controlId: uuid.v4(),
+      id: filter.id,
+      title: filter.title,
+      items: filter.items.map((item) => {
+        return { ...item, isChecked: false }
+      })
+    }
+  })
+})
+
+
+function filterChangeHandler(state, item) {
+  item.isChecked = state
+
+  // const filter = selectedFilters.value.find(
+  //   (list) => list.id === selectedListId
+  // )
+  // if (state) filter.selectedItemsIds.push(selectedItemId)
+  // else {
+  //   const itemIdx = filter.selectedItemsIds.indexOf(selectedItemId)
+  //   filter.selectedItemsIds.splice(itemIdx, 1)
+  // }
+}
 
 const sorting = ref([
   {
@@ -402,25 +507,9 @@ const itemsArrayForSorting = computed(() => {
   }))
 })
 
-function filterChangeHandler(state, listId, itemId) {
-  console.log(state, listId, itemId)
-  const filterList = selectedFilters.value.find((list) => list.id === listId)
-  if (state) filterList.selectedItemsIds.push(itemId)
-  else {
-    const itemIdx = filterList.selectedItemsIds.indexOf(itemId)
-    filterList.selectedItemsIds.splice(itemIdx, 1)
-  }
-}
-
 function sortInputHandler(id) {
   selectedSortId.value = id
 }
-
-onMounted(() => {
-  filters.value.forEach(({ id }) =>
-    selectedFilters.value.push({ id, selectedItemsIds: [] })
-  )
-})
 </script>
 
 <style lang="scss" scoped>
@@ -468,15 +557,10 @@ onMounted(() => {
   }
 
   &-filters {
-    display: none;
-
-    @media screen and (min-width: $md) {
-      display: block;
-      width: 25%;
-    }
+    width: 25%;
 
     &-list {
-      font-size: 16px;
+      font-size: $body-font-size-md;
       &:not(:last-child) {
         margin-bottom: 50px;
       }
@@ -493,19 +577,76 @@ onMounted(() => {
         }
       }
     }
+
+    &-dropdown {
+      position: relative;
+
+      &__btn {
+        width: 100%;
+
+        &.open {
+          outline: 1px solid $primary;
+          background-color: $border-gray;
+        }
+
+        &--item {
+          outline: 1px solid $primary;
+        }
+      }
+
+      &__list {
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        outline: 1px solid $primary;
+        background-color: $light-gray;
+
+        &-item {
+          position: relative;
+
+          &-element {
+            padding: 12px;
+          }
+        }
+
+        &.hidden {
+          display: none;
+        }
+      }
+    }
   }
 
   &-sorting {
     display: flex;
     align-items: center;
     column-gap: 16px;
+    width: 100%;
+
+    @media screen and (min-width: $md) {
+      width: auto;
+    }
 
     &__title {
+      display: none;
       font-size: $body-font-size-sm;
+
+      @media screen and (min-width: $md) {
+        display: inline;
+        text-wrap: nowrap;
+      }
+    }
+
+    &__select {
+      background-color: gray;
+      width: 100%;
     }
   }
 
   $column-gap: 16px;
+  @media screen and (min-width: $md) {
+    $column-gap: 20px;
+  }
 
   &-items {
     @media screen and (min-width: $md) {
@@ -514,7 +655,13 @@ onMounted(() => {
 
     &__top {
       display: flex;
+      flex-direction: column;
       justify-content: flex-end;
+      row-gap: 20px;
+
+      @media screen and (min-width: $md) {
+        flex-direction: row;
+      }
     }
 
     &__list {
@@ -522,11 +669,13 @@ onMounted(() => {
       flex-wrap: wrap;
       column-count: 2;
       justify-content: space-between;
-      gap: 20px $column-gap;
-      margin-top: 50px;
+      column-gap: $column-gap;
+      row-gap: 20px;
+      margin-top: 40px;
 
       @media screen and (min-width: $md) {
         margin-top: 30px;
+        row-gap: 35px;
       }
     }
 
@@ -545,10 +694,6 @@ onMounted(() => {
     max-width: calc((100% - $column-gap) / 2);
 
     @media screen and (min-width: $sm) {
-      max-width: calc((100% - $column-gap * 2) / 3);
-    }
-
-    @media screen and (min-width: $md) {
       max-width: calc((100% - $column-gap * 2) / 3);
     }
 
