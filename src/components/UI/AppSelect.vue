@@ -1,5 +1,5 @@
 <template>
-  <div class="select" tabindex="0">
+  <div class="select">
     <ButtonLink
       :class="['select__selected', { open: isOpen }]"
       style-type="secondary"
@@ -8,11 +8,11 @@
       :icon-is-active="isOpen"
       :aria-label="props.ariaLabel"
       :aria-expanded="isOpen"
-      :aria-controls="id"
+      :aria-controls="controlId"
       @click="isOpen = !isOpen"
       >{{ selected }}</ButtonLink
     >
-    <ul :class="['select__items', { hidden: !isOpen }]" :id="id">
+    <ul :class="['select__items', { hidden: !isOpen }]" :id="controlId">
       <li class="select__item" v-for="option of props.options" :key="option.id">
         <button
           :class="['select__item-btn', { selected: option.id === defaultId }]"
@@ -54,7 +54,7 @@ const emit = defineEmits({
   input: null
 })
 
-const id = uuid.v4()
+const controlId = uuid.v4()
 
 const selected = ref()
 
