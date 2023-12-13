@@ -3,18 +3,21 @@
     <input
       type="checkbox"
       class="custom-checkbox__input"
-      :id="`checkbox-${props.name}`"
+      :id="controlId"
       :name="props.name"
       :disabled="props.isDisabled"
-      @change="emit('change', $event.target.checked)"
+      v-model="isCheckedRef"
+      @change="emit('change', isCheckedRef)"
     />
-    <label class="custom-checkbox__label" :for="`checkbox-${props.name}`">{{
+    <label class="custom-checkbox__label" :for="controlId">{{
       props.label
     }}</label>
   </div>
 </template>
 
 <script setup>
+import { ref, watch } from 'vue'
+import { uuid } from 'vue3-uuid'
 const props = defineProps({
   label: {
     type: String,
@@ -29,12 +32,28 @@ const props = defineProps({
   isDisabled: {
     type: Boolean,
     default: false
+  },
+
+  isChecked: {
+    type: Boolean,
+    default: false
   }
 })
 
 const emit = defineEmits({
   change: null
 })
+
+const controlId = ref(uuid.v4())
+
+const isCheckedRef = ref(props.isChecked)
+
+watch(
+  () => props.isChecked,
+  () => {
+    isCheckedRef.value = props.isChecked
+  }
+)
 </script>
 
 <style lang="scss" scoped>
