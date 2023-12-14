@@ -1,0 +1,119 @@
+[
+  {
+    "id": 1,
+    "name": "Rustic Vase Set",
+    "price": 155,
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
+    "dimesions": {
+      "unit": "sm",
+      "height": 110,
+      "width": 75,
+      "depth": 50
+    },
+    "inStock": 11
+  },
+  {
+    "id": 2,
+    "name": "The Lucy Lamp",
+    "price": 399,
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
+    "dimesions": {
+      "unit": "sm",
+      "height": 110,
+      "width": 75,
+      "depth": 50
+    },
+    "inStock": 8
+  },
+  {
+    "id": 3,
+    "name": "The Silky Vase",
+    "price": 125,
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
+    "dimesions": {
+      "unit": "sm",
+      "height": 110,
+      "width": 75,
+      "depth": 50
+    },
+    "inStock": 6
+  },
+  {
+    "id": 4,
+    "name": "The Dandy Chair",
+    "price": 250,
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
+    "dimesions": {
+      "unit": "sm",
+      "height": 110,
+      "width": 75,
+      "depth": 50
+    },
+    "inStock": 14
+  },
+  {
+    "id": 5,
+    "name": "The Yellow Chair",
+    "price": 199,
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
+    "dimesions": {
+      "unit": "sm",
+      "height": 110,
+      "width": 75,
+      "depth": 50
+    },
+    "inStock": 17
+  },
+  {
+    "id": 6,
+    "name": "The Dark Chair",
+    "price": 210,
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
+    "dimesions": {
+      "unit": "sm",
+      "height": 110,
+      "width": 75,
+      "depth": 50
+    },
+    "inStock": 12
+  },
+  {
+    "id": 7,
+    "name": "Set of Copper Lamps",
+    "price": 450,
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
+    "dimesions": {
+      "unit": "sm",
+      "height": 110,
+      "width": 75,
+      "depth": 50
+    },
+    "inStock": 9
+  },
+  {
+    "id": 8,
+    "name": "The Psikter Vase",
+    "price": 140,
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
+    "dimesions": {
+      "unit": "sm",
+      "height": 110,
+      "width": 75,
+      "depth": 50
+    },
+    "inStock": 16
+  },
+  {
+    "id": 9,
+    "name": "Set of Modern Chairs",
+    "price": 540,
+    "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
+    "dimesions": {
+      "unit": "sm",
+      "height": 110,
+      "width": 75,
+      "depth": 50
+    },
+    "inStock": 7
+  }
+]
