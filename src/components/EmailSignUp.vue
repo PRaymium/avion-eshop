@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import ButtonLink from './ButtonLink.vue'
+import ButtonLink from './UI/ButtonLink.vue'
 
 defineProps({
   styleType: {

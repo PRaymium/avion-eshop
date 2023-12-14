@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import EmailSignUp from './UI/EmailSignUp.vue'
+import EmailSignUp from './EmailSignUp.vue'
 import IconLinkedin from './icons/IconLinkedin.vue'
 import IconFacebook from './icons/IconFacebook.vue'
 import IconInstagram from './icons/IconInstagram.vue'

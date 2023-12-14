@@ -29,7 +29,7 @@
 
 <script setup>
 import IconCheckmark from './icons/IconCheckmark.vue'
-import EmailSignUp from './UI/EmailSignUp.vue'
+import EmailSignUp from './EmailSignUp.vue'
 
 const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
 </script>
