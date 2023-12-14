@@ -118,189 +118,22 @@
               </div>
             </div>
             <ul class="catalog-items__list">
-              <li class="catalog-item">
-                <!-- <router-link :to="item.link" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${item.id}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${item.id}-160w.jpg`"
-                      :alt="item.title"
-                    />
-                  </picture>
-                </router-link> -->
+              <li
+                class="catalog-item"
+                v-for="product of products"
+                :key="product.id"
+              >
                 <router-link to="#" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${1}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${1}-160w.jpg`"
-                      alt="test"
-                    />
-                  </picture>
+                  <ProductPicture
+                    class="catalog-item__picture"
+                    :product-id="product.id"
+                    :title="product.name"
+                  />
                 </router-link>
                 <router-link to="#" class="catalog-item__title-link">
-                  <h2 class="catalog-item__title">Rustic Vase Set</h2>
+                  <h2 class="catalog-item__title">{{ product.name }}</h2>
                 </router-link>
-                <span class="catalog-item__price">£155</span>
-              </li>
-              <li class="catalog-item">
-                <router-link to="#" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${1}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${1}-160w.jpg`"
-                      alt="test"
-                    />
-                  </picture>
-                </router-link>
-                <router-link to="#" class="catalog-item__title-link">
-                  <h2 class="catalog-item__title">Rustic Vase Set</h2>
-                </router-link>
-                <span class="catalog-item__price">£155</span>
-              </li>
-              <li class="catalog-item">
-                <router-link to="#" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${1}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${1}-160w.jpg`"
-                      alt="test"
-                    />
-                  </picture>
-                </router-link>
-                <router-link to="#" class="catalog-item__title-link">
-                  <h2 class="catalog-item__title">Rustic Vase Set</h2>
-                </router-link>
-                <span class="catalog-item__price">£155</span>
-              </li>
-              <li class="catalog-item">
-                <router-link to="#" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${1}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${1}-160w.jpg`"
-                      alt="test"
-                    />
-                  </picture>
-                </router-link>
-                <router-link to="#" class="catalog-item__title-link">
-                  <h2 class="catalog-item__title">Rustic Vase Set</h2>
-                </router-link>
-                <span class="catalog-item__price">£155</span>
-              </li>
-              <li class="catalog-item">
-                <router-link to="#" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${1}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${1}-160w.jpg`"
-                      alt="test"
-                    />
-                  </picture>
-                </router-link>
-                <router-link to="#" class="catalog-item__title-link">
-                  <h2 class="catalog-item__title">Rustic Vase Set</h2>
-                </router-link>
-                <span class="catalog-item__price">£155</span>
-              </li>
-              <li class="catalog-item">
-                <router-link to="#" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${1}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${1}-160w.jpg`"
-                      alt="test"
-                    />
-                  </picture>
-                </router-link>
-                <router-link to="#" class="catalog-item__title-link">
-                  <h2 class="catalog-item__title">Rustic Vase Set</h2>
-                </router-link>
-                <span class="catalog-item__price">£155</span>
-              </li>
-              <li class="catalog-item">
-                <router-link to="#" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${1}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${1}-160w.jpg`"
-                      alt="test"
-                    />
-                  </picture>
-                </router-link>
-                <router-link to="#" class="catalog-item__title-link">
-                  <h2 class="catalog-item__title">Rustic Vase Set</h2>
-                </router-link>
-                <span class="catalog-item__price">£155</span>
-              </li>
-              <li class="catalog-item">
-                <router-link to="#" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${1}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${1}-160w.jpg`"
-                      alt="test"
-                    />
-                  </picture>
-                </router-link>
-                <router-link to="#" class="catalog-item__title-link">
-                  <h2 class="catalog-item__title">Rustic Vase Set</h2>
-                </router-link>
-                <span class="catalog-item__price">£155</span>
-              </li>
-              <li class="catalog-item">
-                <router-link to="#" class="catalog-item__img-link">
-                  <picture class="catalog-item__picture">
-                    <source
-                      :media="`(min-width: ${breakpoints.sm}px)`"
-                      :srcset="`${IMG_PATH}/product-${1}-300w.jpg`"
-                    />
-                    <img
-                      class="catalog-item__img"
-                      :src="`${IMG_PATH}/product-${1}-160w.jpg`"
-                      alt="test"
-                    />
-                  </picture>
-                </router-link>
-                <router-link to="#" class="catalog-item__title-link">
-                  <h2 class="catalog-item__title">Rustic Vase Set</h2>
-                </router-link>
-                <span class="catalog-item__price">£155</span>
+                <span class="catalog-item__price">£ {{ product.price }}</span>
               </li>
             </ul>
             <div class="catalog-items__more">
@@ -326,39 +159,16 @@ import AppFooter from '../components/AppFooter.vue'
 import ButtonLink from '../components/UI/ButtonLink.vue'
 import AppCheckbox from '../components/UI/AppCheckbox.vue'
 import AppSelect from '../components/UI/AppSelect.vue'
+import ProductPicture from '../components/ProductPicture.vue'
 import { ref, computed, inject } from 'vue'
-import { breakpoints } from '../breakpoints'
 import { uuid } from 'vue3-uuid'
+import api from '@/api/avion-api.js'
 
 const mq = inject('mq')
 
-const IMG_PATH = 'img/products'
-// const products = [
-//   {
-//     id: 1,
-//     title: 'Rustic Vase Set',
-//     link: '',
-//     price: 155
-//   },
-//   {
-//     id: 2,
-//     title: 'The Lucy Lamp',
-//     link: '',
-//     price: 399
-//   },
-//   {
-//     id: 3,
-//     title: 'The Silky Vase',
-//     link: '',
-//     price: 125
-//   },
-//   {
-//     id: 4,
-//     title: 'The Dandy chair',
-//     link: '',
-//     price: 250
-//   }
-// ]
+const products = ref()
+
+api.getProducts().then((data) => (products.value = data))
 
 const filters = ref([
   {
@@ -401,7 +211,11 @@ const filters = ref([
       },
       {
         id: 3,
-        name: '250 +'
+        name: '250 - 400'
+      },
+      {
+        id: 4,
+        name: '400+'
       }
     ]
   },
@@ -444,7 +258,6 @@ const filtersWithMeta = ref({
     }
   })
 })
-
 
 function filterChangeHandler(state, item) {
   item.isChecked = state
@@ -698,6 +511,7 @@ function sortInputHandler(id) {
     }
 
     &__picture {
+      display: block;
       width: 100%;
     }
 
