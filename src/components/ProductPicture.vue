@@ -31,6 +31,7 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .product-picture {
+  display: block;
   width: 100%;
 }
 </style>

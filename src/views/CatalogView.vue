@@ -47,10 +47,7 @@
                   :icon-is-active="filtersWithMeta.dropdownIsOpen"
                   :aria-expanded="filtersWithMeta.dropdownIsOpen"
                   :aria-controls="filtersWithMeta.controlId"
-                  @click="
-                    filtersWithMeta.dropdownIsOpen =
-                      !filtersWithMeta.dropdownIsOpen
-                  "
+                  @click="dropdownFiltersMenuStateHandler"
                   >Filters</ButtonLink
                 >
                 <ul
@@ -78,7 +75,7 @@
                       :icon-is-active="filter.isOpen"
                       :aria-expanded="filter.isOpen"
                       :aria-controls="filter.controlId"
-                      @click="filter.isOpen = !filter.isOpen"
+                      @click="dropdownFiltersMenuItemStateHandler(filter)"
                       >{{ filter.title }}</ButtonLink
                     >
                     <ul
@@ -120,20 +117,18 @@
             <ul class="catalog-items__list">
               <li
                 class="catalog-item"
-                v-for="product of products"
+                v-for="product of preparedProducts"
                 :key="product.id"
               >
-                <router-link to="#" class="catalog-item__img-link">
+                <router-link to="#" class="catalog-item__link">
                   <ProductPicture
                     class="catalog-item__picture"
                     :product-id="product.id"
                     :title="product.name"
                   />
-                </router-link>
-                <router-link to="#" class="catalog-item__title-link">
                   <h2 class="catalog-item__title">{{ product.name }}</h2>
+                  <span class="catalog-item__price">£{{ product.price }}</span>
                 </router-link>
-                <span class="catalog-item__price">£ {{ product.price }}</span>
               </li>
             </ul>
             <div class="catalog-items__more">
@@ -160,15 +155,42 @@ import ButtonLink from '../components/UI/ButtonLink.vue'
 import AppCheckbox from '../components/UI/AppCheckbox.vue'
 import AppSelect from '../components/UI/AppSelect.vue'
 import ProductPicture from '../components/ProductPicture.vue'
-import { ref, computed, inject } from 'vue'
+import { ref, computed, inject, watch } from 'vue'
 import { uuid } from 'vue3-uuid'
 import api from '@/api/avion-api.js'
 
 const mq = inject('mq')
 
 const products = ref()
+const preparedProducts = ref()
 
-api.getProducts().then((data) => (products.value = data))
+api.getProducts().then((data) => {
+  products.value = data
+  preparedProducts.value = preparingProducts()
+})
+
+function sortingProducts(data) {
+  return data.sort((a, b) => {
+    if (selectedSortItem.value.value === 'name') {
+      if (a.name > b.name) {
+        if (!selectedSortItem.value.reverse) return 1
+        else return -1
+      } else if (a.name < b.name) {
+        if (!selectedSortItem.value.reverse) return -1
+        else return 1
+      } else return 0
+    } else if (selectedSortItem.value.value === 'price') {
+      if (!selectedSortItem.value.reverse) return a.price - b.price
+      else return b.price - a.price
+    }
+  })
+}
+
+function preparingProducts() {
+  let data = products.value
+  data = sortingProducts(data)
+  return data
+}
 
 const filters = ref([
   {
@@ -185,14 +207,10 @@ const filters = ref([
       },
       {
         id: 3,
-        name: 'Sofas'
-      },
-      {
-        id: 4,
         name: 'Light fittings'
       },
       {
-        id: 5,
+        id: 4,
         name: 'Accessories'
       }
     ]
@@ -259,6 +277,21 @@ const filtersWithMeta = ref({
   })
 })
 
+function dropdownFiltersMenuStateHandler() {
+  filtersWithMeta.value.dropdownIsOpen = !filtersWithMeta.value.dropdownIsOpen
+  if (filtersWithMeta.value.dropdownIsOpen === false) {
+    filtersWithMeta.value.filters.forEach((filter) => (filter.isOpen = false))
+  }
+}
+
+function dropdownFiltersMenuItemStateHandler(filter) {
+  if (filter.isOpen === false) {
+    filtersWithMeta.value.filters.forEach((filter) => (filter.isOpen = false))
+  }
+  filter.isOpen = !filter.isOpen
+}
+
+
 function filterChangeHandler(state, item) {
   item.isChecked = state
 
@@ -277,41 +310,32 @@ const sorting = ref([
     id: 1,
     name: 'Name (A-Z)',
     value: 'name',
-    type: 'asc'
+    reverse: false
   },
   {
     id: 2,
     name: 'Name (Z-A)',
     value: 'name',
-    type: 'desc'
+    reverse: true
   },
   {
     id: 3,
     name: 'Price (Low to High)',
     value: 'price',
-    type: 'asc'
+    reverse: false
   },
   {
     id: 4,
     name: 'Price (High to Low)',
     value: 'price',
-    type: 'desc'
-  },
-  {
-    id: 5,
-    name: 'Added date (to Older)',
-    value: 'added date',
-    type: 'asc'
-  },
-  {
-    id: 6,
-    name: 'Added date (to Newest)',
-    value: 'added date',
-    type: 'desc'
+    reverse: true
   }
 ])
 
 const selectedSortId = ref(1)
+const selectedSortItem = computed(() => {
+  return sorting.value.find((item) => item.id === selectedSortId.value)
+})
 
 const itemsArrayForSorting = computed(() => {
   return sorting.value.map(({ id, name }) => ({
@@ -323,6 +347,13 @@ const itemsArrayForSorting = computed(() => {
 function sortInputHandler(id) {
   selectedSortId.value = id
 }
+
+watch(
+  () => selectedSortItem.value,
+  () => {
+    preparedProducts.value = preparingProducts()
+  }
+)
 </script>
 
 <style lang="scss" scoped>
@@ -456,9 +487,9 @@ function sortInputHandler(id) {
     }
   }
 
-  $column-gap: 16px;
+  $list-column-gap: 16px;
   @media screen and (min-width: $md) {
-    $column-gap: 20px;
+    $list-column-gap: 20px;
   }
 
   &-items {
@@ -480,9 +511,8 @@ function sortInputHandler(id) {
     &__list {
       display: flex;
       flex-wrap: wrap;
-      column-count: 2;
       justify-content: space-between;
-      column-gap: $column-gap;
+      column-gap: $list-column-gap;
       row-gap: 20px;
       margin-top: 40px;
 
@@ -503,20 +533,29 @@ function sortInputHandler(id) {
   }
 
   &-item {
+    max-width: calc((100% - $list-column-gap) / 2);
     flex-grow: 1;
-    max-width: calc((100% - $column-gap) / 2);
+    transition: 0.1s ease-in-out;
 
     @media screen and (min-width: $sm) {
-      max-width: calc((100% - $column-gap * 2) / 3);
+      max-width: calc((100% - $list-column-gap * 2) / 3);
     }
 
-    &__picture {
+    &__link {
       display: block;
-      width: 100%;
-    }
+      transition: 0.1s ease-in-out;
 
-    &__img {
-      width: 100%;
+      &:focus {
+        outline: 2px solid $primary;
+      }
+
+      @media screen and (min-width: $md) {
+        &:hover,
+        &:focus {
+          outline: none;
+          transform: scaleY(104%) translateY(2%);
+        }
+      }
     }
 
     &__title {

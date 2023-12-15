@@ -10,11 +10,13 @@
       "width": 75,
       "depth": 50
     },
-    "inStock": 11
+    "inStock": 11,
+    "type": "Accessories",
+    "designer": "Robert Smith"
   },
   {
     "id": 2,
-    "name": "The Lucy Lamp",
+    "name": "Lucy Lamp",
     "price": 399,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
     "dimesions": {
@@ -23,11 +25,13 @@
       "width": 75,
       "depth": 50
     },
-    "inStock": 8
+    "inStock": 8,
+    "type": "Light fittings",
+    "designer": "Liam Gallagher"
   },
   {
     "id": 3,
-    "name": "The Silky Vase",
+    "name": "Silky Vase",
     "price": 125,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
     "dimesions": {
@@ -36,11 +40,13 @@
       "width": 75,
       "depth": 50
     },
-    "inStock": 6
+    "inStock": 6,
+    "type": "Accessories",
+    "designer": "Robert Smith"
   },
   {
     "id": 4,
-    "name": "The Dandy Chair",
+    "name": "Dandy Chair",
     "price": 250,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
     "dimesions": {
@@ -49,11 +55,13 @@
       "width": 75,
       "depth": 50
     },
-    "inStock": 14
+    "inStock": 14,
+    "type": "Furniture",
+    "designer": "Biggie Smalls"
   },
   {
     "id": 5,
-    "name": "The Yellow Chair",
+    "name": "Yellow Chair",
     "price": 199,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
     "dimesions": {
@@ -62,11 +70,13 @@
       "width": 75,
       "depth": 50
     },
-    "inStock": 17
+    "inStock": 17,
+    "type": "Furniture",
+    "designer": "Thom Yorke"
   },
   {
     "id": 6,
-    "name": "The Dark Chair",
+    "name": "Dark Chair",
     "price": 210,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
     "dimesions": {
@@ -75,11 +85,13 @@
       "width": 75,
       "depth": 50
     },
-    "inStock": 12
+    "inStock": 12,
+    "type": "Furniture",
+    "designer": "Biggie Smalls"
   },
   {
     "id": 7,
-    "name": "Set of Copper Lamps",
+    "name": "Copper Lamps Set",
     "price": 450,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
     "dimesions": {
@@ -88,11 +100,13 @@
       "width": 75,
       "depth": 50
     },
-    "inStock": 9
+    "inStock": 9,
+    "type": "Light fittings",
+    "designer": "Liam Gallagher"
   },
   {
     "id": 8,
-    "name": "The Psikter Vase",
+    "name": "Psikter Vase",
     "price": 140,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
     "dimesions": {
@@ -101,11 +115,13 @@
       "width": 75,
       "depth": 50
     },
-    "inStock": 16
+    "inStock": 16,
+    "type": "Accessories",
+    "designer": "Robert Smith"
   },
   {
     "id": 9,
-    "name": "Set of Modern Chairs",
+    "name": "Modern Chairs Set",
     "price": 540,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
     "dimesions": {
@@ -114,6 +130,8 @@
       "width": 75,
       "depth": 50
     },
-    "inStock": 7
+    "inStock": 7,
+    "type": "Furniture",
+    "designer": "Thom Yorke"
   }
 ]
