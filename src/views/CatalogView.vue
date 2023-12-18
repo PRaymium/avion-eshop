@@ -107,27 +107,31 @@
                 <AppSelect
                   class="catalog-sorting__select"
                   :options="itemsArrayForSorting"
-                  :default-id="selectedSortId"
+                  :selected-id="selectedSortId"
                   :constant-header="!mq.mdPlus ? 'Sorting' : ''"
                   aria-label="Sorting"
                   @input="sortInputHandler"
                 />
               </div>
             </div>
-            <ul class="catalog-items__list">
+            <ul class="catalog-items-list">
               <li
-                class="catalog-item"
+                class="catalog-items-list__item"
                 v-for="product of preparedProducts"
                 :key="product.id"
               >
-                <router-link to="#" class="catalog-item__link">
+                <router-link to="#" class="catalog-items-list__item-link">
                   <ProductPicture
-                    class="catalog-item__picture"
+                    class="catalog-items-list__item-picture"
                     :product-id="product.id"
                     :title="product.name"
                   />
-                  <h2 class="catalog-item__title">{{ product.name }}</h2>
-                  <span class="catalog-item__price">£{{ product.price }}</span>
+                  <h2 class="catalog-items-list__item-title">
+                    {{ product.name }}
+                  </h2>
+                  <span class="catalog-items-list__item-price"
+                    >£{{ product.price }}</span
+                  >
                 </router-link>
               </li>
             </ul>
@@ -157,7 +161,11 @@ import AppSelect from '../components/UI/AppSelect.vue'
 import ProductPicture from '../components/ProductPicture.vue'
 import { ref, computed, inject, watch } from 'vue'
 import { uuid } from 'vue3-uuid'
+import { useRouter, useRoute } from 'vue-router'
 import api from '@/api/avion-api.js'
+
+const router = useRouter()
+const route = useRoute()
 
 const mq = inject('mq')
 
@@ -169,23 +177,6 @@ api.getProducts().then((data) => {
   preparedProducts.value = preparingProducts()
 })
 
-function sortingProducts(data) {
-  return data.sort((a, b) => {
-    if (selectedSortItem.value.value === 'name') {
-      if (a.name > b.name) {
-        if (!selectedSortItem.value.reverse) return 1
-        else return -1
-      } else if (a.name < b.name) {
-        if (!selectedSortItem.value.reverse) return -1
-        else return 1
-      } else return 0
-    } else if (selectedSortItem.value.value === 'price') {
-      if (!selectedSortItem.value.reverse) return a.price - b.price
-      else return b.price - a.price
-    }
-  })
-}
-
 function preparingProducts() {
   let data = products.value
   data = sortingProducts(data)
@@ -196,6 +187,7 @@ const filters = ref([
   {
     id: 1,
     title: 'Product type',
+    value: 'productType',
     items: [
       {
         id: 1,
@@ -218,6 +210,7 @@ const filters = ref([
   {
     id: 2,
     title: 'Price',
+    value: 'price',
     items: [
       {
         id: 1,
@@ -240,6 +233,7 @@ const filters = ref([
   {
     id: 3,
     title: 'Designer',
+    value: 'designer',
     items: [
       {
         id: 1,
@@ -270,6 +264,7 @@ const filtersWithMeta = ref({
       controlId: uuid.v4(),
       id: filter.id,
       title: filter.title,
+      value: filter.value,
       items: filter.items.map((item) => {
         return { ...item, isChecked: false }
       })
@@ -290,7 +285,6 @@ function dropdownFiltersMenuItemStateHandler(filter) {
   }
   filter.isOpen = !filter.isOpen
 }
-
 
 function filterChangeHandler(state, item) {
   item.isChecked = state
@@ -332,7 +326,8 @@ const sorting = ref([
   }
 ])
 
-const selectedSortId = ref(1)
+const defaultSortId = 1
+const selectedSortId = ref(selectedSortIdInit())
 const selectedSortItem = computed(() => {
   return sorting.value.find((item) => item.id === selectedSortId.value)
 })
@@ -344,14 +339,53 @@ const itemsArrayForSorting = computed(() => {
   }))
 })
 
+function selectedSortIdInit() {
+  return route.query.orderId ? +route.query.orderId : defaultSortId
+}
+
 function sortInputHandler(id) {
   selectedSortId.value = id
+  if (id === defaultSortId) replaceWithQuery({ orderId: undefined })
+  else replaceWithQuery({ orderId: id })
+}
+
+function sortingProducts(data) {
+  return data.sort((a, b) => {
+    if (selectedSortItem.value.value === 'name') {
+      if (a.name > b.name) {
+        if (!selectedSortItem.value.reverse) return 1
+        else return -1
+      } else if (a.name < b.name) {
+        if (!selectedSortItem.value.reverse) return -1
+        else return 1
+      } else return 0
+    } else if (selectedSortItem.value.value === 'price') {
+      if (!selectedSortItem.value.reverse) return a.price - b.price
+      else return b.price - a.price
+    }
+  })
+}
+
+function replaceWithQuery(query) {
+  router.replace({
+    query: {
+      ...route.query,
+      ...query
+    }
+  })
 }
 
 watch(
   () => selectedSortItem.value,
   () => {
     preparedProducts.value = preparingProducts()
+  }
+)
+
+watch(
+  () => route.query.orderId,
+  () => {
+    selectedSortId.value = selectedSortIdInit()
   }
 )
 </script>
@@ -508,7 +542,16 @@ watch(
       }
     }
 
-    &__list {
+    &__more {
+      margin-top: 40px;
+      text-align: center;
+
+      @media screen and (min-width: $md) {
+        margin-top: 32px;
+      }
+    }
+
+    &-list {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -520,52 +563,43 @@ watch(
         margin-top: 30px;
         row-gap: 35px;
       }
-    }
 
-    &__more {
-      margin-top: 40px;
-      text-align: center;
+      &__item {
+        max-width: calc((100% - $list-column-gap) / 2);
+        flex-grow: 1;
+        transition: 0.1s ease-in-out;
 
-      @media screen and (min-width: $md) {
-        margin-top: 32px;
-      }
-    }
-  }
+        @media screen and (min-width: $sm) {
+          max-width: calc((100% - $list-column-gap * 2) / 3);
+        }
 
-  &-item {
-    max-width: calc((100% - $list-column-gap) / 2);
-    flex-grow: 1;
-    transition: 0.1s ease-in-out;
+        &-link {
+          display: block;
+          transition: 0.1s ease-in-out;
 
-    @media screen and (min-width: $sm) {
-      max-width: calc((100% - $list-column-gap * 2) / 3);
-    }
+          &:focus {
+            outline: 2px solid $primary;
+          }
 
-    &__link {
-      display: block;
-      transition: 0.1s ease-in-out;
+          @media screen and (min-width: $md) {
+            &:hover,
+            &:focus {
+              outline: none;
+              transform: scaleY(104%) translateY(2%);
+            }
+          }
+        }
 
-      &:focus {
-        outline: 2px solid $primary;
-      }
+        &-title {
+          margin-top: 24px;
+          margin-bottom: 0;
+          font-size: $h4-font-size;
+        }
 
-      @media screen and (min-width: $md) {
-        &:hover,
-        &:focus {
-          outline: none;
-          transform: scaleY(104%) translateY(2%);
+        &-price {
+          margin-top: 8px;
         }
       }
-    }
-
-    &__title {
-      margin-top: 24px;
-      margin-bottom: 0;
-      font-size: $h4-font-size;
-    }
-
-    &__price {
-      margin-top: 8px;
     }
   }
 }
