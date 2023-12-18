@@ -15,7 +15,7 @@
     <ul :class="['select__items', { hidden: !isOpen }]" :id="controlId">
       <li class="select__item" v-for="option of props.options" :key="option.id">
         <button
-          :class="['select__item-btn', { selected: option.id === defaultId }]"
+          :class="['select__item-btn', { selected: option.id === selectedId }]"
           @click="inputHandler($event.target, option)"
         >
           {{ option.name }}
@@ -35,7 +35,7 @@ const props = defineProps({
     type: Array,
     required: true
   },
-  defaultId: {
+  selectedId: {
     type: Number,
     required: false,
     default: null
@@ -63,8 +63,8 @@ const isOpen = ref(false)
 function checkSelected() {
   return props.constantHeader
     ? props.constantHeader
-    : props.defaultId
-    ? props.options[props.defaultId - 1].name
+    : props.selectedId
+    ? props.options[props.selectedId - 1].name
     : props.options.length > 0
     ? props.options[0].name
     : null
@@ -84,6 +84,13 @@ function inputHandler(target, option) {
 
 watch(
   () => props.constantHeader,
+  () => {
+    selected.value = checkSelected()
+  }
+)
+
+watch(
+  () => props.selectedId,
   () => {
     selected.value = checkSelected()
   }
