@@ -129,7 +129,7 @@
             <ul class="catalog-items-list">
               <li
                 class="catalog-items-list__item"
-                v-for="product of preparedProducts"
+                v-for="product of paginatedData"
                 :key="product.id"
               >
                 <router-link to="#" class="catalog-items-list__item-link">
@@ -147,12 +147,13 @@
                 </router-link>
               </li>
             </ul>
-            <div class="catalog-items__more" v-show="preparedProducts.length">
+            <div class="catalog-items__more" v-show="currentPage !== maxPages">
               <ButtonLink
                 class="catalog-items__more-btn"
                 type="button"
                 style-type="secondary"
                 :is-wide-on-mobile="true"
+                @click="currentPage++"
                 >Load more</ButtonLink
               >
             </div>
@@ -176,13 +177,16 @@ import { uuid } from 'vue3-uuid'
 import { useRouter, useRoute } from 'vue-router'
 import api from '@/api/avion-api.js'
 
-const mq = inject('mq')
+const PAGE_SIZE = 6
 
+const mq = inject('mq')
 const router = useRouter()
 const route = useRoute()
 
 const products = ref([])
 const preparedProducts = ref([])
+
+const currentPage = ref(1)
 
 const filters = ref([
   {
@@ -291,6 +295,22 @@ const itemsArrayForSorting = computed(() => {
     id,
     name
   }))
+})
+
+const maxPages = computed(() => {
+  let res = Math.ceil(preparedProducts.value.length / PAGE_SIZE)
+  return res != 0 ? res : 1
+})
+
+const paginatedData = computed(() => {
+  const start = 0
+  let end = 0
+  if (currentPage.value < maxPages.value) {
+    end = currentPage.value * PAGE_SIZE
+  } else {
+    end = preparedProducts.value.length
+  }
+  return preparedProducts.value.slice(start, end)
 })
 
 function selectedFiltersInit() {
@@ -430,6 +450,7 @@ function preparingProducts() {
   let data = products.value
   data = filteringProducts(data)
   data = sortingProducts(data)
+  currentPage.value = 1
   preparedProducts.value = data
 }
 
