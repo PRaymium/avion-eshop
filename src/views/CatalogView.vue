@@ -9,29 +9,31 @@
       </div>
       <div class="catalog-main">
         <div class="container catalog-main__container">
-          <div class="catalog-filters" v-if="mq.mdPlus">
-            <ul
-              class="catalog-filters-list"
-              v-for="filter of filtersWithMeta.filters"
-              :key="filter.id"
-              aria-label="Filters"
-            >
-              <li class="catalog-filters-list__title">
-                {{ filter.title }}
-              </li>
-              <li
-                class="catalog-filters-list__item"
-                v-for="item of filter.items"
-                :key="item.id"
+          <div class="catalog-aside" v-if="mq.mdPlus">
+            <div class="catalog-filters">
+              <ul
+                class="catalog-filters-list"
+                v-for="filter of filtersWithMeta.filters"
+                :key="filter.id"
+                aria-label="Filters"
               >
-                <AppCheckbox
-                  :label="item.name"
-                  :name="item.name"
-                  :is-checked="item.isChecked"
-                  @change="filterChangeHandler($event, item)"
-                />
-              </li>
-            </ul>
+                <li class="catalog-filters-list__title">
+                  {{ filter.title }}
+                </li>
+                <li
+                  class="catalog-filters-list__item"
+                  v-for="item of filter.items"
+                  :key="item.id"
+                >
+                  <AppCheckbox
+                    :label="item.name"
+                    :name="item.name"
+                    :is-checked="isSelectedFilterChecking(filter.id, item.id)"
+                    @change="filterChangeHandler($event, filter.id, item.id)"
+                  />
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="catalog-items">
             <div class="catalog-items__top">
@@ -94,8 +96,12 @@
                           class="catalog-filters-dropdown__list-item-element"
                           :label="item.name"
                           :name="item.name"
-                          :is-checked="item.isChecked"
-                          @change="filterChangeHandler($event, item)"
+                          :is-checked="
+                            isSelectedFilterChecking(filter.id, item.id)
+                          "
+                          @change="
+                            filterChangeHandler($event, filter.id, item.id)
+                          "
                         />
                       </li>
                     </ul>
@@ -114,6 +120,12 @@
                 />
               </div>
             </div>
+            <h2
+              class="catalog-items__no-results"
+              v-show="!preparedProducts.length"
+            >
+              No results
+            </h2>
             <ul class="catalog-items-list">
               <li
                 class="catalog-items-list__item"
@@ -135,7 +147,7 @@
                 </router-link>
               </li>
             </ul>
-            <div class="catalog-items__more">
+            <div class="catalog-items__more" v-show="preparedProducts.length">
               <ButtonLink
                 class="catalog-items__more-btn"
                 type="button"
@@ -164,30 +176,19 @@ import { uuid } from 'vue3-uuid'
 import { useRouter, useRoute } from 'vue-router'
 import api from '@/api/avion-api.js'
 
+const mq = inject('mq')
+
 const router = useRouter()
 const route = useRoute()
 
-const mq = inject('mq')
-
-const products = ref()
-const preparedProducts = ref()
-
-api.getProducts().then((data) => {
-  products.value = data
-  preparedProducts.value = preparingProducts()
-})
-
-function preparingProducts() {
-  let data = products.value
-  data = sortingProducts(data)
-  return data
-}
+const products = ref([])
+const preparedProducts = ref([])
 
 const filters = ref([
   {
     id: 1,
     title: 'Product type',
-    value: 'productType',
+    value: 'type',
     items: [
       {
         id: 1,
@@ -195,43 +196,16 @@ const filters = ref([
       },
       {
         id: 2,
-        name: 'Homeware'
-      },
-      {
-        id: 3,
         name: 'Light fittings'
       },
       {
-        id: 4,
+        id: 3,
         name: 'Accessories'
       }
     ]
   },
   {
     id: 2,
-    title: 'Price',
-    value: 'price',
-    items: [
-      {
-        id: 1,
-        name: '0 - 100'
-      },
-      {
-        id: 2,
-        name: '101 - 250'
-      },
-      {
-        id: 3,
-        name: '250 - 400'
-      },
-      {
-        id: 4,
-        name: '400+'
-      }
-    ]
-  },
-  {
-    id: 3,
     title: 'Designer',
     value: 'designer',
     items: [
@@ -262,42 +236,15 @@ const filtersWithMeta = ref({
     return {
       isOpen: false,
       controlId: uuid.v4(),
-      id: filter.id,
-      title: filter.title,
-      value: filter.value,
-      items: filter.items.map((item) => {
-        return { ...item, isChecked: false }
-      })
+      ...filter
     }
   })
 })
 
-function dropdownFiltersMenuStateHandler() {
-  filtersWithMeta.value.dropdownIsOpen = !filtersWithMeta.value.dropdownIsOpen
-  if (filtersWithMeta.value.dropdownIsOpen === false) {
-    filtersWithMeta.value.filters.forEach((filter) => (filter.isOpen = false))
-  }
-}
+// selecting filters - filterId: [itemsId]
+const selectedFilters = ref({})
 
-function dropdownFiltersMenuItemStateHandler(filter) {
-  if (filter.isOpen === false) {
-    filtersWithMeta.value.filters.forEach((filter) => (filter.isOpen = false))
-  }
-  filter.isOpen = !filter.isOpen
-}
-
-function filterChangeHandler(state, item) {
-  item.isChecked = state
-
-  // const filter = selectedFilters.value.find(
-  //   (list) => list.id === selectedListId
-  // )
-  // if (state) filter.selectedItemsIds.push(selectedItemId)
-  // else {
-  //   const itemIdx = filter.selectedItemsIds.indexOf(selectedItemId)
-  //   filter.selectedItemsIds.splice(itemIdx, 1)
-  // }
-}
+selectedFilters.value = selectedFiltersInit()
 
 const sorting = ref([
   {
@@ -326,8 +273,15 @@ const sorting = ref([
   }
 ])
 
+// selecting sorting by id
 const defaultSortId = 1
 const selectedSortId = ref(selectedSortIdInit())
+
+api.getProducts().then((data) => {
+  products.value = data
+  preparingProducts()
+})
+
 const selectedSortItem = computed(() => {
   return sorting.value.find((item) => item.id === selectedSortId.value)
 })
@@ -339,8 +293,106 @@ const itemsArrayForSorting = computed(() => {
   }))
 })
 
+function selectedFiltersInit() {
+  let data = selectedFilters.value
+  filters.value.forEach((filter) => {
+    data[filter.id] ??= []
+  })
+
+  data = selectedFiltersUrlParsing(data)
+
+  return data
+}
+
+function selectedFiltersUrlParsing(selectedFiltersObj) {
+  let filtersObj = selectedFiltersObj
+
+  if (!route.query.filtersEdited) {
+    writeSelectedFilterToUrl(-1, true, filtersObj)
+  } else {
+    Object.entries(route.query).forEach(([key, value]) => {
+      if (key.includes('filter-')) {
+        const filterId = +key.split('-')[1]
+        filtersObj[filterId] = value.split('-').map((val) => +val)
+      }
+    })
+  }
+
+  return filtersObj
+}
+
+function isSelectedFilterChecking(filterId, itemId) {
+  return selectedFilters.value[filterId].includes(itemId)
+}
+
+function dropdownFiltersMenuStateHandler() {
+  filtersWithMeta.value.dropdownIsOpen = !filtersWithMeta.value.dropdownIsOpen
+  if (filtersWithMeta.value.dropdownIsOpen === false) {
+    filtersWithMeta.value.filters.forEach((filter) => (filter.isOpen = false))
+  }
+}
+
+function dropdownFiltersMenuItemStateHandler(filter) {
+  if (filter.isOpen === false) {
+    filtersWithMeta.value.filters.forEach((filter) => (filter.isOpen = false))
+  }
+  filter.isOpen = !filter.isOpen
+}
+
+function filterChangeHandler(state, filterId, itemId) {
+  if (state) {
+    selectedFilters.value[filterId].push(itemId)
+  } else {
+    const itemIdx = selectedFilters.value[filterId].indexOf(itemId)
+    selectedFilters.value[filterId].splice(itemIdx, 1)
+  }
+  writeSelectedFilterToUrl(filterId)
+}
+
+async function writeSelectedFilterToUrl(
+  filterId,
+  writeAll = false,
+  selectedFiltersObj = selectedFilters.value
+) {
+  let filtersIdsToWrite = []
+  if (!writeAll && filterId >= 0) {
+    filtersIdsToWrite.push(filterId)
+    await replaceWithQuery({ filtersEdited: true })
+  } else if (writeAll) {
+    filtersIdsToWrite = filters.value.map((filter) => filter.id)
+  } else return
+
+  let resultObj = {}
+  filtersIdsToWrite.forEach((id) => {
+    resultObj[`filter-${id}`] = selectedFiltersObj[id].length
+      ? selectedFiltersObj[id].join('-')
+      : undefined
+  })
+
+  replaceWithQuery(resultObj)
+}
+
+function filteringProducts(products) {
+  let data = products
+  Object.entries(selectedFilters.value).forEach(([key, value]) => {
+    if (!value.length) return
+    const filter = filters.value.find((filter) => filter.id == key)
+    const filterItems = filter.items.filter((item) => value.includes(item.id))
+    data = data.filter((product) =>
+      filterItems.some((item) => item.name === product[filter.value])
+    )
+  })
+  return data
+}
+
 function selectedSortIdInit() {
-  return route.query.orderId ? +route.query.orderId : defaultSortId
+  if (route.query.orderId) {
+    if (!sorting.value.some((item) => item.id === +route.query.orderId)) {
+      return defaultSortId
+    } else {
+      return +route.query.orderId
+    }
+  } else return defaultSortId
 }
 
 function sortInputHandler(id) {
@@ -349,25 +401,24 @@ function sortInputHandler(id) {
   else replaceWithQuery({ orderId: id })
 }
 
-function sortingProducts(data) {
-  return data.sort((a, b) => {
+function sortingProducts(products) {
+  let data = products
+  data.sort((a, b) => {
     if (selectedSortItem.value.value === 'name') {
-      if (a.name > b.name) {
-        if (!selectedSortItem.value.reverse) return 1
-        else return -1
-      } else if (a.name < b.name) {
-        if (!selectedSortItem.value.reverse) return -1
-        else return 1
-      } else return 0
-    } else if (selectedSortItem.value.value === 'price') {
-      if (!selectedSortItem.value.reverse) return a.price - b.price
-      else return b.price - a.price
-    }
+      if (a.name > b.name) return 1
+      else if (a.name < b.name) return -1
+      else return 0
+    } else if (selectedSortItem.value.value === 'price')
+      return a.price - b.price
   })
+
+  if (selectedSortItem.value.reverse) data.reverse()
+
+  return data
 }
 
-function replaceWithQuery(query) {
-  router.replace({
+async function replaceWithQuery(query) {
+  await router.replace({
     query: {
       ...route.query,
       ...query
@@ -375,18 +426,19 @@ function replaceWithQuery(query) {
   })
 }
 
-watch(
-  () => selectedSortItem.value,
-  () => {
-    preparedProducts.value = preparingProducts()
-  }
-)
+function preparingProducts() {
+  let data = products.value
+  data = filteringProducts(data)
+  data = sortingProducts(data)
+  preparedProducts.value = data
+}
 
 watch(
-  () => route.query.orderId,
+  () => [selectedSortItem.value, selectedFilters.value],
   () => {
-    selectedSortId.value = selectedSortIdInit()
-  }
+    preparingProducts()
+  },
+  { deep: true }
 )
 </script>
 
@@ -434,8 +486,16 @@ watch(
     }
   }
 
-  &-filters {
+  &-aside {
     width: 25%;
+  }
+
+  &-filters {
+    position: sticky;
+    top: 35px;
+    max-height: 100vh;
+    overflow: auto;
+    padding-left: 3px; //for checkbox focus outline
 
     &-list {
       font-size: $body-font-size-md;
@@ -527,6 +587,8 @@ watch(
   }
 
   &-items {
+    flex-grow: 1;
+
     @media screen and (min-width: $md) {
       width: 75%;
     }
@@ -551,10 +613,19 @@ watch(
       }
     }
 
+    &__no-results {
+      text-align: center;
+      margin-top: 30px;
+
+      @media screen and (min-width: $md) {
+        text-align: left;
+        margin-top: 0;
+      }
+    }
+
     &-list {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
       column-gap: $list-column-gap;
       row-gap: 20px;
       margin-top: 40px;
