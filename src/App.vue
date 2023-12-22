@@ -1,11 +1,26 @@
-<script setup>
-import { RouterView } from 'vue-router'
-</script>
-
 <template>
   <div class="global-container">
-    <RouterView />
+    <component :is="layoutComponent">
+      <RouterView />
+    </component>
   </div>
 </template>
+
+<script setup>
+import { defineAsyncComponent, shallowRef, watch } from 'vue'
+import { RouterView, useRoute } from 'vue-router'
+
+const route = useRoute()
+const layoutComponent = shallowRef()
+watch(
+  () => route.meta.layout ?? 'Default',
+  (layout) => {
+    layoutComponent.value = defineAsyncComponent(() =>
+      import(`@/layouts/${layout}Layout.vue`)
+    )
+  },
+  { immediate: true }
+)
+</script>
 
 <style></style>

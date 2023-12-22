@@ -1,34 +1,28 @@
+<template>
+  <section class="section-hero">
+    <AppHero />
+  </section>
+  <section class="section-features">
+    <AppFeatures />
+  </section>
+  <section class="section-products">
+    <AppProducts />
+  </section>
+  <section class="section-hero2">
+    <AppHero2 />
+  </section>
+  <section class="section-join">
+    <AppJoin />
+  </section>
+</template>
+
 <script setup>
-import AppHeader from '../components/AppHeader.vue'
 import AppHero from '../components/AppHero.vue'
 import AppFeatures from '../components/AppFeatures.vue'
 import AppProducts from '../components/AppProducts.vue'
 import AppHero2 from '../components/AppHero2.vue'
 import AppJoin from '../components/AppJoin.vue'
-import AppFooter from '../components/AppFooter.vue'
 </script>
-
-<template>
-  <AppHeader />
-  <main class="main">
-    <section class="section-hero">
-      <AppHero />
-    </section>
-    <section class="section-features">
-      <AppFeatures />
-    </section>
-    <section class="section-products">
-      <AppProducts />
-    </section>
-    <section class="section-hero2">
-      <AppHero2 />
-    </section>
-    <section class="section-join">
-      <AppJoin />
-    </section>
-  </main>
-  <AppFooter />
-</template>
 
 <style lang="scss" scoped>
 .section-hero {

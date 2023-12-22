@@ -10,8 +10,11 @@ body {
 }
 
 .global-container {
+  display: flex;
+  flex-direction: column;
   min-width: 390px;
   max-width: 1440px;
+  min-height: 100vh;
   margin: 0 auto;
   box-sizing: border-box;
 }
