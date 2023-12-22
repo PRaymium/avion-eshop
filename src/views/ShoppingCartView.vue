@@ -1,9 +1,18 @@
 <template>
-  <AppHeader />
-  <main class="main">
-    <div class="cart">
-      <div class="container container--paddings">
-        <div class="cart__container">
+  <div class="cart">
+    <div class="container container--paddings">
+      <div class="cart__container">
+        <template v-if="!cart.length">
+          <h1 class="cart__empty-title">Your shopping cart is empty</h1>
+          <ButtonLink
+            class="cart__empty-title"
+            :is-wide-on-mobile="true"
+            type="link"
+            link="catalog"
+            >View collection</ButtonLink
+          >
+        </template>
+        <template v-else>
           <h1 class="cart__heading">Your shopping cart</h1>
           <div class="cart-items">
             <div class="cart-items__titles">
@@ -28,13 +37,12 @@
                     :to="item.link"
                     class="cart-items__item-img-link"
                   >
-                    <picture class="cart-items__item-picture">
-                      <img
-                        class="cart-items__item-img"
-                        :src="`${IMG_PATH}/product-${item.id}-160w.jpg`"
-                        :alt="item.title"
-                      />
-                    </picture>
+                    <ProductPicture
+                      class="cart-items__item-picture"
+                      :title="item.title"
+                      :product-id="item.id"
+                      :only-xs="true"
+                    />
                   </router-link>
                   <div class="cart-items__item-info">
                     <router-link :to="item.link" class="cart-items__item-link">
@@ -93,21 +101,17 @@
               </ButtonLink>
             </div>
           </div>
-        </div>
+        </template>
       </div>
     </div>
-  </main>
-  <AppFooter />
+  </div>
 </template>
 
 <script setup>
-import AppHeader from '../components/AppHeader.vue'
-import AppFooter from '../components/AppFooter.vue'
 import AppStepper from '../components/UI/AppStepper.vue'
 import ButtonLink from '../components/UI/ButtonLink.vue'
+import ProductPicture from '../components/ProductPicture.vue'
 import { reactive, computed } from 'vue'
-
-const IMG_PATH = 'img/products'
 
 const cart = reactive([
   {
@@ -241,9 +245,8 @@ const totalCartPrice = computed(() => {
         width: 130px;
       }
 
-      &-img {
-        width: 100%;
-        height: 100%;
+      &-picture {
+        max-height: 160px;
       }
 
       &-info {
