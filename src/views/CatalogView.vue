@@ -1,173 +1,167 @@
 <template>
-  <AppHeader />
-  <main class="main">
-    <div class="catalog">
-      <div class="catalog-header">
-        <div class="container">
-          <h1 class="catalog-header__title">All products</h1>
-        </div>
+  <div class="catalog">
+    <div class="catalog-header">
+      <div class="container">
+        <h1 class="catalog-header__title">All products</h1>
       </div>
-      <div class="catalog-main">
-        <div class="container catalog-main__container">
-          <div class="catalog-aside" v-if="mq.mdPlus">
-            <div class="catalog-filters">
-              <ul
-                class="catalog-filters-list"
-                v-for="filter of filtersWithMeta.filters"
-                :key="filter.id"
-                aria-label="Filters"
+    </div>
+    <div class="catalog-main">
+      <div class="container catalog-main__container">
+        <div class="catalog-aside" v-if="mq.mdPlus">
+          <div class="catalog-filters">
+            <ul
+              class="catalog-filters-list"
+              v-for="filter of filtersWithMeta.filters"
+              :key="filter.id"
+              aria-label="Filters"
+            >
+              <li class="catalog-filters-list__title">
+                {{ filter.title }}
+              </li>
+              <li
+                class="catalog-filters-list__item"
+                v-for="item of filter.items"
+                :key="item.id"
               >
-                <li class="catalog-filters-list__title">
-                  {{ filter.title }}
-                </li>
+                <AppCheckbox
+                  :label="item.name"
+                  :name="item.name"
+                  :is-checked="isSelectedFilterChecking(filter.id, item.id)"
+                  @change="filterChangeHandler($event, filter.id, item.id)"
+                />
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="catalog-items">
+          <div class="catalog-items__top">
+            <div class="catalog-filters-dropdown" v-if="!mq.mdPlus">
+              <ButtonLink
+                :class="[
+                  'catalog-filters-dropdown__btn',
+                  { open: filtersWithMeta.dropdownIsOpen }
+                ]"
+                style-type="secondary"
+                size="small"
+                :icon-visible="true"
+                :icon-is-active="filtersWithMeta.dropdownIsOpen"
+                :aria-expanded="filtersWithMeta.dropdownIsOpen"
+                :aria-controls="filtersWithMeta.controlId"
+                @click="dropdownFiltersMenuStateHandler"
+                >Filters</ButtonLink
+              >
+              <ul
+                :class="[
+                  'catalog-filters-dropdown__list',
+                  'catalog-filters-dropdown__list--menu',
+                  { hidden: !filtersWithMeta.dropdownIsOpen }
+                ]"
+                :id="filtersWithMeta.controlId"
+              >
                 <li
-                  class="catalog-filters-list__item"
-                  v-for="item of filter.items"
-                  :key="item.id"
+                  class="catalog-filters-dropdown__list-item"
+                  v-for="filter of filtersWithMeta.filters"
+                  :key="filter.id"
                 >
-                  <AppCheckbox
-                    :label="item.name"
-                    :name="item.name"
-                    :is-checked="isSelectedFilterChecking(filter.id, item.id)"
-                    @change="filterChangeHandler($event, filter.id, item.id)"
-                  />
+                  <ButtonLink
+                    :class="[
+                      'catalog-filters-dropdown__btn',
+                      'catalog-filters-dropdown__btn--item',
+                      { open: filter.isOpen }
+                    ]"
+                    style-type="secondary"
+                    size="small"
+                    :icon-visible="true"
+                    :icon-is-active="filter.isOpen"
+                    :aria-expanded="filter.isOpen"
+                    :aria-controls="filter.controlId"
+                    @click="dropdownFiltersMenuItemStateHandler(filter)"
+                    >{{ filter.title }}</ButtonLink
+                  >
+                  <ul
+                    :class="[
+                      'catalog-filters-dropdown__list',
+                      { hidden: !filter.isOpen }
+                    ]"
+                    :id="filter.controlId"
+                  >
+                    <li
+                      class="catalog-filters-dropdown__list-item"
+                      v-for="item of filter.items"
+                      :key="item.id"
+                    >
+                      <AppCheckbox
+                        class="catalog-filters-dropdown__list-item-element"
+                        :label="item.name"
+                        :name="item.name"
+                        :is-checked="
+                          isSelectedFilterChecking(filter.id, item.id)
+                        "
+                        @change="
+                          filterChangeHandler($event, filter.id, item.id)
+                        "
+                      />
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </div>
+            <div class="catalog-sorting">
+              <span class="catalog-sorting__title">Sorting by:</span>
+              <AppSelect
+                class="catalog-sorting__select"
+                :options="itemsArrayForSorting"
+                :selected-id="selectedSortId"
+                :constant-header="!mq.mdPlus ? 'Sorting' : ''"
+                aria-label="Sorting"
+                @input="sortInputHandler"
+              />
+            </div>
           </div>
-          <div class="catalog-items">
-            <div class="catalog-items__top">
-              <div class="catalog-filters-dropdown" v-if="!mq.mdPlus">
-                <ButtonLink
-                  :class="[
-                    'catalog-filters-dropdown__btn',
-                    { open: filtersWithMeta.dropdownIsOpen }
-                  ]"
-                  style-type="secondary"
-                  size="small"
-                  :icon-visible="true"
-                  :icon-is-active="filtersWithMeta.dropdownIsOpen"
-                  :aria-expanded="filtersWithMeta.dropdownIsOpen"
-                  :aria-controls="filtersWithMeta.controlId"
-                  @click="dropdownFiltersMenuStateHandler"
-                  >Filters</ButtonLink
-                >
-                <ul
-                  :class="[
-                    'catalog-filters-dropdown__list',
-                    'catalog-filters-dropdown__list--menu',
-                    { hidden: !filtersWithMeta.dropdownIsOpen }
-                  ]"
-                  :id="filtersWithMeta.controlId"
-                >
-                  <li
-                    class="catalog-filters-dropdown__list-item"
-                    v-for="filter of filtersWithMeta.filters"
-                    :key="filter.id"
-                  >
-                    <ButtonLink
-                      :class="[
-                        'catalog-filters-dropdown__btn',
-                        'catalog-filters-dropdown__btn--item',
-                        { open: filter.isOpen }
-                      ]"
-                      style-type="secondary"
-                      size="small"
-                      :icon-visible="true"
-                      :icon-is-active="filter.isOpen"
-                      :aria-expanded="filter.isOpen"
-                      :aria-controls="filter.controlId"
-                      @click="dropdownFiltersMenuItemStateHandler(filter)"
-                      >{{ filter.title }}</ButtonLink
-                    >
-                    <ul
-                      :class="[
-                        'catalog-filters-dropdown__list',
-                        { hidden: !filter.isOpen }
-                      ]"
-                      :id="filter.controlId"
-                    >
-                      <li
-                        class="catalog-filters-dropdown__list-item"
-                        v-for="item of filter.items"
-                        :key="item.id"
-                      >
-                        <AppCheckbox
-                          class="catalog-filters-dropdown__list-item-element"
-                          :label="item.name"
-                          :name="item.name"
-                          :is-checked="
-                            isSelectedFilterChecking(filter.id, item.id)
-                          "
-                          @change="
-                            filterChangeHandler($event, filter.id, item.id)
-                          "
-                        />
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-              <div class="catalog-sorting">
-                <span class="catalog-sorting__title">Sorting by:</span>
-                <AppSelect
-                  class="catalog-sorting__select"
-                  :options="itemsArrayForSorting"
-                  :selected-id="selectedSortId"
-                  :constant-header="!mq.mdPlus ? 'Sorting' : ''"
-                  aria-label="Sorting"
-                  @input="sortInputHandler"
-                />
-              </div>
-            </div>
-            <h2
-              class="catalog-items__no-results"
-              v-show="!preparedProducts.length"
+          <h2
+            class="catalog-items__no-results"
+            v-show="!preparedProducts.length"
+          >
+            No results
+          </h2>
+          <ul class="catalog-items-list">
+            <li
+              class="catalog-items-list__item"
+              v-for="product of paginatedData"
+              :key="product.id"
             >
-              No results
-            </h2>
-            <ul class="catalog-items-list">
-              <li
-                class="catalog-items-list__item"
-                v-for="product of paginatedData"
-                :key="product.id"
-              >
-                <router-link to="#" class="catalog-items-list__item-link">
-                  <ProductPicture
-                    class="catalog-items-list__item-picture"
-                    :product-id="product.id"
-                    :title="product.name"
-                  />
-                  <h2 class="catalog-items-list__item-title">
-                    {{ product.name }}
-                  </h2>
-                  <span class="catalog-items-list__item-price"
-                    >£{{ product.price }}</span
-                  >
-                </router-link>
-              </li>
-            </ul>
-            <div class="catalog-items__more" v-show="currentPage !== maxPages">
-              <ButtonLink
-                class="catalog-items__more-btn"
-                type="button"
-                style-type="secondary"
-                :is-wide-on-mobile="true"
-                @click="currentPage++"
-                >Load more</ButtonLink
-              >
-            </div>
+              <router-link to="#" class="catalog-items-list__item-link">
+                <ProductPicture
+                  class="catalog-items-list__item-picture"
+                  :product-id="product.id"
+                  :title="product.name"
+                />
+                <h2 class="catalog-items-list__item-title">
+                  {{ product.name }}
+                </h2>
+                <span class="catalog-items-list__item-price"
+                  >£{{ product.price }}</span
+                >
+              </router-link>
+            </li>
+          </ul>
+          <div class="catalog-items__more" v-show="currentPage !== maxPages">
+            <ButtonLink
+              class="catalog-items__more-btn"
+              type="button"
+              style-type="secondary"
+              :is-wide-on-mobile="true"
+              @click="currentPage++"
+              >Load more</ButtonLink
+            >
           </div>
         </div>
       </div>
     </div>
-  </main>
-  <AppFooter />
+  </div>
 </template>
 
 <script setup>
-import AppHeader from '../components/AppHeader.vue'
-import AppFooter from '../components/AppFooter.vue'
 import ButtonLink from '../components/UI/ButtonLink.vue'
 import AppCheckbox from '../components/UI/AppCheckbox.vue'
 import AppSelect from '../components/UI/AppSelect.vue'
