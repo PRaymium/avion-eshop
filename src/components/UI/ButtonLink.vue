@@ -40,6 +40,11 @@ const props = defineProps({
     default: ''
   },
 
+  linkObj: {
+    type: Object,
+    default: () => {}
+  },
+
   styleType: {
     type: String,
     default: 'primary',
@@ -97,6 +102,16 @@ const iconPathClass = computed(() => ({
   'btn__icon-path': true,
   'btn__icon-path--dark': props.styleType !== ('primary' || 'opaque')
 }))
+
+const link = computed(() => {
+  if (props.linkObj) {
+    return {
+      name: props.linkObj.name ?? undefined,
+      query: props.linkObj.query ?? {},
+      params: props.linkObj.params ?? {}
+    }
+  } else return props.link
+})
 
 function toggleActive() {
   iconIsActive.value = !iconIsActive.value
