@@ -4,7 +4,7 @@
     "name": "Rustic Vase Set",
     "price": 155,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
-    "dimesions": {
+    "dimensions": {
       "unit": "sm",
       "height": 110,
       "width": 75,
@@ -19,7 +19,7 @@
     "name": "Lucy Lamp",
     "price": 399,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
-    "dimesions": {
+    "dimensions": {
       "unit": "sm",
       "height": 110,
       "width": 75,
@@ -34,7 +34,7 @@
     "name": "Silky Vase",
     "price": 125,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
-    "dimesions": {
+    "dimensions": {
       "unit": "sm",
       "height": 110,
       "width": 75,
@@ -49,7 +49,7 @@
     "name": "Dandy Chair",
     "price": 250,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
-    "dimesions": {
+    "dimensions": {
       "unit": "sm",
       "height": 110,
       "width": 75,
@@ -64,7 +64,7 @@
     "name": "Yellow Chair",
     "price": 199,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
-    "dimesions": {
+    "dimensions": {
       "unit": "sm",
       "height": 110,
       "width": 75,
@@ -79,7 +79,7 @@
     "name": "Dark Chair",
     "price": 210,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
-    "dimesions": {
+    "dimensions": {
       "unit": "sm",
       "height": 110,
       "width": 75,
@@ -94,7 +94,7 @@
     "name": "Copper Lamps Set",
     "price": 450,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
-    "dimesions": {
+    "dimensions": {
       "unit": "sm",
       "height": 110,
       "width": 75,
@@ -109,7 +109,7 @@
     "name": "Psikter Vase",
     "price": 140,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
-    "dimesions": {
+    "dimensions": {
       "unit": "sm",
       "height": 110,
       "width": 75,
@@ -124,7 +124,7 @@
     "name": "Modern Chairs Set",
     "price": 540,
     "description": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea reprehenderit atque quisquam excepturi blanditiis iste eveniet enim repellendus nemo? Tenetur magni reiciendis corrupti repudiandae itaque facilis! Voluptatem aliquam temporibus porro!",
-    "dimesions": {
+    "dimensions": {
       "unit": "sm",
       "height": 110,
       "width": 75,

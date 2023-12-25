@@ -37,17 +37,17 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
 <style lang="scss" scoped>
 .join {
   color: $white;
-  background-image: url('img/join/join-bg-390w.jpg');
+  background-image: url('/img/join/join-bg-390w.jpg');
   background-position: 0 100%;
   background-repeat: no-repeat;
   background-size: cover;
 
   @media screen and (min-width: $md) {
-    background-image: url('img/join/join-bg-768w.jpg');
+    background-image: url('/img/join/join-bg-768w.jpg');
   }
 
   @media screen and (min-width: $lg) {
-    background-image: url('img/join/join-bg-1280w.jpg');
+    background-image: url('/img/join/join-bg-1280w.jpg');
   }
 
   &__container {
