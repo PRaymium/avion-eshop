@@ -1,33 +1,33 @@
 <template>
   <div class="product">
     <div class="container container--product-padding">
-      <div class="product__container">
+      <h1 v-if="product === undefined">Product not found</h1>
+      <div class="product__container" v-else>
         <picture class="product-picture">
           <source
             :media="`(max-width: ${breakpoints.xs}px)`"
-            srcset="img/product-view/product-390w.jpg"
+            srcset="/img/product-view/product-390w.jpg"
           />
           <img
             class="product-picture__img"
-            srcset="img/product-view/product-640w.jpg"
+            srcset="/img/product-view/product-640w.jpg"
             alt="Product"
           />
         </picture>
         <div class="product-info">
           <div class="container container--product-info-padding">
             <div class="product-info-heading">
-              <h1 class="product-info-heading__name">The Dandy Chair</h1>
-              <p class="product-info-heading__price">£250</p>
+              <h1 class="product-info-heading__name">{{ product.name }}</h1>
+              <span class="product-info-heading__price">
+                {{ `£${product.price}` }}
+              </span>
             </div>
             <div class="product-info-description">
               <span class="product-info-description__title"
                 >Product description</span
               >
               <p class="product-info-description__info">
-                A timeless design, with premium materials features as one of our
-                most popular and iconic pieces. The dandy chair is perfect for
-                any stylish living space with beech legs and lambskin leather
-                upholstery.
+                {{ product.description }}
               </p>
             </div>
             <div class="product-info-dimensions">
@@ -37,17 +37,25 @@
                   <span class="product-info-dimensions__item-title"
                     >Height</span
                   >
-                  <p class="product-info-dimensions__item-value">110cm</p>
+                  <span class="product-info-dimensions__item-value">
+                    {{
+                      `${product.dimensions.height} ${product.dimensions.unit}`
+                    }}
+                  </span>
                 </li>
                 <li class="product-info-dimensions__separator"></li>
                 <li class="product-info-dimensions__item">
                   <span class="product-info-dimensions__item-title">Width</span>
-                  <p class="product-info-dimensions__item-value">75cm</p>
+                  <span class="product-info-dimensions__item-value">{{
+                    `${product.dimensions.width} ${product.dimensions.unit}`
+                  }}</span>
                 </li>
                 <li class="product-info-dimensions__separator"></li>
                 <li class="product-info-dimensions__item">
                   <span class="product-info-dimensions__item-title">Depth</span>
-                  <p class="product-info-dimensions__item-value">50cm</p>
+                  <span class="product-info-dimensions__item-value">{{
+                    `${product.dimensions.depth} ${product.dimensions.unit}`
+                  }}</span>
                 </li>
               </ul>
             </div>
@@ -57,6 +65,7 @@
                 <AppStepper
                   style-type="white"
                   :is-wide-on-mobile="true"
+                  :max="product.inStock"
                   class="product-info-controls-amount__stepper"
                 ></AppStepper>
               </div>
@@ -77,6 +86,21 @@
 import AppStepper from './UI/AppStepper.vue'
 import ButtonLink from './UI/ButtonLink.vue'
 import { breakpoints } from '../breakpoints'
+import { ref } from 'vue'
+import api from '@/api/avion-api.js'
+
+const props = defineProps({
+  productId: {
+    type: Number,
+    required: true
+  }
+})
+
+const product = ref()
+
+api.getProductById(props.productId).then((data) => {
+  product.value = data
+})
 </script>
 
 <style lang="scss" scoped>
@@ -146,6 +170,9 @@ import { breakpoints } from '../breakpoints'
       }
 
       &__price {
+        display: block;
+        margin-top: 12px;
+        margin-bottom: 15px;
         font-size: 20px;
 
         @media screen and (min-width: $md) {
@@ -206,6 +233,7 @@ import { breakpoints } from '../breakpoints'
       }
 
       &__item-value {
+        display: block;
         margin-top: 15px;
         margin-bottom: 0;
 

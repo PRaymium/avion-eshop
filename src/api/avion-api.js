@@ -1,11 +1,22 @@
 class AvionApi {
   async getProducts() {
     try {
-      const response = await fetch('./api/products.json')
+      const response = await fetch('/api/products.json')
       const data = await response.json()
       return data
     } catch (e) {
       console.log(e)
+    }
+  }
+  async getProductById(id) {
+    try {
+      const response = await fetch('/api/products.json')
+      const data = await response.json()
+      const item = data.find((item) => item.id === id)
+      return item
+    } catch (e) {
+      console.log(e)
+      return {}
     }
   }
 }

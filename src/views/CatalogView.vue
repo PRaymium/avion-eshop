@@ -130,7 +130,10 @@
               v-for="product of paginatedData"
               :key="product.id"
             >
-              <router-link to="#" class="catalog-items-list__item-link">
+              <router-link
+                :to="{ name: 'product', params: { id: product.id } }"
+                class="catalog-items-list__item-link"
+              >
                 <ProductPicture
                   class="catalog-items-list__item-picture"
                   :product-id="product.id"

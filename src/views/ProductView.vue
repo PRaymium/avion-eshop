@@ -1,6 +1,6 @@
 <template>
   <section class="section-product">
-    <ProductInfo />
+    <ProductInfo :product-id="id" />
   </section>
   <section class="section-products">
     <AppProducts :title="appProductsTitle" />
@@ -18,8 +18,13 @@ import ProductInfo from '../components/ProductInfo.vue'
 import AppProducts from '../components/AppProducts.vue'
 import AppFeatures from '../components/AppFeatures.vue'
 import AppJoin from '../components/AppJoin.vue'
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 const appProductsTitle = 'You might also like'
+const route = useRoute()
+
+const id = ref(+route.params.id)
 </script>
 
 <style lang="scss" scoped>

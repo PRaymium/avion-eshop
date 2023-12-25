@@ -15,7 +15,7 @@ const router = createRouter({
       component: () => import('../views/ShoppingCartView.vue')
     },
     {
-      path: '/product',
+      path: '/product/:id',
       name: 'product',
       component: () => import('../views/ProductView.vue')
     },
@@ -24,7 +24,10 @@ const router = createRouter({
       name: 'catalog',
       component: () => import('../views/CatalogView.vue')
     }
-  ]
+  ],
+  scrollBehavior() {
+    return { el: 'body', top: 0 }
+  }
 })
 
 export default router

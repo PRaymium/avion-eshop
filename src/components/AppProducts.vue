@@ -10,12 +10,12 @@
             :id="product.id"
             :title="product.title"
             :price="product.price"
-            :link="product.link"
           ></AppProductsCard>
         </li>
       </ul>
       <ButtonLink
         type="link"
+        :link-obj="{ name: 'catalog' }"
         style-type="secondary"
         :is-wide-on-mobile="true"
         class="products-link"
@@ -40,25 +40,21 @@ const products = [
   {
     id: 1,
     title: 'Rustic Vase Set',
-    link: '',
     price: 155
   },
   {
     id: 2,
     title: 'The Lucy Lamp',
-    link: '',
     price: 399
   },
   {
     id: 3,
     title: 'The Silky Vase',
-    link: '',
     price: 125
   },
   {
     id: 4,
     title: 'The Dandy chair',
-    link: '',
     price: 250
   }
 ]

@@ -1,6 +1,9 @@
 <template>
   <div class="product-card">
-    <router-link :to="props.link" class="product-card__link">
+    <router-link
+      :to="{ name: 'product', params: { id: props.id } }"
+      class="product-card__link"
+    >
       <ProductPicture :title="props.title" :product-id="props.id" />
       <h4 class="product-card__heading">{{ props.title }}</h4>
       <span class="product-card__price">£{{ props.price }}</span>
@@ -24,11 +27,6 @@ const props = defineProps({
 
   price: {
     type: Number,
-    required: true
-  },
-
-  link: {
-    type: String,
     required: true
   }
 })
