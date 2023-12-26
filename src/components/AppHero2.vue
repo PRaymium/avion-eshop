@@ -18,10 +18,10 @@
       <picture class="hero-picture">
         <source
           :media="`(max-width: ${breakpoints.xs}px)`"
-          srcset="img/hero2/hero2-390w.jpg"
+          srcset="/img/hero2/hero2-390w.jpg"
         />
         <img
-          src="img/hero2/hero2-640w.jpg"
+          src="/img/hero2/hero2-640w.jpg"
           alt="modern interior"
           class="hero-picture__img"
         />
