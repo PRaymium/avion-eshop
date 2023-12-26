@@ -9,6 +9,21 @@
         :height="IMG_SIZES[160].height"
       />
     </template>
+    <template v-else-if="props.forProductInfo">
+      <source
+        :media="`(max-width: ${breakpoints.xs}px)`"
+        :srcset="`${IMG_PATH}/product-${props.productId}-300w.jpg`"
+        :width="IMG_SIZES[300].width"
+        :height="IMG_SIZES[300].height"
+      />
+      <img
+        class="product-picture__img"
+        :src="`${IMG_PATH}/product-${props.productId}-610w.jpg`"
+        :alt="props.title"
+        :width="IMG_SIZES[610].width"
+        :height="IMG_SIZES[610].height"
+      />
+    </template>
     <template v-else>
       <source
         :media="`(max-width: ${breakpoints.xs}px)`"
@@ -39,6 +54,10 @@ const IMG_SIZES = {
   300: {
     width: 300,
     height: 370
+  },
+  610: {
+    width: 610,
+    height: 750
   }
 }
 
@@ -54,6 +73,11 @@ const props = defineProps({
   },
 
   onlyXs: {
+    type: Boolean,
+    default: false
+  },
+
+  forProductInfo: {
     type: Boolean,
     default: false
   }
