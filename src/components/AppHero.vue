@@ -22,7 +22,7 @@
       <picture>
         <source
           :media="`(max-width: ${breakpoints.xs}px)`"
-          srcset="img/hero/hero-390w.jpg"
+          srcset="/img/hero/hero-390w.jpg"
         />
         <img class="hero-content__img" src="/img/hero/hero-640w.jpg" alt="" />
       </picture>
