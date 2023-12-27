@@ -2,11 +2,36 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
   font-family: $font-satoshi;
-  font-size: $body-font-size;
+  font-size: $body-font-size-md;
   font-weight: 400;
   color: $dark-primary;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-family: $font-satoshi;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+img,
+picture {
+  display: block;
+  max-width: 100%;
 }
 
 .global-container {
@@ -29,34 +54,4 @@ body {
   @media screen and (min-width: $xl) {
     padding: 0 $container-padding-xl;
   }
-}
-
-a {
-  text-decoration: none;
-  color: black;
-}
-
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-li {
-  list-style: none;
-}
-
-button {
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  font-family: $font-satoshi;
-  font-size: $body-font-size;
-  cursor: pointer;
-}
-
-img,
-picture {
-  display: block;
-  max-width: 100%;
 }

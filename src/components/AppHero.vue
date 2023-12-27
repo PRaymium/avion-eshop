@@ -3,18 +3,19 @@
     <div class="hero-content">
       <div class="hero-content__text">
         <div class="container hero-content__text-container">
-          <h2 class="hero-content__heading">
+          <h1 class="h2 hero-content__heading">
             Luxury homeware for people who love timeless design quality
-          </h2>
+          </h1>
           <p class="hero-content__description">
             With our new collection, view over 400 bespoke pieces from homeware
             through to furniture today
           </p>
           <ButtonLink
+            class="hero-content__link"
             type="link"
+            :link-obj="{ name: 'catalog' }"
             style-type="secondary"
             :is-wide-on-mobile="true"
-            class="hero-content__link"
             >View collection</ButtonLink
           >
         </div>
@@ -95,7 +96,6 @@ import { breakpoints } from '../breakpoints'
 
     &__heading {
       margin-bottom: 12px;
-      font-size: normal;
       line-height: normal;
 
       @media screen and (min-width: $lg) {
@@ -104,6 +104,13 @@ import { breakpoints } from '../breakpoints'
     }
 
     &__description {
+      @media screen and (min-width: $md) {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
       @media screen and (min-width: $lg) {
         margin-top: 0;
         font-size: $body-font-size-lg;

@@ -2,23 +2,27 @@
   <div class="join">
     <div class="container">
       <div class="join__container">
-        <h2 class="join-heading">Join the club and get the benefits</h2>
-        <p class="join-description">
+        <h2 class="join__heading">Join the club and get the benefits</h2>
+        <p class="join__description">
           Sign up for our newsletter and receive exclusive offers on new ranges,
           sales, pop up stores and more
         </p>
         <ul class="join-list">
-          <li class="join-item" v-for="(benefit, idx) of benefits" :key="idx">
-            <span class="join-item__icon">
+          <li
+            class="join-list-item"
+            v-for="(benefit, idx) of benefits"
+            :key="idx"
+          >
+            <span class="join-list-item__icon">
               <IconCheckmark
                 style-type="filled"
                 :size="16"
-                class="join-item__icon-svg"
+                class="join-list-item__icon-svg"
               />
             </span>
-            <p class="join-item__text">
+            <span class="join-list-item__text">
               {{ benefit }}
-            </p>
+            </span>
           </li>
         </ul>
         <EmailSignUp class="join-form" />
@@ -61,11 +65,11 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
     }
   }
 
-  &-heading {
+  &__heading {
     margin-bottom: 12px;
   }
 
-  &-description {
+  &__description {
     font-size: $body-font-size-sm;
 
     @media screen and (min-width: $lg) {
@@ -84,20 +88,15 @@ const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
       justify-content: space-around;
       margin-top: 30px;
     }
-  }
 
-  &-item {
-    display: flex;
-    gap: 8px;
-
-    &__icon {
+    &-item {
       display: flex;
-      align-items: center;
-    }
+      gap: 8px;
 
-    &__text {
-      margin: 0;
-      font-size: $body-font-size-md;
+      &__icon {
+        display: flex;
+        align-items: center;
+      }
     }
   }
 

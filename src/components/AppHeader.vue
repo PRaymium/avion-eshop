@@ -3,7 +3,7 @@
     <div class="container">
       <div class="header-row header-row-top">
         <div class="header-row-top__left header-btn-list">
-          <button class="header-btn header-btn--search">
+          <button class="header-btn header-btn--search" aria-label="search">
             <IconSearch />
           </button>
         </div>
@@ -13,15 +13,17 @@
           </div>
         </div>
         <div class="header-row-top__right header-btn-list">
-          <router-link to="cart" class="header-btn header-btn--cart">
+          <router-link
+            :to="{ name: 'cart' }"
+            class="header-btn header-btn--cart"
+            aria-label="cart"
+          >
             <IconShopcart
           /></router-link>
-          <router-link to="/" class="header-btn header-btn--user">
-            <IconUser />
-          </router-link>
           <button
             class="header-btn header-btn--toggle"
             aria-controls="menu"
+            aria-label="open menu"
             @click="menuIsHide = !menuIsHide"
           >
             <IconBurgerMenu />
@@ -40,6 +42,7 @@
           <button
             class="header-collapse-menu__close"
             aria-controls="menu"
+            aria-label="close menu"
             @click="menuIsHide = !menuIsHide"
           >
             X
@@ -66,7 +69,6 @@
 <script setup>
 import IconSearch from './icons/IconSearch.vue'
 import IconBurgerMenu from './icons/IconBurgerMenu.vue'
-import IconUser from './icons/IconUser.vue'
 import IconShopcart from './icons/IconShopcart.vue'
 import { ref } from 'vue'
 
@@ -212,7 +214,7 @@ const menuIsHide = ref(true)
       position: static;
       flex-direction: row;
       padding: 0;
-      font-size: $body-font-size-md;
+      font-size: 1rem;
       transform: translateX(0);
       overflow-y: hidden;
       visibility: visible;
@@ -247,6 +249,10 @@ const menuIsHide = ref(true)
 
     &__link {
       color: $nav-link;
+
+      &:hover {
+        border-bottom: 1px solid $nav-link;
+      }
     }
   }
 }

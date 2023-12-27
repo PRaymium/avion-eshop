@@ -19,7 +19,7 @@
       </svg>
     </span>
   </button>
-  <router-link v-else :to="link" :class="buttonsClass">
+  <router-link v-else :to="linkComputed" :class="buttonsClass">
     <slot></slot>
   </router-link>
 </template>
@@ -103,7 +103,7 @@ const iconPathClass = computed(() => ({
   'btn__icon-path--dark': props.styleType !== ('primary' || 'opaque')
 }))
 
-const link = computed(() => {
+const linkComputed = computed(() => {
   if (props.linkObj) {
     return {
       name: props.linkObj.name ?? undefined,
@@ -200,13 +200,13 @@ watch(
   }
 
   &--medium {
-    padding: 16px 32px;
-    column-gap: 12px;
+    padding: 1rem 2rem;
+    column-gap: 0.75rem;
   }
 
   &--small {
-    padding: 12px 24px;
-    column-gap: 8px;
+    padding: 0.75rem 1.5rem;
+    column-gap: 0.5rem;
   }
 
   &--wide {

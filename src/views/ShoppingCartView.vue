@@ -34,7 +34,7 @@
                   class="cart-items__item-column-product cart-items__main-column"
                 >
                   <router-link
-                    :to="item.link"
+                    :to="{ name: 'product', params: { id: item.id } }"
                     class="cart-items__item-img-link"
                   >
                     <ProductPicture
@@ -45,8 +45,13 @@
                     />
                   </router-link>
                   <div class="cart-items__item-info">
-                    <router-link :to="item.link" class="cart-items__item-link">
-                      <h2 class="cart-items__item-title">{{ item.title }}</h2>
+                    <router-link
+                      :to="{ name: 'product', params: { id: item.id } }"
+                      class="cart-items__item-link"
+                    >
+                      <h2 class="h5 cart-items__item-title">
+                        {{ item.title }}
+                      </h2>
                     </router-link>
 
                     <p class="cart-items__item-description">
@@ -119,7 +124,6 @@ const cart = reactive([
     title: 'Graystone vase',
     desciption: 'A timeless ceramic vase with a tri color grey glaze.',
     price: 85,
-    link: '',
     count: 2
   },
   {
@@ -127,7 +131,6 @@ const cart = reactive([
     title: 'The Dandy Chair',
     desciption: 'A timeless design, with premium materials features ... ',
     price: 250,
-    link: '',
     count: 1
   }
 ])
@@ -232,6 +235,7 @@ const totalCartPrice = computed(() => {
 
         &-total {
           display: none;
+          font-size: $body-font-size-lg;
 
           @media screen and (min-width: $md) {
             display: block;
@@ -260,24 +264,15 @@ const totalCartPrice = computed(() => {
 
       &-title {
         margin: 0;
-        font-size: 16px;
 
         @media screen and (min-width: $md) {
-          font-size: 20px;
+          font-size: $h4-font-size;
         }
       }
 
       &-description {
         margin: 8px 0;
         font-size: $body-font-size-sm;
-      }
-
-      &-price {
-        font-size: $body-font-size-md;
-
-        @media screen and (min-width: $md) {
-          font-size: $body-font-size-lg;
-        }
       }
 
       &-stepper {

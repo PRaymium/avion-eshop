@@ -4,14 +4,14 @@
       <div class="footer-content">
         <div class="footer-lists">
           <div class="footer-list" v-for="list of lists" :key="list.title">
-            <h5 class="footer-list__heading">{{ list.title }}</h5>
+            <span class="h5 footer-list__heading">{{ list.title }}</span>
             <ul class="footer-list__ul">
               <li
                 class="footer-list__li"
                 v-for="(item, idx) of list.items"
                 :key="idx"
               >
-                <router-link :to="item.link" class="footer-link">{{
+                <router-link :to="item.link" class="footer-list__link">{{
                   item.name
                 }}</router-link>
               </li>
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="footer-join">
-          <h5 class="footer-join__heading">Join our mailing list</h5>
+          <span class="h5 footer-join__heading">Join our mailing list</span>
           <EmailSignUp
             style-type="secondary"
             class="footer-join__input"
@@ -29,17 +29,17 @@
 
       <hr class="footer-hr" />
       <div class="footer-info">
-        <p class="footer-copyright">Copyright 2023 Avion LTD</p>
+        <span class="footer-copyright">Copyright 2023 Avion LTD</span>
         <ul class="footer-social">
           <li
-            class="footer-social-item"
+            class="footer-social__item"
             v-for="(item, idx) of social"
             :key="idx"
           >
-            <a :href="item.link" class="footer-social-item__link">
+            <a :href="item.link" class="footer-social__item-link">
               <component
                 :is="item.iconComponent"
-                class="footer-social-icon"
+                class="footer-social__item-icon"
               ></component>
             </a>
           </li>
@@ -206,11 +206,15 @@ const social = [
       margin-top: 12px;
       row-gap: 12px;
     }
-  }
 
-  &-link {
-    font-size: $body-font-size-sm;
-    color: inherit;
+    &__link {
+      font-size: $body-font-size-sm;
+      color: inherit;
+
+      &:hover {
+        border-bottom: 1px solid $white;
+      }
+    }
   }
 
   &-join {
@@ -257,10 +261,13 @@ const social = [
     display: flex;
     gap: 24px;
 
-    &-item {
+    &__item {
       display: flex;
 
-      &__link {
+      &-link {
+        border-bottom: 1px solid transparent;
+        transition: border-bottom 0.1s ease-in-out;
+
         &:hover {
           border-bottom: 1px solid $white;
         }

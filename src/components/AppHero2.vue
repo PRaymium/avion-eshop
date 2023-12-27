@@ -8,10 +8,11 @@
           studio in South London in early 2014
         </p>
         <ButtonLink
+          class="hero-info__btn"
           type="link"
+          :link-obj="{ name: 'catalog' }"
           style-type="opaque"
           :is-wide-on-mobile="true"
-          class="hero-info__btn"
           >View collection</ButtonLink
         >
       </div>
