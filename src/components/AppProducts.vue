@@ -1,16 +1,17 @@
 <template>
   <div class="products">
     <div class="container">
-      <h2 v-if="title" class="products-heading">
-        {{ title }}
+      <h2 v-if="props.title" class="products-heading">
+        {{ props.title }}
       </h2>
       <ul class="products-list">
         <li class="products-item" v-for="product of products" :key="product.id">
-          <AppProductsCard
+          <ProductCard
             :id="product.id"
             :title="product.title"
             :price="product.price"
-          ></AppProductsCard>
+            title-tag="h3"
+          />
         </li>
       </ul>
       <ButtonLink
@@ -26,10 +27,10 @@
 </template>
 
 <script setup>
-import AppProductsCard from './AppProductsCard.vue'
+import ProductCard from './ProductCard.vue'
 import ButtonLink from './UI/ButtonLink.vue'
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: ''

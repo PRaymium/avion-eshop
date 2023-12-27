@@ -130,22 +130,13 @@
               v-for="product of paginatedData"
               :key="product.id"
             >
-              <router-link
-                :to="{ name: 'product', params: { id: product.id } }"
-                class="catalog-items-list__item-link"
-              >
-                <ProductPicture
-                  class="catalog-items-list__item-picture"
-                  :product-id="product.id"
-                  :title="product.name"
-                />
-                <h2 class="catalog-items-list__item-title">
-                  {{ product.name }}
-                </h2>
-                <span class="catalog-items-list__item-price"
-                  >£{{ product.price }}</span
-                >
-              </router-link>
+              <ProductCard
+                class="catalog-items-list__item-card"
+                :id="product.id"
+                :title="product.name"
+                :price="product.price"
+                title-tag="h2"
+              />
             </li>
           </ul>
           <div class="catalog-items__more" v-show="currentPage !== maxPages">
@@ -168,7 +159,7 @@
 import ButtonLink from '../components/UI/ButtonLink.vue'
 import AppCheckbox from '../components/UI/AppCheckbox.vue'
 import AppSelect from '../components/UI/AppSelect.vue'
-import ProductPicture from '../components/ProductPicture.vue'
+import ProductCard from '../components/ProductCard.vue'
 import { ref, computed, inject, watch } from 'vue'
 import { uuid } from 'vue3-uuid'
 import { useRouter, useRoute } from 'vue-router'
@@ -660,33 +651,6 @@ watch(
 
         @media screen and (min-width: $sm) {
           max-width: calc((100% - $list-column-gap * 2) / 3);
-        }
-
-        &-link {
-          display: block;
-          transition: 0.1s ease-in-out;
-
-          &:focus {
-            outline: 2px solid $primary;
-          }
-
-          @media screen and (min-width: $md) {
-            &:hover,
-            &:focus {
-              outline: none;
-              transform: scaleY(104%) translateY(2%);
-            }
-          }
-        }
-
-        &-title {
-          margin-top: 24px;
-          margin-bottom: 0;
-          font-size: $h4-font-size;
-        }
-
-        &-price {
-          margin-top: 8px;
         }
       }
     }
