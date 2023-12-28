@@ -15,11 +15,14 @@
         <div class="header-row-top__right header-btn-list">
           <router-link
             :to="{ name: 'cart' }"
-            class="header-btn header-btn--cart"
+            class="header-btn header-btn-cart"
             aria-label="cart"
           >
-            <IconShopcart
-          /></router-link>
+            <IconShopcart />
+            <span class="header-btn-cart__counter" v-show="cart.size != 0">{{
+              cart.size
+            }}</span>
+          </router-link>
           <button
             class="header-btn header-btn--toggle"
             aria-controls="menu"
@@ -71,6 +74,9 @@ import IconSearch from './icons/IconSearch.vue'
 import IconBurgerMenu from './icons/IconBurgerMenu.vue'
 import IconShopcart from './icons/IconShopcart.vue'
 import { ref } from 'vue'
+import { useCartStore } from '../stores/cart'
+
+const cart = useCartStore()
 
 const navItems = [
   {
@@ -151,6 +157,7 @@ const menuIsHide = ref(true)
       &__right {
         display: flex;
         justify-content: end;
+        align-items: center;
       }
 
       @media screen and (min-width: $md) {
@@ -177,6 +184,24 @@ const menuIsHide = ref(true)
   }
 
   &-btn {
+    display: flex;
+
+    &-cart {
+      display: inline-flex;
+      align-items: center;
+
+      &__counter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 0.4rem;
+        margin-left: 0.2rem;
+        border-radius: 50px;
+        color: $white;
+        background-color: $dark-primary;
+      }
+    }
+
     &--toggle {
       @media screen and (min-width: $md) {
         display: none;

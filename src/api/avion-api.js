@@ -19,6 +19,18 @@ class AvionApi {
       return {}
     }
   }
+
+  async getProductsByIds(idsArray) {
+    try {
+      const response = await fetch('/api/products.json')
+      const data = await response.json()
+      const array = data.filter((item) => idsArray.includes(item.id))
+      return array
+    } catch (e) {
+      console.log(e)
+      return {}
+    }
+  }
 }
 
 export default new AvionApi()

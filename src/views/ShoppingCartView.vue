@@ -2,7 +2,7 @@
   <div class="cart">
     <div class="container container--paddings">
       <div class="cart__container">
-        <template v-if="!cart.length">
+        <template v-if="cart.size === 0">
           <h1 class="cart__empty-title">Your shopping cart is empty</h1>
           <ButtonLink
             class="cart__empty-title"
@@ -29,7 +29,11 @@
               </div>
             </div>
             <ul class="cart-items__list">
-              <li class="cart-items__item" v-for="item of cart" :key="item.id">
+              <li
+                class="cart-items__item"
+                v-for="item of products"
+                :key="item.id"
+              >
                 <div
                   class="cart-items__item-column-product cart-items__main-column"
                 >
@@ -39,7 +43,7 @@
                   >
                     <ProductPicture
                       class="cart-items__item-picture"
-                      :title="item.title"
+                      :title="item.name"
                       :product-id="item.id"
                       :only-xs="true"
                     />
@@ -50,20 +54,21 @@
                       class="cart-items__item-link"
                     >
                       <h2 class="h5 cart-items__item-title">
-                        {{ item.title }}
+                        {{ item.name }}
                       </h2>
                     </router-link>
 
                     <p class="cart-items__item-description">
-                      {{ item.desciption }}
+                      {{ item.description }}
                     </p>
                     <span class="cart-items__item-price">{{
                       '£' + item.price
                     }}</span>
                     <AppStepper
                       class="cart-items__item-stepper cart-items__item-stepper--mobile"
-                      :start="item.count"
-                      @change="(value) => (item.count = value)"
+                      :start="cart.items[item.id]"
+                      :max="item.inStock"
+                      @change="(value) => stepperHandler(value.value, item.id)"
                     />
                   </div>
                 </div>
@@ -72,15 +77,16 @@
                 >
                   <AppStepper
                     class="cart-items__item-stepper"
-                    :start="item.count"
-                    @change="(value) => (item.count = value)"
+                    :start="cart.items[item.id]"
+                    :max="item.inStock"
+                    @change="(value) => stepperHandler(value.value, item.id)"
                   />
                 </div>
                 <div
                   class="cart-items__item-column-total cart-items__second-column cart-items__second-column--right-align"
                 >
                   <span class="cart-items__item-total">{{
-                    '£' + item.price * item.count
+                    '£' + item.price * cart.items[item.id]
                   }}</span>
                 </div>
               </li>
@@ -113,31 +119,36 @@
 </template>
 
 <script setup>
-import AppStepper from '../components/UI/AppStepper.vue'
-import ButtonLink from '../components/UI/ButtonLink.vue'
-import ProductPicture from '../components/ProductPicture.vue'
-import { reactive, computed } from 'vue'
+import AppStepper from '@/components/UI/AppStepper.vue'
+import ButtonLink from '@/components/UI/ButtonLink.vue'
+import ProductPicture from '@/components/ProductPicture.vue'
+import { ref, computed } from 'vue'
+import { useCartStore } from '@/stores/cart'
+import api from '@/api/avion-api'
 
-const cart = reactive([
-  {
-    id: 3,
-    title: 'Graystone vase',
-    desciption: 'A timeless ceramic vase with a tri color grey glaze.',
-    price: 85,
-    count: 2
-  },
-  {
-    id: 4,
-    title: 'The Dandy Chair',
-    desciption: 'A timeless design, with premium materials features ... ',
-    price: 250,
-    count: 1
-  }
-])
+const cart = useCartStore()
+
+const products = ref([])
+getProducts()
 
 const totalCartPrice = computed(() => {
-  return cart.reduce((acc, item) => acc + item.price * item.count, 0)
+  return products.value.reduce(
+    (acc, item) => acc + item.price * cart.items[item.id],
+    0
+  )
 })
+
+function getProducts() {
+  api
+    .getProductsByIds(Object.keys(cart.items).map((key) => +key))
+    .then((data) => {
+      products.value = data
+    })
+}
+
+function stepperHandler(value, id) {
+  cart.set(id, value)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -246,11 +257,11 @@ const totalCartPrice = computed(() => {
       &-img-link {
         display: block;
         flex-shrink: 0;
-        width: 130px;
+        width: 140px;
       }
 
       &-picture {
-        max-height: 160px;
+        max-height: 180px;
       }
 
       &-info {
@@ -271,6 +282,10 @@ const totalCartPrice = computed(() => {
       }
 
       &-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
         margin: 8px 0;
         font-size: $body-font-size-sm;
       }
