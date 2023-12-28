@@ -36,7 +36,11 @@
             v-for="(item, idx) of social"
             :key="idx"
           >
-            <a :href="item.link" class="footer-social__item-link">
+            <a
+              :href="item.link"
+              class="footer-social__item-link"
+              :aria-label="item.name"
+            >
               <component
                 :is="item.iconComponent"
                 class="footer-social__item-icon"
@@ -145,26 +149,32 @@ const lists = {
 const social = [
   {
     iconComponent: IconLinkedin,
+    name: 'linkedIn',
     link: '#'
   },
   {
     iconComponent: IconFacebook,
+    name: 'facebook',
     link: '#'
   },
   {
     iconComponent: IconInstagram,
+    name: 'instagram',
     link: '#'
   },
   {
     iconComponent: IconSkype,
+    name: 'skype',
     link: '#'
   },
   {
     iconComponent: IconTwitter,
+    name: 'twitter',
     link: '#'
   },
   {
     iconComponent: IconPinterest,
+    name: 'pinterest',
     link: '#'
   }
 ]
