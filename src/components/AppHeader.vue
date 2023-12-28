@@ -249,6 +249,8 @@ const menuIsHide = ref(true)
 
     &__link {
       color: $nav-link;
+      border-bottom: 1px solid transparent;
+      transition: border-bottom 0.1s ease-in-out;
 
       &:hover {
         border-bottom: 1px solid $nav-link;
