@@ -119,6 +119,7 @@ function changeCount(action) {
 .stepper {
   display: inline-flex;
   box-sizing: border-box;
+  align-items: center;
   background-color: $light-gray;
 
   &-item {
@@ -132,8 +133,10 @@ function changeCount(action) {
   }
 
   &-btn {
-    color: $border-dark;
+    height: 100%;
+    color: $primary;
     transition: 0.1s ease-in-out;
+    flex-grow: 1;
 
     &:focus,
     &:hover {
@@ -144,12 +147,6 @@ function changeCount(action) {
 
     &:active {
       background-color: rgba($color: #000000, $alpha: 0.4);
-    }
-
-    &--wide {
-      @media screen and (max-width: ($md - 1)) {
-        flex-grow: 1;
-      }
     }
   }
 

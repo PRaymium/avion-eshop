@@ -68,17 +68,34 @@
                     >Amount</span
                   >
                   <AppStepper
+                    class="product-info-controls-amount__stepper"
                     style-type="white"
                     :is-wide-on-mobile="true"
+                    :start="countInCart ?? countWithoutCart"
                     :max="product.inStock"
-                    class="product-info-controls-amount__stepper"
+                    @change="stepperHandler"
                   ></AppStepper>
                 </div>
-                <ButtonLink
-                  :is-wide-on-mobile="true"
-                  class="product-info-controls-add"
-                  >Add to cart
-                </ButtonLink>
+                <div class="product-info-controls-buttons">
+                  <ButtonLink
+                    class="product-info-controls-buttons__delete"
+                    v-if="countInCart"
+                    size="small"
+                    :is-wide-on-mobile="true"
+                    style-type="secondary-border"
+                    aria-label="Remove from cart"
+                    @click="removeFromCart"
+                  >
+                    <IconTrashcan />
+                  </ButtonLink>
+                  <ButtonLink
+                    class="product-info-controls-buttons__add"
+                    :is-wide-on-mobile="true"
+                    :aria-label="countInCart ? 'Go to cart' : 'Add to cart'"
+                    @click="addToCart"
+                    >{{ countInCart ? 'Go to cart' : 'Add to cart' }}
+                  </ButtonLink>
+                </div>
               </div>
             </div>
           </div>
@@ -98,26 +115,55 @@
 </template>
 
 <script setup>
-import ProductPicture from '../components/ProductPicture.vue'
-import AppStepper from '../components/UI/AppStepper.vue'
-import ButtonLink from '../components/UI/ButtonLink.vue'
-import AppProducts from '../components/AppProducts.vue'
-import AppFeatures from '../components/AppFeatures.vue'
-import AppJoin from '../components/AppJoin.vue'
-import { ref, watch } from 'vue'
+import ProductPicture from '@/components/ProductPicture.vue'
+import AppStepper from '@/components/UI/AppStepper.vue'
+import ButtonLink from '@/components/UI/ButtonLink.vue'
+import AppProducts from '@/components/AppProducts.vue'
+import AppFeatures from '@/components/AppFeatures.vue'
+import AppJoin from '@/components/AppJoin.vue'
+import IconTrashcan from '@/components/icons/IconTrashcan.vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import api from '@/api/avion-api.js'
+import { useCartStore } from '@/stores/cart'
 
 const appProductsTitle = 'You might also like'
 const route = useRoute()
+const router = useRouter()
+const cart = useCartStore()
 
 const id = ref(+route.params.id)
 const product = ref(getProduct(id.value))
+
+const countWithoutCart = ref(1)
+const countInCart = computed(() => cart.items[id.value])
 
 function getProduct(id) {
   api.getProductById(id).then((data) => {
     product.value = data
   })
+}
+
+function stepperHandler(value) {
+  countWithoutCart.value = value.value
+
+  if (countInCart.value) {
+    cart.set(id.value, value.value)
+  }
+}
+
+function removeFromCart() {
+  cart.remove(id.value)
+  countWithoutCart.value = 1
+}
+
+function addToCart() {
+  if (!countInCart.value) {
+    cart.set(id.value, countWithoutCart.value)
+  } else {
+    router.push({ name: 'cart' })
+  }
 }
 
 watch(
@@ -300,14 +346,15 @@ watch(
     }
 
     &-controls {
+      display: flex;
+      flex-direction: column;
       margin-top: 32px;
+      gap: 16px 48px;
 
       @media screen and (min-width: $md) {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 50px;
+        flex-direction: row;
         flex-wrap: wrap;
-        row-gap: 16px;
+        margin-top: 50px;
       }
 
       &-amount {
@@ -316,34 +363,41 @@ watch(
 
         @media screen and (min-width: $md) {
           flex-direction: row;
+          justify-content: space-between;
           align-items: center;
-          column-gap: 20px;
-          flex: 1 1 40%;
+          flex: 1 1 0;
+          column-gap: 16px;
         }
 
-        @media screen and (min-width: $lg) {
-          flex: 0 0 auto;
+        &__title {
+          flex: 1 1 25%;
         }
 
         &__stepper {
           margin-top: 12px;
 
           @media screen and (min-width: $md) {
+            flex: 1 1 75%;
             margin-top: 0;
           }
         }
       }
 
-      &-add {
-        margin-top: 16px;
+      &-buttons {
+        display: flex;
+        justify-content: space-between;
+        column-gap: 16px;
 
         @media screen and (min-width: $md) {
-          margin-top: 0;
-          flex: 1 1 60%;
+          flex-grow: 1;
         }
 
-        @media screen and (min-width: $lg) {
-          flex: 0 0 auto;
+        &__add {
+          flex: 1 1 75%;
+        }
+
+        &__delete {
+          flex: 1 1 25%;
         }
       }
     }

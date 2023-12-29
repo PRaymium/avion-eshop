@@ -49,9 +49,14 @@ const props = defineProps({
     type: String,
     default: 'primary',
     validator(value) {
-      return ['primary', 'secondary', 'white', 'opaque', 'ghost'].includes(
-        value
-      )
+      return [
+        'primary',
+        'secondary',
+        'secondary-border',
+        'white',
+        'opaque',
+        'ghost'
+      ].includes(value)
     }
   },
 
@@ -166,6 +171,14 @@ watch(
   &--secondary {
     color: $dark-primary;
     background-color: $light-gray;
+
+    &-border {
+      border: 1px solid $primary;
+
+      &:hover {
+        background-color: $border-gray;
+      }
+    }
 
     &:hover {
       background-color: $border-gray;

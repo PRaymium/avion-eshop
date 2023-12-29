@@ -37,17 +37,12 @@
                 <div
                   class="cart-items__item-column-product cart-items__main-column"
                 >
-                  <router-link
-                    :to="{ name: 'product', params: { id: item.id } }"
-                    class="cart-items__item-img-link"
-                  >
-                    <ProductPicture
-                      class="cart-items__item-picture"
-                      :title="item.name"
-                      :product-id="item.id"
-                      :only-xs="true"
-                    />
-                  </router-link>
+                  <ProductPicture
+                    class="cart-items__item-picture"
+                    :title="item.name"
+                    :product-id="item.id"
+                    :only-xs="true"
+                  />
                   <div class="cart-items__item-info">
                     <router-link
                       :to="{ name: 'product', params: { id: item.id } }"
@@ -64,12 +59,25 @@
                     <span class="cart-items__item-price">{{
                       '£' + item.price
                     }}</span>
-                    <AppStepper
-                      class="cart-items__item-stepper cart-items__item-stepper--mobile"
-                      :start="cart.items[item.id]"
-                      :max="item.inStock"
-                      @change="(value) => stepperHandler(value.value, item.id)"
-                    />
+                    <div class="cart-items__item-controls">
+                      <ButtonLink
+                        class="cart-items__item-remove-btn cart-items__item-remove-btn--mobile"
+                        size="small"
+                        style-type="secondary"
+                        aria-label="Remove from cart"
+                        @click="removeHandler(item.id)"
+                      >
+                        <IconTrashcan />
+                      </ButtonLink>
+                      <AppStepper
+                        class="cart-items__item-stepper"
+                        :start="cart.items[item.id]"
+                        :max="item.inStock"
+                        @change="
+                          (value) => stepperHandler(value.value, item.id)
+                        "
+                      />
+                    </div>
                   </div>
                 </div>
                 <div
@@ -81,6 +89,15 @@
                     :max="item.inStock"
                     @change="(value) => stepperHandler(value.value, item.id)"
                   />
+                  <ButtonLink
+                    class="cart-items__item-remove-btn"
+                    size="small"
+                    style-type="secondary"
+                    aria-label="Remove from cart"
+                    @click="removeHandler(item.id)"
+                  >
+                    <IconTrashcan />
+                  </ButtonLink>
                 </div>
                 <div
                   class="cart-items__item-column-total cart-items__second-column cart-items__second-column--right-align"
@@ -125,6 +142,7 @@ import ProductPicture from '@/components/ProductPicture.vue'
 import { ref, computed } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import api from '@/api/avion-api'
+import IconTrashcan from '../components/icons/IconTrashcan.vue'
 
 const cart = useCartStore()
 
@@ -148,6 +166,11 @@ function getProducts() {
 
 function stepperHandler(value, id) {
   cart.set(id, value)
+}
+
+function removeHandler(id) {
+  cart.remove(id)
+  products.value = products.value.filter((item) => item.id != id)
 }
 </script>
 
@@ -224,10 +247,9 @@ function stepperHandler(value, id) {
 
     &__item {
       display: flex;
-      //height: 160px;
 
       @media screen and (min-width: $md) {
-        column-gap: 20px;
+        column-gap: 30px;
       }
 
       &-column {
@@ -240,7 +262,9 @@ function stepperHandler(value, id) {
           display: none;
 
           @media screen and (min-width: $md) {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            row-gap: 20px;
           }
         }
 
@@ -254,14 +278,9 @@ function stepperHandler(value, id) {
         }
       }
 
-      &-img-link {
-        display: block;
-        flex-shrink: 0;
-        width: 140px;
-      }
-
       &-picture {
-        max-height: 180px;
+        width: 150px;
+        flex-shrink: 0;
       }
 
       &-info {
@@ -290,14 +309,26 @@ function stepperHandler(value, id) {
         font-size: $body-font-size-sm;
       }
 
-      &-stepper {
+      &-controls {
+        display: flex;
         margin-top: auto;
-        align-self: flex-start;
+        column-gap: 10px;
+
+        @media screen and (min-width: $md) {
+          display: none;
+        }
+      }
+
+      &-stepper {
+        width: 100%;
+      }
+
+      &-remove-btn {
+        width: 100%;
 
         &--mobile {
-          @media screen and (min-width: $md) {
-            display: none;
-          }
+          width: auto;
+          padding: 8px;
         }
       }
     }
