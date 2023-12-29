@@ -77,17 +77,20 @@
                   ></AppStepper>
                 </div>
                 <div class="product-info-controls-buttons">
-                  <ButtonLink
-                    class="product-info-controls-buttons__delete"
-                    v-if="countInCart"
-                    size="small"
-                    :is-wide-on-mobile="true"
-                    style-type="secondary-border"
-                    aria-label="Remove from cart"
-                    @click="removeFromCart"
-                  >
-                    <IconTrashcan />
-                  </ButtonLink>
+                  <Transition name="show">
+                    <ButtonLink
+                      class="product-info-controls-buttons__delete"
+                      v-if="countInCart"
+                      size="small"
+                      :is-wide-on-mobile="true"
+                      style-type="secondary-border"
+                      aria-label="Remove from cart"
+                      @click="removeFromCart"
+                    >
+                      <IconTrashcan />
+                    </ButtonLink>
+                  </Transition>
+
                   <ButtonLink
                     class="product-info-controls-buttons__add"
                     :is-wide-on-mobile="true"
@@ -387,6 +390,7 @@ watch(
         display: flex;
         justify-content: space-between;
         column-gap: 16px;
+        overflow: hidden;
 
         @media screen and (min-width: $md) {
           flex-grow: 1;
@@ -402,5 +406,17 @@ watch(
       }
     }
   }
+}
+
+.show-enter-active {
+  transition: transform 0.2s ease;
+}
+
+.show-enter-from {
+  transform: translateX(-100%);
+}
+
+.show-enter-to {
+  transform: translateX(0);
 }
 </style>
