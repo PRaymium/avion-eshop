@@ -25,8 +25,11 @@ const router = createRouter({
       component: () => import('../views/CatalogView.vue')
     }
   ],
-  scrollBehavior() {
-    return { el: 'body', top: 0 }
+
+  scrollBehavior(to, from) {
+    if (to.path != from.path) {
+      return { el: 'body', top: 0 }
+    }
   }
 })
 
