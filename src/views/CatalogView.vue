@@ -458,17 +458,17 @@ watch(
     align-items: flex-end;
     justify-content: center;
     height: 150px;
-    background-image: url('img/catalog-view/header-390w.jpg');
+    background-image: url('/img/catalog-view/header-390w.jpg');
     background-size: cover;
     background-repeat: no-repeat;
 
     @media screen and (min-width: $sm) {
       background-position: 50% 0%;
-      background-image: url('img/catalog-view/header-768w.jpg');
+      background-image: url('/img/catalog-view/header-768w.jpg');
     }
 
     @media screen and (min-width: $md) {
-      background-image: url('img/catalog-view/header-1440w.jpg');
+      background-image: url('/img/catalog-view/header-1440w.jpg');
       justify-content: flex-start;
     }
 
