@@ -1,0 +1,47 @@
+[
+  {
+    "name": "price",
+    "params": {
+      "min": null,
+      "max": null
+    }
+  },
+  {
+    "name": "type",
+    "items": [
+      {
+        "id": 1,
+        "name": "Furniture"
+      },
+      {
+        "id": 2,
+        "name": "Light fittings"
+      },
+      {
+        "id": 3,
+        "name": "Accessories"
+      }
+    ]
+  },
+  {
+    "name": "designer",
+    "items": [
+      {
+        "id": 1,
+        "name": "Robert Smith"
+      },
+      {
+        "id": 2,
+        "name": "Liam Gallagher"
+      },
+      {
+        "id": 3,
+        "name": "Biggie Smalls"
+      },
+      {
+        "id": 4,
+        "name": "Thom Yorke"
+      }
+    ]
+  }
+]

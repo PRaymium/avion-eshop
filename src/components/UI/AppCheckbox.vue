@@ -79,7 +79,7 @@ watch(
     }
     /* focus */
     &:focus + label::before {
-      box-shadow: 0 0 0 0.2rem rgba($primary, $alpha: 0.25);
+      box-shadow: 0 0 0 0.2em rgba($primary, $alpha: 0.25);
     }
     /* focus, non checked */
     &:focus:not(:checked) + label::before {
@@ -110,6 +110,7 @@ watch(
       background-repeat: no-repeat;
       background-position: center center;
       background-size: 100% 100%;
+      transition: 0.1s ease-in-out;
     }
   }
 }
