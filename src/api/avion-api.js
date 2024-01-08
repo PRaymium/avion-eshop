@@ -29,8 +29,6 @@ class AvionApi {
               min: Math.min(...priceArray),
               max: Math.max(...priceArray)
             }
-            //filtersInfo[filter.name].min = Math.min(...priceArray)
-            //filtersInfo[filter.name].max = Math.max(...priceArray)
           }
         }
       })

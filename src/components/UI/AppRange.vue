@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, nextTick } from 'vue'
 const props = defineProps({
   min: {
     type: Number,
@@ -55,6 +55,10 @@ const props = defineProps({
     type: Array,
     default: () => ['min', 'max']
   }
+})
+
+defineExpose({
+  reset
 })
 
 const emit = defineEmits({
@@ -85,6 +89,12 @@ function changeHandler(type) {
   }
   emit('change', res)
 }
+
+async function reset() {
+  await nextTick()
+  result.min = props.minStart
+  result.max = props.maxStart
+}
 </script>
 
 <style lang="scss" scoped>
@@ -105,8 +115,8 @@ function changeHandler(type) {
     width: 100%;
     max-width: 45%;
     height: 2.5em;
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-left: 1em;
+    padding-right: 1em;
     border: 1px solid rgba($primary, $alpha: 0.5);
     border-radius: 0.5em;
     font-size: $body-font-size-md;

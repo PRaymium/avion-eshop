@@ -1,61 +1,9 @@
 <template>
-  <div class="filters" aria-label="Filters" v-if="props.type === 'list'">
-    <ul class="filters-list" v-for="filter of filtersRef" :key="filter.name">
-      <li class="filters-list__title">
-        {{ filter.title }}
-      </li>
-      <template v-if="filter.type === 'checkboxList'">
-        <li
-          class="filters-list__item"
-          v-for="item of filter.items"
-          :key="item.id"
-        >
-          <AppCheckbox
-            :label="item.name"
-            :name="item.name"
-            :is-checked="item.isChecked"
-            @change="(state) => checkboxListChangeHandler(state, item)"
-          />
-        </li>
-      </template>
-
-      <template v-else-if="filter.type === 'range'">
-        <li class="filters-list__item">
-          <AppRange
-            :min="filter.params.min"
-            :max="filter.params.max"
-            :min-start="filter.params.minValue"
-            :max-start="filter.params.maxValue"
-            :step="filter.params.step"
-            @change="(resObj) => rangeChangeHandler(resObj, filter)"
-          />
-        </li>
-      </template>
-      <template v-else> Error </template>
-    </ul>
-    <ButtonLink
-      class="filters__btn filters__btn--reset"
-      size="small"
-      style-type="secondary-border"
-      @click="resetHandler"
-      >Reset</ButtonLink
-    >
-    <ButtonLink
-      class="filters__btn filters__btn--apply"
-      size="small"
-      @click="applyChanges"
-      >Apply</ButtonLink
-    >
-  </div>
-  <div
-    class="filters-dropdown"
-    aria-label="Filters"
-    v-else-if="props.type === 'dropdown'"
-  >
+  <div class="filters" aria-label="Filters">
     <ButtonLink
       :class="[
-        'filters-dropdown__btn',
-        { open: dropdownParams.dropdownIsOpen }
+        'filters-dropdown-toggler',
+        { active: dropdownParams.dropdownIsOpen }
       ]"
       style-type="secondary"
       size="small"
@@ -63,101 +11,109 @@
       :icon-is-active="dropdownParams.dropdownIsOpen"
       :aria-expanded="dropdownParams.dropdownIsOpen"
       :aria-controls="dropdownParams.controlId"
+      v-if="props.type === 'dropdown'"
       @click="dropdownFiltersMenuStateHandler"
       >Filters</ButtonLink
     >
-    <ul
-      :class="[
-        'filters-dropdown__list',
-        'filters-dropdown__list--menu',
-        { hidden: !dropdownParams.dropdownIsOpen }
-      ]"
+    <div
+      :class="['filters-content', { show: dropdownParams.dropdownIsOpen }]"
       :id="dropdownParams.controlId"
+      v-show="props.type === 'dropdown' ? dropdownParams.dropdownIsOpen : true"
     >
-      <li
-        class="filters-dropdown__list-item"
-        v-for="filter of filtersRef"
-        :key="filter.name"
-      >
-        <ButtonLink
-          :class="[
-            'filters-dropdown__btn',
-            'filters-dropdown__btn--item',
-            { open: dropdownParams.filters[filter.name].isOpen }
-          ]"
-          style-type="secondary"
-          size="small"
-          :icon-visible="true"
-          :icon-is-active="dropdownParams.filters[filter.name].isOpen"
-          :aria-expanded="dropdownParams.filters[filter.name].isOpen"
-          :aria-controls="dropdownParams.filters[filter.name].controlId"
-          @click="dropdownFiltersMenuItemStateHandler(filter)"
-          >{{ filter.title }}</ButtonLink
+      <ul class="filters-list">
+        <li
+          class="filters-list__item"
+          v-for="filter of props.filters"
+          :key="filter.name"
         >
-        <ul
-          :class="[
-            'filters-dropdown__list',
-            { hidden: !dropdownParams.filters[filter.name].isOpen }
-          ]"
-          :id="dropdownParams.filters[filter.name].controlId"
-        >
-          <template v-if="filter.type === 'checkboxList'">
-            <li
-              class="filters-dropdown__list-item-element"
-              v-for="item of filter.items"
-              :key="item.id"
-            >
-              <AppCheckbox
-                :label="item.name"
-                :name="item.name"
-                :is-checked="item.isChecked"
-                @change="(state) => checkboxListChangeHandler(state, item)"
-              />
-            </li>
-          </template>
+          <button
+            class="filters-list__item-toggler"
+            :aria-expanded="dropdownParams.filters[filter.name].isOpen"
+            :aria-controls="dropdownParams.filters[filter.name].controlId"
+            @click="dropdownFiltersMenuItemStateHandler(filter.name)"
+          >
+            <IconBase
+              :class="[
+                'filters-list__item-toggler-icon',
+                { active: dropdownParams.filters[filter.name].isOpen }
+              ]"
+              :width="16"
+              :height="16"
+              icon-color="black"
+              icon-name="arrow"
+              ><IconArrow
+            /></IconBase>
+            {{ filter.title }}
+          </button>
+          <ul
+            class="filters-list__item-list"
+            :id="dropdownParams.filters[filter.name].controlId"
+            v-show="dropdownParams.filters[filter.name].isOpen"
+          >
+            <template v-if="filter.type === 'checkboxList'">
+              <li
+                class="filters-list__item-list-element"
+                v-for="item of filter.items"
+                :key="item.id"
+              >
+                <AppCheckbox
+                  :label="item.name"
+                  :name="item.name"
+                  :is-checked="item.isChecked"
+                  @change="(state) => itemChangeHandler(filter, item, state)"
+                />
+              </li>
+            </template>
 
-          <template v-else-if="filter.type === 'range'">
-            <li class="filters-dropdown__list-item-element">
-              <AppRange
-                :min="filter.params.min"
-                :max="filter.params.max"
-                :min-start="filter.params.minValue"
-                :max-start="filter.params.maxValue"
-                :step="filter.params.step"
-                @change="(resObj) => rangeChangeHandler(resObj, filter)"
-              />
-            </li>
-          </template>
-          <template v-else> Error </template>
-        </ul>
-      </li>
-    </ul>
+            <template v-else-if="filter.type === 'range'">
+              <li class="filters-list__item-list-element">
+                <AppRange
+                  :min="filter.params.min"
+                  :max="filter.params.max"
+                  :min-start="filter.params.minValue"
+                  :max-start="filter.params.maxValue"
+                  :step="filter.params.step"
+                  ref="rangeFiltersRef"
+                  @change="(resObj) => itemChangeHandler(filter, item, resObj)"
+                />
+              </li>
+            </template>
+            <template v-else>Error</template>
+          </ul>
+        </li>
+      </ul>
+      <div class="filters-controls">
+        <ButtonLink
+          class="filters-controls__btn filters-controls__btn--reset"
+          size="small"
+          style-type="secondary-border"
+          @click="resetHandler"
+          >Reset</ButtonLink
+        >
+        <ButtonLink
+          class="filters-controls__btn filters-controls__btn--apply"
+          size="small"
+          @click="applyChanges"
+          >Apply</ButtonLink
+        >
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import AppCheckbox from '../components/UI/AppCheckbox.vue'
-import AppRange from '../components/UI/AppRange.vue'
-import ButtonLink from './UI/ButtonLink.vue'
-import { ref, reactive, watch, onMounted } from 'vue'
+import AppCheckbox from '@/components/UI/AppCheckbox.vue'
+import AppRange from '@/components/UI/AppRange.vue'
+import ButtonLink from '@/components/UI/ButtonLink.vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconArrow from './icons/IconArrow.vue'
+import { ref, reactive } from 'vue'
 import { uuid } from 'vue3-uuid'
-import { useRoute, useRouter } from 'vue-router'
-import { useReplaceWithQuery } from '@/composables/asyncReplaceWithQuery.js'
 
 const props = defineProps({
   filters: {
     type: Array,
     required: true
-  },
-
-  filtersValueUpdate: {
-    type: Boolean,
-    default: false
-  },
-
-  defaultFiltersState: {
-    type: Object,
-    default: () => {}
   },
 
   type: {
@@ -171,269 +127,143 @@ const props = defineProps({
 
 const emit = defineEmits({
   change: null,
-  filtersUpdated: null
+  apply: null,
+  reset: null
 })
-
-const route = useRoute()
-const router = useRouter()
-
-const filtersRef = ref(props.filters)
 
 const dropdownParams = reactive({
   dropdownIsOpen: false,
   controlId: uuid.v4(),
-  filters: filtersRef.value.reduce(
-    (obj, filter) =>
-      (obj[filter.name] = {
-        isOpen: false,
+
+  filters: props.filters.reduce((acc, filter) => {
+    const filterName = filter.name
+    return {
+      ...acc,
+      [filterName]: {
+        isOpen: true,
         controlId: uuid.v4()
-      }),
-    {}
-  )
+      }
+    }
+  }, {})
 })
 
-checkUrlFiltersEdited()
+const rangeFiltersRef = ref([])
 
-watch(
-  () => props.filtersValueUpdate,
-  (value) => {
-    if (value) {
-      filtersRef.value = props.filters
-      emit('filtersUpdated')
-    }
-  }
-)
-
-function checkUrlFiltersEdited() {
-  parseUrlToFilters()
-
-  if (!route.query.filtersEdited) filtersInitFromDefaultFilters()
-}
-
-function parseUrlToFilters() {
-  Object.entries(route.query).forEach(([key, value]) => {
-    if (key.includes('filter-')) {
-      const filterName = key.split('-')[1]
-      const filter = filtersRef.value.find(
-        (filter) => filter.name === filterName
-      )
-
-      switch (filter.type) {
-        case 'checkboxList': {
-          value.split('-').forEach((val) => {
-            filter.items.find((item) => (item.id = +val)).isChecked = true
-          })
-          break
-        }
-
-        case 'range': {
-          const values = value.split('-')
-          filter.params.minValue = +values[0]
-          filter.params.maxValue = +values[1]
-          break
-        }
-
-        default: {
-          throw new Error('Filter type not defined!')
-        }
-      }
-    }
-  })
-}
-
-function filtersInitFromDefaultFilters() {
-  if (Object.keys(props.defaultFiltersState).length === 0) return
-  else {
-    Object.entries(props.defaultFiltersState).forEach(([key, values]) => {
-      const filter = filtersRef.value.find((filter) => filter.name === key)
-
-      switch (filter.type) {
-        case 'checkboxList': {
-          values.forEach((defaultFilterValue) => {
-            filter.items.find(
-              (item) => item.id === defaultFilterValue
-            ).isChecked = true
-          })
-          break
-        }
-
-        case 'range': {
-          Object.entries(values).forEach(([rangeKey, rangeValue]) => {
-            filter.params[rangeKey] = rangeValue
-          })
-          break
-        }
-
-        default: {
-          throw new Error('Filter type not defined!')
-        }
-      }
-    })
-  }
-}
-
-function filterStateWriteToUrl(isFiltersEdited = true) {
-  let resultObj = {
-    filtersEdited: isFiltersEdited ? isFiltersEdited : undefined
-  }
-
-  filtersRef.value.forEach((filter) => {
-    switch (filter.type) {
-      case 'checkboxList': {
-        const checkedIds = filter.items
-          .filter((item) => item.isChecked)
-          .map(({ id }) => id)
-
-        if (checkedIds.length != 0) {
-          resultObj[`filter-${filter.name}`] = checkedIds.join('-')
-        } else resultObj[`filter-${filter.name}`] = undefined
-
-        break
-      }
-
-      case 'range': {
-        if (filter.params.minValue && filter.params.maxValue) {
-          resultObj[`filter-${filter.name}`] = [
-            filter.params.minValue,
-            filter.params.maxValue
-          ].join('-')
-        } else {
-          resultObj[`filter-${filter.name}`] = undefined
-        }
-
-        break
-      }
-
-      default: {
-        throw new Error('Filter type not defined!')
-      }
-    }
-  })
-
-  //useReplaceWithQuery(resultObj)
-  replaceWithQuery(resultObj)
-}
-
-function filtersRemoveFromUrl() {
-  const removeNamesObj = {}
-
-  Object.keys(route.query).forEach((key) => {
-    if (key.includes('filter-')) {
-      const filterName = key.split('-')[1]
-      removeNamesObj[filterName] = undefined
-    }
-  })
-
-  replaceWithQuery({ filtersEdited: undefined, ...removeNamesObj })
-}
-
-function filtersResetValues() {
-  filtersRef.value.forEach((filter) => {
-    switch (filter.type) {
-      case 'checkboxList': {
-        filter.items.forEach((item) => (item.isChecked = false))
-        break
-      }
-
-      case 'range': {
-        filter.params.minValue = undefined
-        filter.params.maxValue = undefined
-        break
-      }
-
-      default: {
-        throw new Error('Filter type not defined!')
-      }
-    }
-  })
-}
-
-function applyChanges(event, isInit = false) {
-  if (isInit) {
-    filterStateWriteToUrl(false)
-  } else {
-    filterStateWriteToUrl()
-  }
-
-  emit('change', filtersRef.value)
+function applyChanges() {
+  emit('apply')
 }
 
 function resetHandler() {
-  filtersRemoveFromUrl()
-  filtersResetValues()
-  filtersInitFromDefaultFilters()
-  applyChanges(null, true)
+  emit('reset')
+  rangeFiltersRef.value.forEach((ref) => {
+    ref.reset()
+  })
 }
 
-function checkboxListChangeHandler(state, item) {
-  item.isChecked = state
-}
+function itemChangeHandler(filter, item, value) {
+  switch (filter.type) {
+    case 'checkboxList': {
+      emit('change', {
+        filterName: filter.name,
+        itemId: item.id,
+        res: value
+      })
 
-function rangeChangeHandler(resObj, filter) {
-  filter.params.minValue = resObj.min
-  filter.params.maxValue = resObj.max
+      break
+    }
+
+    case 'range': {
+      emit('change', {
+        filterName: filter.name,
+        res: { minValue: value.min, maxValue: value.max }
+      })
+
+      break
+    }
+  }
 }
 
 function dropdownFiltersMenuStateHandler() {
   dropdownParams.dropdownIsOpen = !dropdownParams.dropdownIsOpen
-  // if (dropdownParams.dropdownIsOpen === false) {
-  //   Object.keys(dropdownParams.filters).forEach((key) => {
-  //     dropdownParams.filters[key].isOpen = false
-  //   })
-  // }
 }
 
-function dropdownFiltersMenuItemStateHandler(filter) {
-  // if (dropdownParams.filters[filter].isOpen  === false) {
-  //   filtersWithMeta.value.filters.forEach((filter) => (filter.isOpen = false))
-  // }
-  dropdownParams.filters[filter].isOpen = !dropdownParams.filters[filter].isOpen
+function dropdownFiltersMenuItemStateHandler(filterName) {
+  dropdownParams.filters[filterName].isOpen =
+    !dropdownParams.filters[filterName].isOpen
 }
-
-function replaceWithQuery(query) {
-  router.replace({
-    query: {
-      ...route.query,
-      ...query
-    }
-  })
-}
-
-onMounted(() => {
-  applyChanges(null, true)
-})
 </script>
 
 <style lang="scss">
 .filters {
   max-height: 100vh;
   overflow: auto;
-  padding: 0 3px; //for focus outlines and shadows
+  padding: 3px; //for focus outlines and shadows
 
-  &__btn {
+  &-dropdown-toggler {
     width: 100%;
 
-    &:not(:first-child) {
-      margin-top: 10px;
+    &.active {
+      outline: 1px solid $primary;
+      background-color: $border-gray;
+    }
+  }
+
+  &-content {
+    &.show {
+      padding: 1em;
+      outline: 1px solid $primary;
     }
   }
 
   &-list {
+    margin-bottom: 50px;
     font-size: $body-font-size-md;
-    &:not(:last-child) {
-      margin-bottom: 50px;
-    }
-
-    &__title {
-      margin-bottom: 20px;
-      font-family: $font-clash-display;
-      line-height: 140%;
-      font-weight: 500;
-    }
 
     &__item {
       &:not(:last-child) {
-        margin-bottom: 12px;
+        margin-bottom: 30px;
+      }
+
+      &-toggler {
+        display: flex;
+        column-gap: 0.3em;
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 0.5em 0;
+        border-radius: 0.5em;
+        font-family: $font-clash-display;
+        font-weight: 500;
+        transition: background-color 0.1s ease-in-out;
+
+        &:hover,
+        &:focus {
+          outline: none;
+          background-color: rgba($primary, $alpha: 0.1);
+        }
+
+        &-icon {
+          &.active {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      &-list {
+        &-element {
+          &:not(:last-child) {
+            margin-bottom: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  &-controls {
+    &__btn {
+      width: 100%;
+
+      &:not(:last-child) {
+        margin-bottom: 10px;
       }
     }
   }
