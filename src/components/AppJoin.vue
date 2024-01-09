@@ -14,11 +14,13 @@
             :key="idx"
           >
             <span class="join-list-item__icon">
-              <IconCheckmark
-                style-type="filled"
-                :size="16"
+              <IconBase
                 class="join-list-item__icon-svg"
-              />
+                :width="16"
+                :height="16"
+                icon-name="checkmark"
+                ><IconCheckmark
+              /></IconBase>
             </span>
             <span class="join-list-item__text">
               {{ benefit }}
@@ -32,8 +34,9 @@
 </template>
 
 <script setup>
-import IconCheckmark from './icons/IconCheckmark.vue'
-import EmailSignUp from './EmailSignUp.vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconCheckmark from '@/components/icons/IconCheckmark.vue'
+import EmailSignUp from '@/components/EmailSignUp.vue'
 
 const benefits = ['Exclusive offers', 'Free events', 'Large discounts']
 </script>

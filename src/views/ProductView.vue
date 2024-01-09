@@ -87,7 +87,9 @@
                       aria-label="Remove from cart"
                       @click="removeFromCart"
                     >
-                      <IconTrashcan />
+                      <IconBase :width="24" :height="24" icon-name="trashcan"
+                        ><IconTrashcan
+                      /></IconBase>
                     </ButtonLink>
                   </Transition>
 
@@ -124,6 +126,7 @@ import ButtonLink from '@/components/UI/ButtonLink.vue'
 import AppProducts from '@/components/AppProducts.vue'
 import AppFeatures from '@/components/AppFeatures.vue'
 import AppJoin from '@/components/AppJoin.vue'
+import IconBase from '@/components/icons/IconBase.vue'
 import IconTrashcan from '@/components/icons/IconTrashcan.vue'
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'

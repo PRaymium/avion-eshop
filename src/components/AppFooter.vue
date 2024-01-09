@@ -41,10 +41,13 @@
               class="footer-social__item-link"
               :aria-label="item.name"
             >
-              <component
-                :is="item.iconComponent"
+              <IconBase
                 class="footer-social__item-icon"
-              ></component>
+                :width="24"
+                :height="24"
+                :icon-name="item.name"
+                ><component :is="item.iconComponent"></component
+              ></IconBase>
             </a>
           </li>
         </ul>
@@ -54,13 +57,14 @@
 </template>
 
 <script setup>
-import EmailSignUp from './EmailSignUp.vue'
-import IconLinkedin from './icons/IconLinkedin.vue'
-import IconFacebook from './icons/IconFacebook.vue'
-import IconInstagram from './icons/IconInstagram.vue'
-import IconSkype from './icons/IconSkype.vue'
-import IconTwitter from './icons/IconTwitter.vue'
-import IconPinterest from './icons/IconPinterest.vue'
+import EmailSignUp from '@/components/EmailSignUp.vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconLinkedin from '@/components/icons/IconLinkedin.vue'
+import IconFacebook from '@/components/icons/IconFacebook.vue'
+import IconInstagram from '@/components/icons/IconInstagram.vue'
+import IconSkype from '@/components/icons/IconSkype.vue'
+import IconTwitter from '@/components/icons/IconTwitter.vue'
+import IconPinterest from '@/components/icons/IconPinterest.vue'
 
 const lists = {
   categories: {
@@ -275,6 +279,7 @@ const social = [
       display: flex;
 
       &-link {
+        color: $white;
         border-bottom: 1px solid transparent;
         transition: border-bottom 0.1s ease-in-out;
 

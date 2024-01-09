@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import ProductPicture from './ProductPicture.vue'
+import ProductPicture from '@/components/ProductPicture.vue'
 
 const props = defineProps({
   id: {

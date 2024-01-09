@@ -6,17 +6,11 @@
     @click="toggleActive"
   >
     <slot></slot>
+
     <span v-if="iconVisible" class="btn__icon">
-      <svg
-        :class="iconSvgClass"
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-      >
-        <path :class="iconPathClass" d="M18 9L12 16.5L6 9H18Z" fill="#2A254B" />
-      </svg>
+      <IconBase :class="iconClass" :width="16" :height="16" icon-name="arrow"
+        ><IconArrow
+      /></IconBase>
     </span>
   </button>
   <router-link v-else :to="linkComputed" :class="buttonsClass">
@@ -26,6 +20,9 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconArrow from '@/components/icons/IconArrow.vue'
+
 const props = defineProps({
   type: {
     type: String,
@@ -98,14 +95,9 @@ const buttonsClass = computed(() => ({
   'btn--wide': props.isWideOnMobile
 }))
 
-const iconSvgClass = computed(() => ({
+const iconClass = computed(() => ({
   'btn__icon-svg': true,
   'btn__icon-svg--active': iconIsActive.value
-}))
-
-const iconPathClass = computed(() => ({
-  'btn__icon-path': true,
-  'btn__icon-path--dark': props.styleType !== ('primary' || 'opaque')
 }))
 
 const linkComputed = computed(() => {
@@ -145,16 +137,9 @@ watch(
 
     &-svg {
       flex: 0 0 100%;
+
       &--active {
         transform: rotate(180deg);
-      }
-    }
-
-    &-path {
-      fill: $white;
-
-      &--dark {
-        fill: $dark-primary;
       }
     }
   }

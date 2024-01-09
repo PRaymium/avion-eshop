@@ -32,8 +32,8 @@
 </template>
 
 <script setup>
-import ButtonLink from './UI/ButtonLink.vue'
-import { breakpoints } from '../breakpoints'
+import ButtonLink from '@/components/UI/ButtonLink.vue'
+import { breakpoints } from '@/breakpoints'
 </script>
 
 <style lang="scss" scoped>

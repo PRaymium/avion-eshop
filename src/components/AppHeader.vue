@@ -4,7 +4,9 @@
       <div class="header-row header-row-top">
         <div class="header-row-top__left header-btn-list">
           <button class="header-btn header-btn--search" aria-label="search">
-            <IconSearch />
+            <IconBase :width="16" :height="16" icon-name="search"
+              ><IconSearch
+            /></IconBase>
           </button>
         </div>
         <div class="header-row-top__center">
@@ -18,7 +20,10 @@
             class="header-btn header-btn-cart"
             aria-label="cart"
           >
-            <IconShopcart />
+            <IconBase :width="16" :height="16" icon-name="cart"
+              ><IconShopcart
+            /></IconBase>
+
             <span class="header-btn-cart__counter" v-show="cart.size != 0">{{
               cart.size
             }}</span>
@@ -29,7 +34,9 @@
             aria-label="open menu"
             @click="menuIsHide = !menuIsHide"
           >
-            <IconBurgerMenu />
+            <IconBase :width="16" :height="16" icon-name="burger-menu"
+              ><IconBurgerMenu
+            /></IconBase>
           </button>
         </div>
       </div>
@@ -70,11 +77,12 @@
 </template>
 
 <script setup>
-import IconSearch from './icons/IconSearch.vue'
-import IconBurgerMenu from './icons/IconBurgerMenu.vue'
-import IconShopcart from './icons/IconShopcart.vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconSearch from '@/components/icons/IconSearch.vue'
+import IconBurgerMenu from '@/components/icons/IconBurgerMenu.vue'
+import IconShopcart from '@/components/icons/IconShopcart.vue'
 import { ref } from 'vue'
-import { useCartStore } from '../stores/cart'
+import { useCartStore } from '@/stores/cart'
 
 const cart = useCartStore()
 

@@ -45,7 +45,6 @@
               ]"
               :width="16"
               :height="16"
-              icon-color="black"
               icon-name="arrow"
               ><IconArrow
             /></IconBase>
@@ -263,6 +262,9 @@ function dropdownFiltersMenuItemStateHandler(filterName) {
         }
 
         &-icon {
+          // width: 16px;
+          // height: 16px;
+
           &.active {
             transform: rotate(180deg);
           }

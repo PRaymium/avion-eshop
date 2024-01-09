@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import ButtonLink from './ButtonLink.vue'
+import ButtonLink from '@/components/UI/ButtonLink.vue'
 import { uuid } from 'vue3-uuid'
 import { ref, watch } from 'vue'
 

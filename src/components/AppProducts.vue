@@ -27,8 +27,8 @@
 </template>
 
 <script setup>
-import ProductCard from './ProductCard.vue'
-import ButtonLink from './UI/ButtonLink.vue'
+import ProductCard from '@/components/ProductCard.vue'
+import ButtonLink from '@/components/UI/ButtonLink.vue'
 
 const props = defineProps({
   title: {

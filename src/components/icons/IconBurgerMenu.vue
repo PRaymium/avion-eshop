@@ -1,15 +1,6 @@
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 16 16"
-    fill="none"
-  >
-    <rect width="16" height="16" fill="none" style="mix-blend-mode: multiply" />
-    <path d="M14 3H2V4H14V3Z" fill="#2A254B" />
-    <path d="M14 12H2V13H14V12Z" fill="#2A254B" />
-    <path d="M14 6H2V7H14V6Z" fill="#2A254B" />
-    <path d="M14 9H2V10H14V9Z" fill="#2A254B" />
-  </svg>
+  <path d="M21 4.5H3V6H21V4.5Z" />
+  <path d="M21 18H3V19.5H21V18Z" />
+  <path d="M21 9H3V10.5H21V9Z" />
+  <path d="M21 13.5H3V15H21V13.5Z" />
 </template>

@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { breakpoints } from '../breakpoints'
+import { breakpoints } from '@/breakpoints'
 const IMG_PATH = '/img/products'
 
 const IMG_SIZES = {

@@ -5,7 +5,14 @@
       <ul class="features-list">
         <li class="features-list__item" v-for="card of cards" :key="card.id">
           <div class="features-card">
-            <component :is="card.icon" class="features-card__icon" />
+            <IconBase
+              class="features-card__icon"
+              :width="24"
+              :height="24"
+              icon-name="test"
+            >
+              <component :is="card.icon" />
+            </IconBase>
             <h3 class="h4 features-card__heading">{{ card.title }}</h3>
             <p class="features-card__desciption">{{ card.description }}</p>
           </div>
@@ -16,10 +23,11 @@
 </template>
 
 <script setup>
-import IconDelivery from './icons/IconDelivery.vue'
-import IconCheckmark from './icons/IconCheckmark.vue'
-import IconPurchase from './icons/IconPurchase.vue'
-import IconSprout from './icons/IconSprout.vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconDelivery from '@/components/icons/IconDelivery.vue'
+import IconCheckmarkOutline from '@/components/icons/IconCheckmarkOutline.vue'
+import IconPurchase from '@/components/icons/IconPurchase.vue'
+import IconSprout from '@/components/icons/IconSprout.vue'
 
 const cards = [
   {
@@ -33,7 +41,7 @@ const cards = [
     title: 'Made by true artisans',
     description:
       'Handmade crafted goods made with real passion and craftmanship',
-    icon: IconCheckmark
+    icon: IconCheckmarkOutline
   },
   {
     id: 3,

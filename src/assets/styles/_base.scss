@@ -10,7 +10,10 @@ body {
 
 a {
   text-decoration: none;
-  color: black;
+
+  &:visited {
+    color: currentColor;
+  }
 }
 
 ul {
@@ -25,6 +28,7 @@ button {
   background-color: transparent;
   font-family: $font-satoshi;
   font-size: 1rem;
+  color: $dark-primary;
   cursor: pointer;
 }
 
