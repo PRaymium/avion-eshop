@@ -70,7 +70,7 @@
               type="button"
               style-type="secondary"
               :is-wide-on-mobile="true"
-              @click="currentPage++"
+              @click="loadMoreHandler"
               >Load more</ButtonLink
             >
           </div>
@@ -85,7 +85,7 @@ import CatalogFilters from '../components/CatalogFilters.vue'
 import ProductCard from '../components/ProductCard.vue'
 import ButtonLink from '../components/UI/ButtonLink.vue'
 import AppSelect from '../components/UI/AppSelect.vue'
-import { ref, computed, inject, reactive } from 'vue'
+import { ref, computed, reactive, inject, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/avion-api.js'
 import { useReplaceWithQuery } from '@/composables/asyncReplaceWithQuery.js'
@@ -427,7 +427,7 @@ async function preparingProducts() {
                 data.filtersInfo[filterName][filtersInfoItem] &&
                 !filter.params[filtersInfoItem]
               ) {
-                filter.params[filtersInfoItem] =
+                filter.params[filtersInfoItem] ??=
                   data.filtersInfo[filterName][filtersInfoItem]
               }
             }
@@ -476,6 +476,19 @@ const paginatedProducts = computed(() => {
   }
   return preparedProducts.value.slice(start, end)
 })
+
+async function loadMoreHandler() {
+  currentPage.value++
+
+  await nextTick()
+
+  const elemIdx = (currentPage.value - 1) * PAGE_SIZE
+  const firstOfNewItems = document.querySelectorAll(
+    '.catalog-items-list__item-card'
+  )[elemIdx]
+
+  firstOfNewItems.focus()
+}
 </script>
 
 <style lang="scss" scoped>

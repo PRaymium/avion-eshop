@@ -1,5 +1,8 @@
 <template>
-  <div class="filters" aria-label="Filters">
+  <div
+    :class="['filters', { 'filters--dropdown': props.type === 'dropdown' }]"
+    aria-label="Filters"
+  >
     <ButtonLink
       :class="[
         'filters-dropdown-toggler',
@@ -16,7 +19,10 @@
       >Filters</ButtonLink
     >
     <div
-      :class="['filters-content', { show: dropdownParams.dropdownIsOpen }]"
+      :class="[
+        'filters-content',
+        { show: props.type === 'dropdown' && dropdownParams.dropdownIsOpen }
+      ]"
       :id="dropdownParams.controlId"
       v-show="props.type === 'dropdown' ? dropdownParams.dropdownIsOpen : true"
     >
@@ -106,7 +112,7 @@ import AppCheckbox from '@/components/UI/AppCheckbox.vue'
 import AppRange from '@/components/UI/AppRange.vue'
 import ButtonLink from '@/components/UI/ButtonLink.vue'
 import IconBase from '@/components/icons/IconBase.vue'
-import IconArrow from './icons/IconArrow.vue'
+import IconArrow from '@/components/icons/IconArrow.vue'
 import { ref, reactive } from 'vue'
 import { uuid } from 'vue3-uuid'
 
@@ -151,6 +157,7 @@ const rangeFiltersRef = ref([])
 
 function applyChanges() {
   emit('apply')
+  dropdownFiltersMenuItemStateHandler()
 }
 
 function resetHandler() {
@@ -195,9 +202,15 @@ function dropdownFiltersMenuItemStateHandler(filterName) {
 
 <style lang="scss">
 .filters {
+  position: relative;
   max-height: 100vh;
-  overflow: auto;
+  overflow-y: auto;
   padding: 3px; //for focus outlines and shadows
+
+  &--dropdown {
+    padding: 0;
+    overflow: visible;
+  }
 
   &-dropdown-toggler {
     width: 100%;
@@ -210,7 +223,15 @@ function dropdownFiltersMenuItemStateHandler(filterName) {
 
   &-content {
     &.show {
+      position: absolute;
+      left: 0;
+      right: 0;
+      max-height: 100vh;
       padding: 1em;
+      z-index: 10;
+      overflow-y: auto;
+
+      background-color: $white;
       outline: 1px solid $primary;
     }
   }
