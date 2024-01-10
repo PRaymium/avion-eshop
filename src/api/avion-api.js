@@ -76,6 +76,18 @@ class AvionApi {
       return {}
     }
   }
+
+  async getCatalogFilterByName(name) {
+    try {
+      const response = await fetch('/api/catalogFilters.json')
+      let data = await response.json()
+      data = data.find((filter) => filter.name === name).items
+      return data
+    } catch (e) {
+      console.log(e)
+      return {}
+    }
+  }
 }
 
 export default new AvionApi()

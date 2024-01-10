@@ -65,36 +65,24 @@ import IconInstagram from '@/components/icons/IconInstagram.vue'
 import IconSkype from '@/components/icons/IconSkype.vue'
 import IconTwitter from '@/components/icons/IconTwitter.vue'
 import IconPinterest from '@/components/icons/IconPinterest.vue'
+import { reactive, computed } from 'vue'
+import { useProductTypesStore } from '@/stores/productTypes'
 
-const lists = {
+const productTypes = useProductTypesStore()
+
+const categories = computed(() =>
+  productTypes.items.map((item) => {
+    return {
+      name: item.name,
+      link: { name: 'catalog', query: { 'filter-type': item.id } }
+    }
+  })
+)
+
+const lists = reactive({
   categories: {
     title: 'Categories',
-    items: [
-      {
-        name: 'Crockery',
-        link: '#'
-      },
-      {
-        name: 'Furniture',
-        link: '#'
-      },
-      {
-        name: 'Homeware',
-        link: '#'
-      },
-      {
-        name: 'Plant pots',
-        link: '#'
-      },
-      {
-        name: 'Chairs',
-        link: '#'
-      },
-      {
-        name: 'Crockery',
-        link: '#'
-      }
-    ]
+    items: categories
   },
 
   menu: {
@@ -148,7 +136,7 @@ const lists = {
       }
     ]
   }
-}
+})
 
 const social = [
   {

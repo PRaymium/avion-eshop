@@ -39,5 +39,5 @@ export const useCartStore = defineStore('cart', () => {
     _countMap.clear()
   }
 
-  return { _countMap, size, items, set, remove, clear }
+  return { size, items, set, remove, clear }
 })
