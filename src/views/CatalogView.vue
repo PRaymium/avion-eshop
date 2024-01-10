@@ -88,7 +88,6 @@ import AppSelect from '../components/UI/AppSelect.vue'
 import { ref, computed, reactive, inject, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/avion-api.js'
-import { useReplaceWithQuery } from '@/composables/asyncReplaceWithQuery.js'
 
 const mq = inject('mq')
 
@@ -162,8 +161,6 @@ async function filtersInit() {
           filter.params[dataFilterParamKey] =
             dataFilter.params[dataFilterParamKey] ?? undefined
         })
-        // filter.params.min = dataFilter.params.min ?? undefined
-        // filter.params.max = dataFilter.params.max ?? undefined
         break
       }
 
@@ -400,9 +397,7 @@ function selectedSortIdInit() {
 
 function sortInputHandler(id) {
   selectedSortId.value = id
-  // if (id === defaultSortId) useReplaceWithQuery({ orderId: undefined })
   if (id === defaultSortId) replaceWithQuery({ orderId: undefined })
-  // else useReplaceWithQuery({ orderId: id })
   else replaceWithQuery({ orderId: id })
   preparingProducts()
 }

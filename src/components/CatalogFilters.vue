@@ -156,7 +156,7 @@ const rangeFiltersRef = ref([])
 
 function applyChanges() {
   emit('apply')
-  dropdownFiltersMenuItemStateHandler()
+  dropdownFiltersMenuStateHandler()
 }
 
 function resetHandler() {

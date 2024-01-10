@@ -67,7 +67,9 @@
                         aria-label="Remove from cart"
                         @click="removeHandler(item.id)"
                       >
-                        <IconTrashcan />
+                        <IconBase :width="24" :height="24" icon-name="trashcan"
+                          ><IconTrashcan
+                        /></IconBase>
                       </ButtonLink>
                       <AppStepper
                         class="cart-items__item-stepper"
@@ -96,7 +98,9 @@
                     aria-label="Remove from cart"
                     @click="removeHandler(item.id)"
                   >
-                    <IconTrashcan />
+                    <IconBase :width="24" :height="24" icon-name="trashcan"
+                      ><IconTrashcan
+                    /></IconBase>
                   </ButtonLink>
                 </div>
                 <div
@@ -142,7 +146,8 @@ import ProductPicture from '@/components/ProductPicture.vue'
 import { ref, computed } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import api from '@/api/avion-api'
-import IconTrashcan from '../components/icons/IconTrashcan.vue'
+import IconBase from '@/components/icons/IconBase.vue'
+import IconTrashcan from '@/components/icons/IconTrashcan.vue'
 
 const cart = useCartStore()
 
@@ -256,6 +261,11 @@ function removeHandler(id) {
         &-product {
           display: flex;
           column-gap: 20px;
+          width: 100%;
+
+          @media screen and (min-width: $xs) {
+            width: auto;
+          }
         }
 
         &-amount {
@@ -286,6 +296,11 @@ function removeHandler(id) {
       &-info {
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
+
+        @media screen and (min-width: $xs) {
+          flex-grow: 0;
+        }
 
         @media screen and (min-width: $md) {
           justify-content: center;
@@ -293,26 +308,36 @@ function removeHandler(id) {
       }
 
       &-title {
-        margin: 0;
+        margin-bottom: 8px;
+        font-size: $h4-font-size;
 
         @media screen and (min-width: $md) {
-          font-size: $h4-font-size;
+          margin: 0;
         }
       }
 
       &-description {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        margin: 8px 0;
+        display: none;
         font-size: $body-font-size-sm;
+
+        @media screen and (min-width: $xs) {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          margin: 8px 0;
+        }
       }
 
       &-controls {
         display: flex;
+        flex-direction: column;
         margin-top: auto;
-        column-gap: 10px;
+        gap: 10px;
+
+        @media screen and (min-width: $xs) {
+          flex-direction: row;
+        }
 
         @media screen and (min-width: $md) {
           display: none;
