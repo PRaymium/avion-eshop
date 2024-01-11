@@ -9,11 +9,8 @@ body {
 }
 
 a {
+  color: $dark-primary;
   text-decoration: none;
-
-  &:visited {
-    color: $dark-primary;
-  }
 }
 
 ul {

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed, reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import api from '@/api/avion-api'
 
 export const useProductTypesStore = defineStore('productTypes', () => {
