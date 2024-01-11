@@ -59,7 +59,7 @@ const props = defineProps({
 
   max: {
     type: Number,
-    default: 10,
+    default: 999,
     validator(value) {
       return value >= 1
     }

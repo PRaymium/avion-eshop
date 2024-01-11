@@ -2,63 +2,105 @@
   <section class="section-product">
     <div class="product">
       <div class="container container--product-padding">
-        <h1 v-if="product === undefined">Product not found</h1>
-        <div class="product__container" v-else>
+        <div class="product__container">
           <ProductPicture
             class="product-picture"
-            :title="product.name"
-            :product-id="product.id"
+            :product-id="id"
             :for-product-info="true"
           />
+
           <div class="product-info">
             <div class="container container--product-info-padding">
               <div class="product-info-heading">
-                <h1 class="product-info-heading__name">{{ product.name }}</h1>
-                <span class="product-info-heading__price">
-                  {{ `£${product.price}` }}
+                <h1 class="product-info-heading__name">
+                  <ContentLoader :is-loading="isLoading">{{
+                    product.name
+                  }}</ContentLoader>
+                </h1>
+                <span class="h3 product-info-heading__price">
+                  <ContentLoader :is-loading="isLoading" block-type="inline">{{
+                    `£${product.price}`
+                  }}</ContentLoader>
                 </span>
               </div>
               <div class="product-info-description">
-                <span class="product-info-description__title"
-                  >Product description</span
+                <span class="product-info-description__title">
+                  <ContentLoader :is-loading="isLoading" block-type="inline">
+                    Product description
+                  </ContentLoader></span
                 >
                 <p
                   class="product-info-description__info"
-                  :title="product.description"
+                  title="product.description"
                 >
-                  {{ product.description }}
+                  <ContentLoader :is-loading="isLoading">{{
+                    product.description
+                  }}</ContentLoader>
                 </p>
               </div>
               <div class="product-info-dimensions">
-                <span class="product-info-dimensions__title">Dimensions</span>
+                <span class="product-info-dimensions__title"
+                  ><ContentLoader :is-loading="isLoading" block-type="inline">
+                    Dimensions
+                  </ContentLoader></span
+                >
                 <ul class="product-info-dimensions__list">
                   <li class="product-info-dimensions__item">
                     <span class="product-info-dimensions__item-title"
-                      >Height</span
+                      ><ContentLoader
+                        :is-loading="isLoading"
+                        block-type="inline"
+                      >
+                        Height
+                      </ContentLoader></span
                     >
                     <span class="product-info-dimensions__item-value">
-                      {{
-                        `${product.dimensions.height} ${product.dimensions.unit}`
-                      }}
+                      <ContentLoader
+                        :is-loading="isLoading"
+                        block-type="inline"
+                        >{{
+                          `${product.dimensions.height} ${product.dimensions.unit}`
+                        }}</ContentLoader
+                      >
                     </span>
                   </li>
                   <li class="product-info-dimensions__separator"></li>
                   <li class="product-info-dimensions__item">
                     <span class="product-info-dimensions__item-title"
-                      >Width</span
+                      ><ContentLoader
+                        :is-loading="isLoading"
+                        block-type="inline"
+                      >
+                        Width
+                      </ContentLoader></span
                     >
-                    <span class="product-info-dimensions__item-value">{{
-                      `${product.dimensions.width} ${product.dimensions.unit}`
-                    }}</span>
+                    <span
+                      class="product-info-dimensions__item-value"
+                      block-type="inline"
+                    >
+                      <ContentLoader :is-loading="isLoading">{{
+                        `${product.dimensions.width} ${product.dimensions.unit}`
+                      }}</ContentLoader>
+                    </span>
                   </li>
                   <li class="product-info-dimensions__separator"></li>
                   <li class="product-info-dimensions__item">
                     <span class="product-info-dimensions__item-title"
-                      >Depth</span
+                      ><ContentLoader
+                        :is-loading="isLoading"
+                        block-type="inline"
+                      >
+                        Depth
+                      </ContentLoader></span
                     >
-                    <span class="product-info-dimensions__item-value">{{
-                      `${product.dimensions.depth} ${product.dimensions.unit}`
-                    }}</span>
+                    <span
+                      class="product-info-dimensions__item-value"
+                      block-type="inline"
+                    >
+                      <ContentLoader :is-loading="isLoading">{{
+                        `${product.dimensions.depth} ${product.dimensions.unit}`
+                      }}</ContentLoader></span
+                    >
                   </li>
                 </ul>
               </div>
@@ -72,7 +114,7 @@
                     style-type="white"
                     :is-wide-on-mobile="true"
                     :start="countInCart ?? countWithoutCart"
-                    :max="product.inStock"
+                    :max="product?.inStock ?? 999"
                     @change="stepperHandler"
                   ></AppStepper>
                 </div>
@@ -133,14 +175,18 @@ import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 import api from '@/api/avion-api.js'
 import { useCartStore } from '@/stores/cart'
+import ContentLoader from '@/components/UI/ContentLoader.vue'
 
 const appProductsTitle = 'You might also like'
+
 const route = useRoute()
 const router = useRouter()
+
 const cart = useCartStore()
 
 const id = ref(+route.params.id)
 const product = ref(getProduct(id.value))
+const isLoading = ref(true)
 
 const countWithoutCart = ref(1)
 const countInCart = computed(() => cart.items[id.value])
@@ -148,6 +194,7 @@ const countInCart = computed(() => cart.items[id.value])
 function getProduct(id) {
   api.getProductById(id).then((data) => {
     product.value = data
+    isLoading.value = false
   })
 }
 
@@ -176,33 +223,40 @@ watch(
   () => route.params.id,
   (newVal) => {
     id.value = +newVal
-    product.value = getProduct(id.value)
+    isLoading.value = true
+    countWithoutCart.value = 1
+    getProduct(id.value)
   }
 )
 </script>
 
 <style lang="scss" scoped>
-.section-products {
-  margin-top: 50px;
-
-  @media screen and (min-width: $md) {
-    margin-top: 80px;
-  }
+.test {
+  background-color: grey;
 }
+.section {
+  &-products {
+    margin-top: 50px;
 
-.section-features {
-  margin-top: 85px;
-
-  @media screen and (min-width: $lg) {
-    margin-top: 115px;
+    @media screen and (min-width: $md) {
+      margin-top: 80px;
+    }
   }
-}
 
-.section-join {
-  margin-top: 50px;
+  &-features {
+    margin-top: 85px;
 
-  @media screen and (min-width: $md) {
-    margin-top: 80px;
+    @media screen and (min-width: $lg) {
+      margin-top: 115px;
+    }
+  }
+
+  &-join {
+    margin-top: 50px;
+
+    @media screen and (min-width: $md) {
+      margin-top: 80px;
+    }
   }
 }
 
@@ -265,15 +319,9 @@ watch(
         display: block;
         margin-top: 12px;
         margin-bottom: 15px;
-        font-size: 20px;
 
         @media screen and (min-width: $md) {
           margin-bottom: 25px;
-        }
-
-        @media screen and (min-width: $lg) {
-          flex: 0 0 auto;
-          font-size: 24px;
         }
       }
     }

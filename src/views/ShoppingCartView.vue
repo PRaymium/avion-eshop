@@ -39,7 +39,7 @@
                 >
                   <ProductPicture
                     class="cart-items__item-picture"
-                    :title="item.name"
+                    :title="item?.name ?? 'Product'"
                     :product-id="item.id"
                     :only-xs="true"
                   />
@@ -49,16 +49,24 @@
                       class="cart-items__item-link"
                     >
                       <h2 class="h5 cart-items__item-title">
-                        {{ item.name }}
+                        <ContentLoader :is-loading="isLoading">{{
+                          item.name
+                        }}</ContentLoader>
                       </h2>
                     </router-link>
 
                     <p class="cart-items__item-description">
-                      {{ item.description }}
+                      <ContentLoader :is-loading="isLoading">{{
+                        item.description
+                      }}</ContentLoader>
                     </p>
-                    <span class="cart-items__item-price">{{
-                      '£' + item.price
-                    }}</span>
+                    <span class="cart-items__item-price">
+                      <ContentLoader
+                        :is-loading="isLoading"
+                        block-type="inline"
+                        >{{ '£' + item.price }}</ContentLoader
+                      >
+                    </span>
                     <div class="cart-items__item-controls">
                       <ButtonLink
                         class="cart-items__item-remove-btn cart-items__item-remove-btn--mobile"
@@ -74,7 +82,7 @@
                       <AppStepper
                         class="cart-items__item-stepper"
                         :start="cart.items[item.id]"
-                        :max="item.inStock"
+                        :max="item?.inStock ?? 999"
                         @change="
                           (value) => stepperHandler(value.value, item.id)
                         "
@@ -88,7 +96,7 @@
                   <AppStepper
                     class="cart-items__item-stepper"
                     :start="cart.items[item.id]"
-                    :max="item.inStock"
+                    :max="item?.inStock ?? 999"
                     @change="(value) => stepperHandler(value.value, item.id)"
                   />
                   <ButtonLink
@@ -106,9 +114,15 @@
                 <div
                   class="cart-items__item-column-total cart-items__second-column cart-items__second-column--right-align"
                 >
-                  <span class="cart-items__item-total">{{
-                    '£' + item.price * cart.items[item.id]
-                  }}</span>
+                  <span class="cart-items__item-total">
+                    <ContentLoader
+                      :is-loading="isLoading"
+                      block-type="inline"
+                      >{{
+                        '£' + item.price * cart.items[item.id]
+                      }}</ContentLoader
+                    ></span
+                  >
                 </div>
               </li>
             </ul>
@@ -118,8 +132,11 @@
               >
               <div class="cart-items__summary-total">
                 <span class="cart-items__summary-total-title">Subtotal</span>
-                <span class="cart-items__summary-total-value">{{
-                  '£' + totalCartPrice
+                <span class="cart-items__summary-total-value">
+                  <ContentLoader :is-loading="isLoading" block-type="inline">{{
+                    '£' + totalCartPrice
+                  }}</ContentLoader>
+                  {{
                 }}</span>
               </div>
             </div>
@@ -148,11 +165,18 @@ import { useCartStore } from '@/stores/cart'
 import api from '@/api/avion-api'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconTrashcan from '@/components/icons/IconTrashcan.vue'
+import ContentLoader from '@/components/UI/ContentLoader.vue'
 
 const cart = useCartStore()
 
 const products = ref([])
+Object.keys(cart.items).forEach((key) => {
+  products.value.push({ id: key })
+})
+
 getProducts()
+
+const isLoading = ref(true)
 
 const totalCartPrice = computed(() => {
   return products.value.reduce(
@@ -166,6 +190,7 @@ function getProducts() {
     .getProductsByIds(Object.keys(cart.items).map((key) => +key))
     .then((data) => {
       products.value = data
+      isLoading.value = false
     })
 }
 
@@ -263,9 +288,9 @@ function removeHandler(id) {
           column-gap: 20px;
           width: 100%;
 
-          @media screen and (min-width: $xs) {
-            width: auto;
-          }
+          // @media screen and (min-width: $xs) {
+          //   width: auto;
+          // }
         }
 
         &-amount {
@@ -298,9 +323,9 @@ function removeHandler(id) {
         flex-direction: column;
         flex-grow: 1;
 
-        @media screen and (min-width: $xs) {
-          flex-grow: 0;
-        }
+        // @media screen and (min-width: $xs) {
+        //   flex-grow: 0;
+        // }
 
         @media screen and (min-width: $md) {
           justify-content: center;

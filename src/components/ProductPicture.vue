@@ -1,5 +1,5 @@
 <template>
-  <picture class="product-picture">
+  <picture class="product-picture loading">
     <template v-if="props.onlyXs">
       <img
         class="product-picture__img"
