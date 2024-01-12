@@ -1,22 +1,32 @@
 import { defineStore } from 'pinia'
-import { reactive, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 export const useCartStore = defineStore('cart', () => {
   /** @type {Map<number, number>} */
-  const _countMap = reactive(new Map())
+  const _countMap = ref(new Map())
 
-  _countMap.set(1, 2)
-  _countMap.set(3, 5)
+  // _countMap.value.set(7, 2)
+  // _countMap.value.set(8, 4)
+
+  const localStorageKey = 'cart'
+
+  if (localStorage.getItem(localStorageKey)) {
+    _countMap.value = new Map(
+      Object.entries(JSON.parse(localStorage.getItem(localStorageKey))).map(
+        ([key, value]) => [+key, value]
+      )
+    )
+  }
 
   /**
    * @returns {number}
    */
-  const size = computed(() => _countMap.size)
+  const size = computed(() => _countMap.value.size)
 
   /**
    * @returns {[k: string]: number}
    */
-  const items = computed(() => Object.fromEntries(_countMap))
+  const items = computed(() => Object.fromEntries(_countMap.value))
 
   /**
    *
@@ -24,7 +34,7 @@ export const useCartStore = defineStore('cart', () => {
    * @param {number} count
    */
   function set(id, count) {
-    _countMap.set(id, count)
+    _countMap.value.set(id, count)
   }
 
   /**
@@ -32,12 +42,22 @@ export const useCartStore = defineStore('cart', () => {
    * @param {number} id
    */
   function remove(id) {
-    _countMap.delete(id)
+    _countMap.value.delete(id)
   }
 
   function clear() {
-    _countMap.clear()
+    _countMap.value.clear()
   }
+
+  watch(
+    () => _countMap.value,
+    () => {
+      localStorage.setItem(localStorageKey, JSON.stringify(items.value))
+    },
+    {
+      deep: true
+    }
+  )
 
   return { size, items, set, remove, clear }
 })
