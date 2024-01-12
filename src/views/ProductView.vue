@@ -13,19 +13,19 @@
             <div class="container container--product-info-padding">
               <div class="product-info-heading">
                 <h1 class="product-info-heading__name">
-                  <ContentLoader :is-loading="isLoading">{{
+                  <ContentLoader :is-loaded="isLoaded">{{
                     product.name
                   }}</ContentLoader>
                 </h1>
                 <span class="h3 product-info-heading__price">
-                  <ContentLoader :is-loading="isLoading" block-type="inline">{{
+                  <ContentLoader :is-loaded="isLoaded" block-type="inline">{{
                     `£${product.price}`
                   }}</ContentLoader>
                 </span>
               </div>
               <div class="product-info-description">
                 <span class="product-info-description__title">
-                  <ContentLoader :is-loading="isLoading" block-type="inline">
+                  <ContentLoader :is-loaded="isLoaded" block-type="inline">
                     Product description
                   </ContentLoader></span
                 >
@@ -33,30 +33,27 @@
                   class="product-info-description__info"
                   title="product.description"
                 >
-                  <ContentLoader :is-loading="isLoading">{{
+                  <ContentLoader :is-loaded="isLoaded">{{
                     product.description
                   }}</ContentLoader>
                 </p>
               </div>
               <div class="product-info-dimensions">
                 <span class="product-info-dimensions__title"
-                  ><ContentLoader :is-loading="isLoading" block-type="inline">
+                  ><ContentLoader :is-loaded="isLoaded" block-type="inline">
                     Dimensions
                   </ContentLoader></span
                 >
                 <ul class="product-info-dimensions__list">
                   <li class="product-info-dimensions__item">
                     <span class="product-info-dimensions__item-title"
-                      ><ContentLoader
-                        :is-loading="isLoading"
-                        block-type="inline"
-                      >
+                      ><ContentLoader :is-loaded="isLoaded" block-type="inline">
                         Height
                       </ContentLoader></span
                     >
                     <span class="product-info-dimensions__item-value">
                       <ContentLoader
-                        :is-loading="isLoading"
+                        :is-loaded="isLoaded"
                         block-type="inline"
                         >{{
                           `${product.dimensions.height} ${product.dimensions.unit}`
@@ -67,10 +64,7 @@
                   <li class="product-info-dimensions__separator"></li>
                   <li class="product-info-dimensions__item">
                     <span class="product-info-dimensions__item-title"
-                      ><ContentLoader
-                        :is-loading="isLoading"
-                        block-type="inline"
-                      >
+                      ><ContentLoader :is-loaded="isLoaded" block-type="inline">
                         Width
                       </ContentLoader></span
                     >
@@ -78,7 +72,7 @@
                       class="product-info-dimensions__item-value"
                       block-type="inline"
                     >
-                      <ContentLoader :is-loading="isLoading">{{
+                      <ContentLoader :is-loaded="isLoaded">{{
                         `${product.dimensions.width} ${product.dimensions.unit}`
                       }}</ContentLoader>
                     </span>
@@ -86,10 +80,7 @@
                   <li class="product-info-dimensions__separator"></li>
                   <li class="product-info-dimensions__item">
                     <span class="product-info-dimensions__item-title"
-                      ><ContentLoader
-                        :is-loading="isLoading"
-                        block-type="inline"
-                      >
+                      ><ContentLoader :is-loaded="isLoaded" block-type="inline">
                         Depth
                       </ContentLoader></span
                     >
@@ -97,7 +88,7 @@
                       class="product-info-dimensions__item-value"
                       block-type="inline"
                     >
-                      <ContentLoader :is-loading="isLoading">{{
+                      <ContentLoader :is-loaded="isLoaded">{{
                         `${product.dimensions.depth} ${product.dimensions.unit}`
                       }}</ContentLoader></span
                     >
@@ -186,7 +177,7 @@ const cart = useCartStore()
 
 const id = ref(+route.params.id)
 const product = ref(getProduct(id.value))
-const isLoading = ref(true)
+const isLoaded = ref(false)
 
 const countWithoutCart = ref(1)
 const countInCart = computed(() => cart.items[id.value])
@@ -194,7 +185,7 @@ const countInCart = computed(() => cart.items[id.value])
 function getProduct(id) {
   api.getProductById(id).then((data) => {
     product.value = data
-    isLoading.value = false
+    isLoaded.value = true
   })
 }
 
@@ -223,7 +214,7 @@ watch(
   () => route.params.id,
   (newVal) => {
     id.value = +newVal
-    isLoading.value = true
+    isLoaded.value = false
     countWithoutCart.value = 1
     getProduct(id.value)
   }

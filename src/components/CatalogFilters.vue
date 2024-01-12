@@ -56,34 +56,62 @@
             v-show="dropdownParams.filters[filter.name].isOpen"
           >
             <template v-if="filter.type === 'checkboxList'">
-              <li
-                class="filters-list__item-list-element"
-                v-for="item of filter.items"
-                :key="item.id"
-              >
-                <AppCheckbox
-                  :label="item.name"
-                  :name="item.name"
-                  :is-checked="item.isChecked"
-                  @change="(state) => itemChangeHandler(filter, item, state)"
-                />
-              </li>
+              <template v-if="!props.isLoaded">
+                <li
+                  class="filters-list__item-list-element"
+                  v-for="idx in new Array(
+                    loaderPlaceholderCountByType[filter.type]
+                  )"
+                  :key="idx"
+                >
+                  <ContentLoader :is-loaded="props.isLoaded"></ContentLoader>
+                </li>
+              </template>
+              <template v-else>
+                <li
+                  class="filters-list__item-list-element"
+                  v-for="item of filter.items"
+                  :key="item.id"
+                >
+                  <AppCheckbox
+                    :label="item.name"
+                    :name="item.name"
+                    :is-checked="item.isChecked"
+                    @change="(state) => itemChangeHandler(filter, item, state)"
+                  />
+                </li>
+              </template>
             </template>
 
             <template v-else-if="filter.type === 'range'">
-              <li class="filters-list__item-list-element">
-                <AppRange
-                  :min="filter.params.min"
-                  :max="filter.params.max"
-                  :min-start="filter.params.minValue"
-                  :max-start="filter.params.maxValue"
-                  :step="filter.params.step"
-                  ref="rangeFiltersRef"
-                  @change="(resObj) => itemChangeHandler(filter, item, resObj)"
-                />
-              </li>
+              <template v-if="!props.isLoaded">
+                <li
+                  class="filters-list__item-list-element"
+                  v-for="idx in new Array(
+                    loaderPlaceholderCountByType[filter.type]
+                  )"
+                  :key="idx"
+                >
+                  <ContentLoader :is-loaded="props.isLoaded"></ContentLoader>
+                </li>
+              </template>
+              <template v-else>
+                <li class="filters-list__item-list-element">
+                  <AppRange
+                    :min="filter.params.min"
+                    :max="filter.params.max"
+                    :min-start="filter.params.minValue"
+                    :max-start="filter.params.maxValue"
+                    :step="filter.params.step"
+                    ref="rangeFiltersRef"
+                    @change="
+                      (resObj) => itemChangeHandler(filter, item, resObj)
+                    "
+                  />
+                </li>
+              </template>
             </template>
-            <template v-else>Error</template>
+            <template v-else>Wrong filter type</template>
           </ul>
         </li>
       </ul>
@@ -112,6 +140,7 @@ import AppRange from '@/components/UI/AppRange.vue'
 import ButtonLink from '@/components/UI/ButtonLink.vue'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconArrow from '@/components/icons/IconArrow.vue'
+import ContentLoader from '@/components/UI/ContentLoader.vue'
 import { ref, reactive } from 'vue'
 import { uuid } from 'vue3-uuid'
 
@@ -127,6 +156,11 @@ const props = defineProps({
     validator(value) {
       return ['list', 'dropdown'].includes(value)
     }
+  },
+
+  isLoaded: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -135,6 +169,11 @@ const emit = defineEmits({
   apply: null,
   reset: null
 })
+
+const loaderPlaceholderCountByType = {
+  checkboxList: 3,
+  range: 1
+}
 
 const dropdownParams = reactive({
   dropdownIsOpen: false,

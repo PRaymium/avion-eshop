@@ -4,7 +4,7 @@
       <img
         class="product-picture__img"
         :src="`${IMG_PATH}/product-${props.productId}-160w.jpg`"
-        :alt="props.title"
+        :alt="isLoaded ? props.title : undefined"
         :width="IMG_SIZES[160].width"
         :height="IMG_SIZES[160].height"
       />
@@ -19,7 +19,7 @@
       <img
         class="product-picture__img"
         :src="`${IMG_PATH}/product-${props.productId}-610w.jpg`"
-        :alt="props.title"
+        :alt="isLoaded ? props.title : undefined"
         :width="IMG_SIZES[610].width"
         :height="IMG_SIZES[610].height"
       />
@@ -34,7 +34,7 @@
       <img
         class="product-picture__img"
         :src="`${IMG_PATH}/product-${props.productId}-300w.jpg`"
-        :alt="props.title"
+        :alt="isLoaded ? props.title : undefined"
         :width="IMG_SIZES[300].width"
         :height="IMG_SIZES[300].height"
       />
@@ -69,7 +69,7 @@ const props = defineProps({
 
   title: {
     type: String,
-    required: true
+    required: false
   },
 
   onlyXs: {
@@ -80,6 +80,11 @@ const props = defineProps({
   forProductInfo: {
     type: Boolean,
     default: false
+  },
+
+  isLoaded: {
+    type: Boolean,
+    default: true
   }
 })
 </script>
@@ -91,6 +96,7 @@ const props = defineProps({
   &__img {
     width: 100%;
     height: auto;
+    text-indent: -10000px;
   }
 }
 </style>

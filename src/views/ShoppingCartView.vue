@@ -49,20 +49,20 @@
                       class="cart-items__item-link"
                     >
                       <h2 class="h5 cart-items__item-title">
-                        <ContentLoader :is-loading="isLoading">{{
+                        <ContentLoader :is-loaded="isLoaded">{{
                           item.name
                         }}</ContentLoader>
                       </h2>
                     </router-link>
 
                     <p class="cart-items__item-description">
-                      <ContentLoader :is-loading="isLoading">{{
+                      <ContentLoader :is-loaded="isLoaded">{{
                         item.description
                       }}</ContentLoader>
                     </p>
                     <span class="cart-items__item-price">
                       <ContentLoader
-                        :is-loading="isLoading"
+                        :is-loaded="isLoaded"
                         block-type="inline"
                         >{{ '£' + item.price }}</ContentLoader
                       >
@@ -115,13 +115,9 @@
                   class="cart-items__item-column-total cart-items__second-column cart-items__second-column--right-align"
                 >
                   <span class="cart-items__item-total">
-                    <ContentLoader
-                      :is-loading="isLoading"
-                      block-type="inline"
-                      >{{
-                        '£' + item.price * cart.items[item.id]
-                      }}</ContentLoader
-                    ></span
+                    <ContentLoader :is-loaded="isLoaded" block-type="inline">{{
+                      '£' + item.price * cart.items[item.id]
+                    }}</ContentLoader></span
                   >
                 </div>
               </li>
@@ -133,7 +129,7 @@
               <div class="cart-items__summary-total">
                 <span class="cart-items__summary-total-title">Subtotal</span>
                 <span class="cart-items__summary-total-value">
-                  <ContentLoader :is-loading="isLoading" block-type="inline">{{
+                  <ContentLoader :is-loaded="isLoaded" block-type="inline">{{
                     '£' + totalCartPrice
                   }}</ContentLoader>
                   {{
@@ -171,12 +167,12 @@ const cart = useCartStore()
 
 const products = ref([])
 Object.keys(cart.items).forEach((key) => {
-  products.value.push({ id: key })
+  products.value.push({ id: +key })
 })
 
 getProducts()
 
-const isLoading = ref(true)
+const isLoaded = ref(false)
 
 const totalCartPrice = computed(() => {
   return products.value.reduce(
@@ -190,7 +186,7 @@ function getProducts() {
     .getProductsByIds(Object.keys(cart.items).map((key) => +key))
     .then((data) => {
       products.value = data
-      isLoading.value = false
+      isLoaded.value = true
     })
 }
 
@@ -322,10 +318,6 @@ function removeHandler(id) {
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-
-        // @media screen and (min-width: $xs) {
-        //   flex-grow: 0;
-        // }
 
         @media screen and (min-width: $md) {
           justify-content: center;

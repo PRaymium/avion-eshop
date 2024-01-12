@@ -8,9 +8,10 @@
         <li class="products-item" v-for="product of products" :key="product.id">
           <ProductCard
             :id="product.id"
-            :title="product.title"
+            :title="product.name"
             :price="product.price"
             title-tag="h3"
+            :is-loaded="isLoaded"
           />
         </li>
       </ul>
@@ -29,6 +30,8 @@
 <script setup>
 import ProductCard from '@/components/ProductCard.vue'
 import ButtonLink from '@/components/UI/ButtonLink.vue'
+import { ref } from 'vue'
+import api from '@/api/avion-api.js'
 
 const props = defineProps({
   title: {
@@ -37,28 +40,20 @@ const props = defineProps({
   }
 })
 
-const products = [
-  {
-    id: 1,
-    title: 'Rustic Vase Set',
-    price: 155
-  },
-  {
-    id: 2,
-    title: 'The Lucy Lamp',
-    price: 399
-  },
-  {
-    id: 3,
-    title: 'The Silky Vase',
-    price: 125
-  },
-  {
-    id: 4,
-    title: 'The Dandy chair',
-    price: 250
-  }
-]
+const ids = [1, 2, 3, 4]
+
+const products = ref([])
+
+const isLoaded = ref(false)
+
+ids.forEach((id) => {
+  products.value.push({ id: id, name: 'Title', price: 100 })
+})
+
+api.getProductsByIds(ids).then((data) => {
+  products.value = data
+  isLoaded.value = true
+})
 </script>
 
 <style lang="scss" scoped>

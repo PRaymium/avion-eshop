@@ -1,7 +1,7 @@
 <template>
   <div
     :class="['loading', { inline: blockType === 'inline' }]"
-    v-if="isLoading"
+    v-if="!isLoaded"
   >
     {{ props.text }}
   </div>
@@ -10,9 +10,9 @@
 
 <script setup>
 const props = defineProps({
-  isLoading: {
+  isLoaded: {
     type: Boolean,
-    default: false
+    required: true
   },
 
   text: {

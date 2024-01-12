@@ -46,8 +46,16 @@ class AvionApi {
     try {
       const response = await fetch('/api/products.json')
       const data = await response.json()
+
       const item = data.find((item) => item.id === id)
       return item
+
+      // return new Promise(function (resolve) {
+      //   setTimeout(() => {
+      //     const item = data.find((item) => item.id === id)
+      //     resolve(item)
+      //   }, 500)
+      // })
     } catch (e) {
       console.log(e)
       return {}

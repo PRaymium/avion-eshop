@@ -3,21 +3,31 @@
     :to="{ name: 'product', params: { id: props.id } }"
     class="product-card"
   >
-    <ProductPicture :title="props.title" :product-id="props.id" />
-    <component :is="titleTag" class="product-card__heading">{{
-      props.title
-    }}</component>
-    <span class="product-card__price">£{{ props.price }}</span>
+    <ProductPicture
+      :title="props.title"
+      :product-id="props.id"
+      :is-loaded="isLoaded"
+    />
+
+    <component :is="props.titleTag" class="product-card__heading">
+      <ContentLoader :is-loaded="isLoaded">{{ props.title }}</ContentLoader>
+    </component>
+    <span class="product-card__price"
+      ><ContentLoader :is-loaded="isLoaded" block-type="inline"
+        >£{{ props.price }}
+      </ContentLoader></span
+    >
   </router-link>
 </template>
 
 <script setup>
 import ProductPicture from '@/components/ProductPicture.vue'
+import ContentLoader from '@/components/UI/ContentLoader.vue'
 
 const props = defineProps({
   id: {
     type: Number,
-    required: true
+    default: 0
   },
 
   title: {
@@ -36,6 +46,11 @@ const props = defineProps({
     validator(value) {
       return ['h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
     }
+  },
+
+  isLoaded: {
+    type: Boolean,
+    default: true
   }
 })
 </script>

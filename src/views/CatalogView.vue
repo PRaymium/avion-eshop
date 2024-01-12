@@ -10,8 +10,8 @@
         <div class="catalog-aside" v-if="mq.lgPlus">
           <div class="catalog-filters">
             <CatalogFilters
-              v-if="filtersIsLoaded"
               :filters="filters"
+              :is-loaded="filtersIsLoaded"
               @change="filtersChangeHandler"
               @apply="applyFiltersHandler"
               @reset="resetFiltersHandler"
@@ -23,8 +23,8 @@
             <div class="catalog-filters-dropdown" v-if="!mq.lgPlus">
               <CatalogFilters
                 type="dropdown"
-                v-if="filtersIsLoaded"
                 :filters="filters"
+                :is-loaded="filtersIsLoaded"
                 @change="filtersChangeHandler"
                 @apply="applyFiltersHandler"
                 @reset="resetFiltersHandler"
@@ -45,24 +45,42 @@
           </div>
           <h2
             class="catalog-items__no-results"
-            v-show="!preparedProducts.length"
+            v-show="!preparedProducts.length && productsIsLoaded"
           >
             No results
           </h2>
           <ul class="catalog-items-list">
-            <li
-              class="catalog-items-list__item"
-              v-for="product of paginatedProducts"
-              :key="product.id"
-            >
-              <ProductCard
-                class="catalog-items-list__item-card"
-                :id="product.id"
-                :title="product.name"
-                :price="product.price"
-                title-tag="h2"
-              />
-            </li>
+            <template v-if="!productsIsLoaded">
+              <li
+                class="catalog-items-list__item"
+                v-for="idx in new Array(PAGE_SIZE)"
+                :key="idx"
+              >
+                <ProductCard
+                  class="catalog-items-list__item-card"
+                  :id="0"
+                  title="Title"
+                  :price="100"
+                  :is-loaded="productsIsLoaded"
+                  title-tag="h2"
+                />
+              </li>
+            </template>
+            <template v-else>
+              <li
+                class="catalog-items-list__item"
+                v-for="product of paginatedProducts"
+                :key="product.id"
+              >
+                <ProductCard
+                  class="catalog-items-list__item-card"
+                  :id="product.id"
+                  :title="product.name"
+                  :price="product.price"
+                  title-tag="h2"
+                />
+              </li>
+            </template>
           </ul>
           <div class="catalog-items__more" v-show="currentPage !== maxPages">
             <ButtonLink
@@ -404,6 +422,8 @@ function sortInputHandler(id) {
 
 const preparedProducts = ref([])
 
+const productsIsLoaded = ref(false)
+
 async function preparingProducts() {
   let data = await api.getPreparedProductsWithFiltersInfo(
     filters,
@@ -439,6 +459,7 @@ async function preparingProducts() {
   }
 
   preparedProducts.value = data.products
+  productsIsLoaded.value = true
 
   currentPage.value = 1
 }
@@ -624,6 +645,7 @@ async function loadMoreHandler() {
       }
 
       &__item {
+        width: 100%;
         max-width: calc((100% - $list-column-gap) / 2);
         flex-grow: 1;
         transition: 0.1s ease-in-out;
