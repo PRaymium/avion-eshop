@@ -6,17 +6,17 @@
       size="small"
       :icon-visible="true"
       :icon-is-active="isOpen"
-      :aria-label="props.ariaLabel"
+      :aria-label="props.arLabel"
       :aria-expanded="isOpen"
       :aria-controls="controlId"
       @click="isOpen = !isOpen"
-      >{{ selected }}</ButtonLink
+      >{{ selectedName }}</ButtonLink
     >
     <ul :class="['select__items', { hidden: !isOpen }]" :id="controlId">
       <li class="select__item" v-for="option of props.options" :key="option.id">
         <button
           :class="['select__item-btn', { selected: option.id === selectedId }]"
-          @click="inputHandler($event.target, option)"
+          @click="inputHandler($event.target as HTMLButtonElement, option)"
         >
           {{ option.name }}
         </button>
@@ -25,59 +25,56 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ButtonLink from '@/components/UI/ButtonLink.vue'
 import { uuid } from 'vue3-uuid'
 import { ref, watch } from 'vue'
 
-const props = defineProps({
-  options: {
-    type: Array,
-    required: true
-  },
-  selectedId: {
-    type: Number,
-    required: false,
-    default: null
-  },
-  constantHeader: {
-    type: String,
-    default: ''
-  },
-  ariaLabel: {
-    type: String,
-    required: true
-  }
+type Option = {
+  id: number
+  name: string
+}
+
+interface Props {
+  options: Option[]
+  selectedId?: number
+  constantHeader?: string
+  arLabel: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  selectedId: undefined,
+  constantHeader: ''
 })
 
-const emit = defineEmits({
-  input: null
-})
+const emit = defineEmits<{
+  input: [id: number]
+}>()
 
 const controlId = uuid.v4()
 
-const selected = ref()
+const selectedName = ref<string | null>()
 
 const isOpen = ref(false)
 
-function checkSelected() {
+function checkSelectedName() {
   return props.constantHeader
     ? props.constantHeader
     : props.selectedId
-    ? props.options[props.selectedId - 1].name
-    : props.options.length > 0
-    ? props.options[0].name
-    : null
+      ? props.options[props.selectedId - 1].name
+      : props.options.length > 0
+        ? props.options[0].name
+        : null
 }
 
-selected.value = checkSelected()
+selectedName.value = checkSelectedName()
 
-function inputHandler(target, option) {
+function inputHandler(button: HTMLButtonElement, option: Option) {
   const oldSelectedItem = document.querySelector('.select__item-btn.selected')
   if (oldSelectedItem) oldSelectedItem.classList.remove('selected')
-  target.classList.add('selected')
+  button.classList.add('selected')
 
-  if (!props.constantHeader) selected.value = option.name
+  if (!props.constantHeader) selectedName.value = option.name
   isOpen.value = false
   emit('input', option.id)
 }
@@ -85,14 +82,14 @@ function inputHandler(target, option) {
 watch(
   () => props.constantHeader,
   () => {
-    selected.value = checkSelected()
+    selectedName.value = checkSelectedName()
   }
 )
 
 watch(
   () => props.selectedId,
   () => {
-    selected.value = checkSelected()
+    selectedName.value = checkSelectedName()
   }
 )
 </script>

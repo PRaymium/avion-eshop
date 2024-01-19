@@ -22,14 +22,23 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import IconBase from '@/components/icons/IconBase.vue'
 import IconDelivery from '@/components/icons/IconDelivery.vue'
 import IconCheckmarkOutline from '@/components/icons/IconCheckmarkOutline.vue'
 import IconPurchase from '@/components/icons/IconPurchase.vue'
 import IconSprout from '@/components/icons/IconSprout.vue'
 
-const cards = [
+import type { Component } from 'vue'
+
+interface Card {
+  id: number
+  title: string
+  description: string
+  icon: Component
+}
+
+const cards: Card[] = [
   {
     id: 1,
     title: 'Next day as standard',

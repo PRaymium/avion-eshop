@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineAsyncComponent, shallowRef, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 
@@ -15,12 +15,12 @@ const layoutComponent = shallowRef()
 watch(
   () => route.meta.layout ?? 'Default',
   (layout) => {
-    layoutComponent.value = defineAsyncComponent(() =>
-      import(`@/layouts/${layout}Layout.vue`)
+    layoutComponent.value = defineAsyncComponent(
+      () => import(`@/layouts/${layout}Layout.vue`)
     )
   },
   { immediate: true }
 )
 </script>
 
-<style></style>
+<style scoped></style>

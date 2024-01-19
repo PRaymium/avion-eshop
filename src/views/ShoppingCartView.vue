@@ -29,98 +29,182 @@
               </div>
             </div>
             <ul class="cart-items__list">
-              <li
-                class="cart-items__item"
-                v-for="item of products"
-                :key="item.id"
-              >
-                <div
-                  class="cart-items__item-column-product cart-items__main-column"
+              <template v-if="isLoaded">
+                <li
+                  class="cart-items__item"
+                  v-for="item of products"
+                  :key="item.id"
                 >
-                  <ProductPicture
-                    class="cart-items__item-picture"
-                    :title="item?.name ?? 'Product'"
-                    :product-id="item.id"
-                    :only-xs="true"
-                  />
-                  <div class="cart-items__item-info">
-                    <router-link
-                      :to="{ name: 'product', params: { id: item.id } }"
-                      class="cart-items__item-link"
-                    >
-                      <h2 class="h5 cart-items__item-title">
-                        <ContentLoader :is-loaded="isLoaded">{{
-                          item.name
-                        }}</ContentLoader>
-                      </h2>
-                    </router-link>
+                  <div
+                    class="cart-items__item-column-product cart-items__main-column"
+                  >
+                    <ProductPicture
+                      class="cart-items__item-picture"
+                      :title="item?.name ?? 'Product'"
+                      :product-id="item.id"
+                      :only-xs="true"
+                    />
+                    <div class="cart-items__item-info">
+                      <router-link
+                        :to="{ name: 'product', params: { id: item.id } }"
+                        class="cart-items__item-link"
+                      >
+                        <h2 class="h5 cart-items__item-title">
+                          <ContentLoader>{{ item.name }}</ContentLoader>
+                        </h2>
+                      </router-link>
 
-                    <p class="cart-items__item-description">
-                      <ContentLoader :is-loaded="isLoaded">{{
-                        item.description
-                      }}</ContentLoader>
-                    </p>
-                    <span class="cart-items__item-price">
-                      <ContentLoader
-                        :is-loaded="isLoaded"
-                        block-type="inline"
-                        >{{ '£' + item.price }}</ContentLoader
-                      >
-                    </span>
-                    <div class="cart-items__item-controls">
-                      <ButtonLink
-                        class="cart-items__item-remove-btn cart-items__item-remove-btn--mobile"
-                        size="small"
-                        style-type="secondary"
-                        aria-label="Remove from cart"
-                        @click="removeHandler(item.id)"
-                      >
-                        <IconBase :width="24" :height="24" icon-name="trashcan"
-                          ><IconTrashcan
-                        /></IconBase>
-                      </ButtonLink>
-                      <AppStepper
-                        class="cart-items__item-stepper"
-                        :start="cart.items[item.id]"
-                        :max="item?.inStock ?? 999"
-                        @change="
-                          (value) => stepperHandler(value.value, item.id)
-                        "
-                      />
+                      <p class="cart-items__item-description">
+                        <ContentLoader>{{ item.description }}</ContentLoader>
+                      </p>
+                      <span class="cart-items__item-price">
+                        <ContentLoader block-type="inline">{{
+                          '£' + item.price
+                        }}</ContentLoader>
+                      </span>
+                      <div class="cart-items__item-controls">
+                        <ButtonLink
+                          class="cart-items__item-remove-btn cart-items__item-remove-btn--mobile"
+                          size="small"
+                          style-type="secondary"
+                          aria-label="Remove from cart"
+                          @click="removeHandler(item.id)"
+                        >
+                          <IconBase
+                            :width="24"
+                            :height="24"
+                            icon-name="trashcan"
+                            ><IconTrashcan
+                          /></IconBase>
+                        </ButtonLink>
+                        <AppStepper
+                          class="cart-items__item-stepper"
+                          :start="cart.items[item.id]"
+                          :max="item?.inStock ?? 999"
+                          @change="(value) => stepperHandler(value, item.id)"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="cart-items__item-column-amount cart-items__second-column"
-                >
-                  <AppStepper
-                    class="cart-items__item-stepper"
-                    :start="cart.items[item.id]"
-                    :max="item?.inStock ?? 999"
-                    @change="(value) => stepperHandler(value.value, item.id)"
-                  />
-                  <ButtonLink
-                    class="cart-items__item-remove-btn"
-                    size="small"
-                    style-type="secondary"
-                    aria-label="Remove from cart"
-                    @click="removeHandler(item.id)"
+                  <div
+                    class="cart-items__item-column-amount cart-items__second-column"
                   >
-                    <IconBase :width="24" :height="24" icon-name="trashcan"
-                      ><IconTrashcan
-                    /></IconBase>
-                  </ButtonLink>
-                </div>
-                <div
-                  class="cart-items__item-column-total cart-items__second-column cart-items__second-column--right-align"
-                >
-                  <span class="cart-items__item-total">
-                    <ContentLoader :is-loaded="isLoaded" block-type="inline">{{
-                      '£' + item.price * cart.items[item.id]
-                    }}</ContentLoader></span
+                    <AppStepper
+                      class="cart-items__item-stepper"
+                      :start="cart.items[item.id]"
+                      :max="item?.inStock ?? 999"
+                      @change="(value) => stepperHandler(value, item.id)"
+                    />
+                    <ButtonLink
+                      class="cart-items__item-remove-btn"
+                      size="small"
+                      style-type="secondary"
+                      aria-label="Remove from cart"
+                      @click="removeHandler(item.id)"
+                    >
+                      <IconBase :width="24" :height="24" icon-name="trashcan"
+                        ><IconTrashcan
+                      /></IconBase>
+                    </ButtonLink>
+                  </div>
+                  <div
+                    class="cart-items__item-column-total cart-items__second-column cart-items__second-column--right-align"
                   >
-                </div>
-              </li>
+                    <span class="cart-items__item-total">
+                      <ContentLoader block-type="inline">{{
+                        '£' + item.price * cart.items[item.id]
+                      }}</ContentLoader></span
+                    >
+                  </div>
+                </li>
+              </template>
+
+              <template v-else>
+                <li
+                  class="cart-items__item"
+                  v-for="idx in cart.size"
+                  :key="idx"
+                >
+                  <div
+                    class="cart-items__item-column-product cart-items__main-column"
+                  >
+                    <ProductPicture
+                      class="cart-items__item-picture"
+                      title="Product"
+                      :product-id="0"
+                      :only-xs="true"
+                    />
+                    <div class="cart-items__item-info">
+                      <router-link to="#" class="cart-items__item-link">
+                        <h2 class="h5 cart-items__item-title">
+                          <ContentLoader :is-loaded="false"
+                            >Title</ContentLoader
+                          >
+                        </h2>
+                      </router-link>
+
+                      <p class="cart-items__item-description">
+                        <ContentLoader :is-loaded="false"
+                          >Description</ContentLoader
+                        >
+                      </p>
+                      <span class="cart-items__item-price">
+                        <ContentLoader :is-loaded="false" block-type="inline"
+                          >£100</ContentLoader
+                        >
+                      </span>
+                      <div class="cart-items__item-controls">
+                        <ButtonLink
+                          class="cart-items__item-remove-btn cart-items__item-remove-btn--mobile"
+                          size="small"
+                          style-type="secondary"
+                          aria-label="Remove from cart"
+                        >
+                          <IconBase
+                            :width="24"
+                            :height="24"
+                            icon-name="trashcan"
+                            ><IconTrashcan
+                          /></IconBase>
+                        </ButtonLink>
+                        <AppStepper
+                          class="cart-items__item-stepper"
+                          :start="1"
+                          :max="999"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cart-items__item-column-amount cart-items__second-column"
+                  >
+                    <AppStepper
+                      class="cart-items__item-stepper"
+                      :start="1"
+                      :max="999"
+                    />
+                    <ButtonLink
+                      class="cart-items__item-remove-btn"
+                      size="small"
+                      style-type="secondary"
+                      aria-label="Remove from cart"
+                    >
+                      <IconBase :width="24" :height="24" icon-name="trashcan"
+                        ><IconTrashcan
+                      /></IconBase>
+                    </ButtonLink>
+                  </div>
+                  <div
+                    class="cart-items__item-column-total cart-items__second-column cart-items__second-column--right-align"
+                  >
+                    <span class="cart-items__item-total">
+                      <ContentLoader :is-loaded="false" block-type="inline">
+                        £100
+                      </ContentLoader></span
+                    >
+                  </div>
+                </li>
+              </template>
             </ul>
             <div class="cart-items__summary">
               <span class="cart-items__summary-note"
@@ -152,7 +236,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AppStepper from '@/components/UI/AppStepper.vue'
 import ButtonLink from '@/components/UI/ButtonLink.vue'
 import ProductPicture from '@/components/ProductPicture.vue'
@@ -163,12 +247,14 @@ import IconBase from '@/components/icons/IconBase.vue'
 import IconTrashcan from '@/components/icons/IconTrashcan.vue'
 import ContentLoader from '@/components/UI/ContentLoader.vue'
 
+import type IProduct from '@/models/Product'
+
 const cart = useCartStore()
 
-const products = ref([])
-Object.keys(cart.items).forEach((key) => {
-  products.value.push({ id: +key })
-})
+const products = ref<IProduct[]>([])
+// Object.keys(cart.items).forEach((key) => {
+//   products.value.push({ id: +key })
+// })
 
 getProducts()
 
@@ -183,18 +269,20 @@ const totalCartPrice = computed(() => {
 
 function getProducts() {
   api
-    .getProductsByIds(Object.keys(cart.items).map((key) => +key))
+    .getProductById(Object.keys(cart.items).map((key) => +key))
     .then((data) => {
-      products.value = data
-      isLoaded.value = true
+      if (data) {
+        products.value = data
+        isLoaded.value = true
+      }
     })
 }
 
-function stepperHandler(value, id) {
+function stepperHandler(value: number, id: number) {
   cart.set(id, value)
 }
 
-function removeHandler(id) {
+function removeHandler(id: number) {
   cart.remove(id)
   products.value = products.value.filter((item) => item.id != id)
 }

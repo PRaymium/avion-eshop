@@ -6,9 +6,9 @@
   <AppFooter />
 </template>
 
-<script setup>
-import AppHeader from '../components/AppHeader.vue'
-import AppFooter from '../components/AppFooter.vue'
+<script setup lang="ts">
+import AppHeader from '@/components/AppHeader.vue'
+import AppFooter from '@/components/AppFooter.vue'
 </script>
 
 <style lang="scss">

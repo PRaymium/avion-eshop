@@ -4,7 +4,7 @@
       <img
         class="product-picture__img"
         :src="`${IMG_PATH}/product-${props.productId}-160w.jpg`"
-        :alt="isLoaded ? props.title : undefined"
+        :alt="props.isLoaded ? props.title : undefined"
         :width="IMG_SIZES[160].width"
         :height="IMG_SIZES[160].height"
       />
@@ -19,7 +19,7 @@
       <img
         class="product-picture__img"
         :src="`${IMG_PATH}/product-${props.productId}-610w.jpg`"
-        :alt="isLoaded ? props.title : undefined"
+        :alt="props.isLoaded ? props.title : undefined"
         :width="IMG_SIZES[610].width"
         :height="IMG_SIZES[610].height"
       />
@@ -34,7 +34,7 @@
       <img
         class="product-picture__img"
         :src="`${IMG_PATH}/product-${props.productId}-300w.jpg`"
-        :alt="isLoaded ? props.title : undefined"
+        :alt="props.isLoaded ? props.title : undefined"
         :width="IMG_SIZES[300].width"
         :height="IMG_SIZES[300].height"
       />
@@ -42,11 +42,26 @@
   </picture>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { breakpoints } from '@/breakpoints'
+
+interface Props {
+  productId: number
+  title?: string
+  onlyXs?: boolean
+  forProductInfo?: boolean
+  isLoaded?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  onlyXs: false,
+  forProductInfo: false,
+  isLoaded: true
+})
+
 const IMG_PATH = '/img/products'
 
-const IMG_SIZES = {
+const IMG_SIZES: Record<number, { width: number; height: number }> = {
   160: {
     width: 160,
     height: 200
@@ -60,33 +75,6 @@ const IMG_SIZES = {
     height: 750
   }
 }
-
-const props = defineProps({
-  productId: {
-    type: Number,
-    required: true
-  },
-
-  title: {
-    type: String,
-    required: false
-  },
-
-  onlyXs: {
-    type: Boolean,
-    default: false
-  },
-
-  forProductInfo: {
-    type: Boolean,
-    default: false
-  },
-
-  isLoaded: {
-    type: Boolean,
-    default: true
-  }
-})
 </script>
 
 <style lang="scss" scoped>

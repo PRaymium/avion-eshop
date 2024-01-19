@@ -13,102 +13,60 @@
       /></IconBase>
     </span>
   </button>
-  <router-link v-else :to="linkComputed" :class="buttonsClass">
+  <router-link v-else :to="props.link" :class="buttonsClass">
     <slot></slot>
   </router-link>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconArrow from '@/components/icons/IconArrow.vue'
+import type { RouteLocationRaw } from 'vue-router'
 
-const props = defineProps({
-  type: {
-    type: String,
-    default: 'button',
-    validator(value) {
-      return ['button', 'link'].includes(value)
-    }
-  },
+type StyleType =
+  | 'primary'
+  | 'secondary'
+  | 'secondary-border'
+  | 'white'
+  | 'opaque'
+  | 'ghost'
 
-  link: {
-    type: String,
-    default: ''
-  },
+interface Props {
+  type?: 'button' | 'link'
+  link?: string | RouteLocationRaw
+  styleType?: StyleType
+  size?: 'small' | 'medium'
+  isWideOnMobile?: boolean
+  isDisabled?: boolean
+  iconVisible?: boolean
+  iconIsActive?: boolean
+}
 
-  linkObj: {
-    type: Object,
-    default: () => {}
-  },
-
-  styleType: {
-    type: String,
-    default: 'primary',
-    validator(value) {
-      return [
-        'primary',
-        'secondary',
-        'secondary-border',
-        'white',
-        'opaque',
-        'ghost'
-      ].includes(value)
-    }
-  },
-
-  size: {
-    type: String,
-    default: 'medium',
-    validator(value) {
-      return ['small', 'medium'].includes(value)
-    }
-  },
-
-  isWideOnMobile: {
-    type: Boolean,
-    default: false
-  },
-
-  isDisabled: {
-    type: Boolean,
-    default: false
-  },
-
-  iconVisible: {
-    type: Boolean,
-    default: false
-  },
-
-  iconIsActive: {
-    type: Boolean,
-    default: false
-  }
+const props = withDefaults(defineProps<Props>(), {
+  type: 'button',
+  link: '',
+  styleType: 'primary',
+  size: 'medium',
+  isWideOnMobile: false,
+  isDisabled: false,
+  iconVisible: false,
+  iconIsActive: false
 })
 
 const iconIsActive = ref(props.iconIsActive)
 
-const buttonsClass = computed(() => ({
-  btn: true,
-  [`btn--${props.styleType}`]: true,
-  [`btn--${props.size}`]: true,
-  'btn--wide': props.isWideOnMobile
-}))
+const buttonsClass = computed(() => [
+  'btn',
+  `btn--${props.styleType}`,
+  `btn--${props.size}`,
+  { 'btn--wide': props.isWideOnMobile }
+])
 
-const iconClass = computed(() => ({
-  'btn__icon-svg': true,
-  'btn__icon-svg--active': iconIsActive.value
-}))
-
-const linkComputed = computed(() => {
-  if (props.linkObj) {
-    return {
-      name: props.linkObj.name ?? undefined,
-      query: props.linkObj.query ?? {},
-      params: props.linkObj.params ?? {}
-    }
-  } else return props.link
-})
+const iconClass = computed(() => [
+  'btn__icon-svg',
+  { 'btn__icon-svg--active': iconIsActive.value }
+])
 
 function toggleActive() {
   iconIsActive.value = !iconIsActive.value

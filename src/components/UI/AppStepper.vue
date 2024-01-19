@@ -38,58 +38,32 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-const props = defineProps({
-  start: {
-    type: Number,
-    default: 1,
-    validator(value) {
-      return value >= 1
-    }
-  },
 
-  min: {
-    type: Number,
-    default: 1,
-    validator(value) {
-      return value >= 1
-    }
-  },
+type StyleType = 'gray' | 'white'
 
-  max: {
-    type: Number,
-    default: 999,
-    validator(value) {
-      return value >= 1
-    }
-  },
+interface Props {
+  start?: number
+  min?: number
+  max?: number
+  step?: number
+  styleType?: StyleType
+  isWideOnMobile?: boolean
+}
 
-  step: {
-    type: Number,
-    default: 1,
-    validator(value) {
-      return value >= 1
-    }
-  },
-
-  styleType: {
-    type: String,
-    default: 'gray',
-    validator(value) {
-      return ['gray', 'white'].includes(value)
-    }
-  },
-
-  isWideOnMobile: {
-    type: Boolean,
-    default: false
-  }
+const props = withDefaults(defineProps<Props>(), {
+  start: 1,
+  min: 1,
+  max: 999,
+  step: 1,
+  styleType: 'gray',
+  isWideOnMobile: false
 })
 
-const emit = defineEmits({
-  change: null
-})
+const emit = defineEmits<{
+  change: [count: number]
+}>()
 
 const count = ref(props.start)
 
@@ -108,10 +82,10 @@ watch(
   }
 )
 
-function changeCount(action) {
+function changeCount(action: 'increase' | 'decrease') {
   if (action === 'increase') count.value++
   else if (action === 'decrease') count.value--
-  emit('change', count)
+  emit('change', count.value)
 }
 </script>
 

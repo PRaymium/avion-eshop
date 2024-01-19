@@ -7,7 +7,7 @@
       :min="props.min"
       :max="props.max"
       :step="props.step"
-      :placeholder="props.min"
+      :placeholder="props.min.toString()"
       aria-label="Minimum value"
       :name="props.names[0]"
       @change="changeHandler('min')"
@@ -20,7 +20,7 @@
       :min="props.min"
       :max="props.max"
       :step="props.step"
-      :placeholder="props.max"
+      :placeholder="props.max.toString()"
       aria-label="Maximum value"
       :name="props.names[1]"
       @change="changeHandler('max')"
@@ -28,64 +28,96 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, nextTick } from 'vue'
-const props = defineProps({
-  min: {
-    type: Number,
-    default: 0
-  },
-  max: {
-    type: Number,
-    default: 100
-  },
-  minStart: {
-    type: Number,
-    default: undefined
-  },
-  maxStart: {
-    type: Number,
-    default: undefined
-  },
-  step: {
-    type: Number,
-    default: 1
-  },
-  names: {
-    type: Array,
-    default: () => ['min', 'max']
-  }
+
+interface Props {
+  min?: number
+  max?: number
+  minStart?: number
+  maxStart?: number
+  step?: number
+  names?: [string, string]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  min: 0,
+  max: 100,
+  step: 1,
+  names: () => ['min', 'max']
 })
 
 defineExpose({
   reset
 })
 
-const emit = defineEmits({
-  change: null
-})
+export interface IRangeResult {
+  min: number
+  max: number
+}
 
-const result = reactive({
+const emit = defineEmits<{
+  change: [IRangeResult]
+}>()
+
+interface IResult {
+  // [key: string]: number | undefined
+  min: number | undefined
+  max: number | undefined
+}
+
+const result = reactive<IResult>({
   min: props.minStart,
   max: props.maxStart
 })
 
-function changeHandler(type) {
-  if (result[type]) {
-    if (type === 'min') {
-      if (result.min > result.max) result.min = result.max
-      if (result.min < props.min) result.min = props.min
-      if (result.min > props.max) result.min = props.max
-    } else if (type === 'max') {
-      if (result.max < result.min) result.max = result.min
-      if (result.max > props.max) result.max = props.max
-      if (result.max < props.min) result.max = props.min
+function changeHandler(type: 'min' | 'max') {
+  if (type === 'min') {
+    if (result.min) {
+      if (
+        result.min < props.min ||
+        result.min > props.max ||
+        (result.max && result.min > result.max)
+      ) {
+        result.min = props.min
+      }
+    }
+  } else if (type === 'max') {
+    if (result.max) {
+      if (
+        (result.min = props.min) ||
+        result.max < props.min ||
+        (result.min && result.max < result.min)
+      ) {
+        result.max = props.max
+      }
     }
   }
 
+  //   if (result.min < props.min) result.min = props.min
+  //   else if (result.min > props.max) result.min = props.min
+  //   else if (result.max && result.min > result.max) result.min = props.min
+  // } else if (result.max) {
+  //   if (result.max > props.max) result.max = props.max
+  //   else if (result.max < props.min) result.max = props.max
+  //   else if (result.min && result.max < result.min) result.max = props.max
+  // }
+
+  // if (result[type]) {
+  //   if (type === 'min') {
+  //     if (result!.min > result.max) result.min = result.max
+  //     if (result!.min < props.min) result.min = props.min
+  //     if (result.min > props.max) result.min = props.max
+  //   } else {
+  //     if (result.max < result.min) result.max = result.min
+  //     if (result.max > props.max) result.max = props.max
+  //     if (result.max < props.min) result.max = props.min
+  //   }
+  // }
+
   const res = {
-    min: result.min ? result.min : props.min,
-    max: result.max ? result.max : props.max
+    min: result.min ?? props.min,
+    max: result.max ?? props.max
   }
   emit('change', res)
 }

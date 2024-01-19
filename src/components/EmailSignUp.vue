@@ -5,27 +5,25 @@
       name="email"
       placeholder="your@email.com"
       autocomplete="true"
-      :class="['form-email__input', `form-email__input--${styleType}`]"
+      :class="['form-email__input', `form-email__input--${props.styleType}`]"
     />
     <ButtonLink
       class="form-email__btn"
-      :style-type="styleType === 'primary' ? 'primary' : 'white'"
+      :style-type="props.styleType === 'primary' ? 'primary' : 'white'"
       >Sign up</ButtonLink
     >
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ButtonLink from '@/components/UI/ButtonLink.vue'
 
-defineProps({
-  styleType: {
-    type: String,
-    default: 'primary',
-    validator(value) {
-      return ['primary', 'secondary'].includes(value)
-    }
-  }
+interface Props {
+  styleType?: 'primary' | 'secondary'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  styleType: 'primary'
 })
 </script>
 

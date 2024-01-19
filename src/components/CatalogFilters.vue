@@ -70,14 +70,17 @@
               <template v-else>
                 <li
                   class="filters-list__item-list-element"
-                  v-for="item of filter.items"
+                  v-for="item of filter.value"
                   :key="item.id"
                 >
                   <AppCheckbox
                     :label="item.name"
                     :name="item.name"
-                    :is-checked="item.isChecked"
-                    @change="(state) => itemChangeHandler(filter, item, state)"
+                    :is-checked="filter.checkedIds.has(item.id)"
+                    @change="
+                      (state) =>
+                        checkboxListChangeHandler(filter, item.id, state)
+                    "
                   />
                 </li>
               </template>
@@ -98,15 +101,12 @@
               <template v-else>
                 <li class="filters-list__item-list-element">
                   <AppRange
-                    :min="filter.params.min"
-                    :max="filter.params.max"
-                    :min-start="filter.params.minValue"
-                    :max-start="filter.params.maxValue"
-                    :step="filter.params.step"
-                    ref="rangeFiltersRef"
-                    @change="
-                      (resObj) => itemChangeHandler(filter, item, resObj)
-                    "
+                    :min="filter.value.min ?? 0"
+                    :max="filter.value.max ?? 100"
+                    :min-start="filter.value.minValue"
+                    :max-start="filter.value.maxValue"
+                    ref="rangeFiltersRefs"
+                    @change="(resObj) => rangeChangeHandler(filter, resObj)"
                   />
                 </li>
               </template>
@@ -134,7 +134,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AppCheckbox from '@/components/UI/AppCheckbox.vue'
 import AppRange from '@/components/UI/AppRange.vue'
 import ButtonLink from '@/components/UI/ButtonLink.vue'
@@ -144,33 +144,57 @@ import ContentLoader from '@/components/UI/ContentLoader.vue'
 import { ref, reactive } from 'vue'
 import { uuid } from 'vue3-uuid'
 
-const props = defineProps({
-  filters: {
-    type: Array,
-    required: true
-  },
+import {
+  FilterTypes,
+  type Filter,
+  type IFilterCheckboxList,
+  type IFilterRange
+} from '@/models/Filter'
+import { type IRangeResult } from '@/components/UI/AppRange.vue'
 
-  type: {
-    type: String,
-    default: 'list',
-    validator(value) {
-      return ['list', 'dropdown'].includes(value)
-    }
-  },
+interface Props {
+  filters: Filter[]
+  type?: 'list' | 'dropdown'
+  isLoaded?: boolean
+}
 
-  isLoaded: {
-    type: Boolean,
-    default: true
-  }
+const props = withDefaults(defineProps<Props>(), {
+  type: 'list',
+  isLoaded: true
 })
 
-const emit = defineEmits({
-  change: null,
-  apply: null,
-  reset: null
-})
+interface IFilterChangeObj {
+  filterName: string
+  type: FilterTypes
+}
 
-const loaderPlaceholderCountByType = {
+type FilterCheckboxListChangeRes = boolean
+
+type FilterRangeChangeRes = {
+  minValue: number
+  maxValue: number
+}
+
+interface IFilterCheckboxListChange extends IFilterChangeObj {
+  type: FilterTypes.checkboxList
+  itemId: number
+  res: FilterCheckboxListChangeRes
+}
+
+interface IFilterRangeChange extends IFilterChangeObj {
+  type: FilterTypes.range
+  res: FilterRangeChangeRes
+}
+
+export type FilterChange = IFilterCheckboxListChange | IFilterRangeChange
+
+const emit = defineEmits<{
+  change: [FilterChange]
+  apply: []
+  reset: []
+}>()
+
+const loaderPlaceholderCountByType: Record<FilterTypes, number> = {
   checkboxList: 3,
   range: 1
 }
@@ -188,10 +212,10 @@ const dropdownParams = reactive({
         controlId: uuid.v4()
       }
     }
-  }, {})
+  }, {}) as Record<string, { isOpen: boolean; controlId: string }>
 })
 
-const rangeFiltersRef = ref([])
+const rangeFiltersRefs = ref<InstanceType<typeof AppRange>[] | null>(null)
 
 function applyChanges() {
   emit('apply')
@@ -200,39 +224,37 @@ function applyChanges() {
 
 function resetHandler() {
   emit('reset')
-  rangeFiltersRef.value.forEach((ref) => {
+  rangeFiltersRefs.value?.forEach((ref) => {
     ref.reset()
   })
 }
 
-function itemChangeHandler(filter, item, value) {
-  switch (filter.type) {
-    case 'checkboxList': {
-      emit('change', {
-        filterName: filter.name,
-        itemId: item.id,
-        res: value
-      })
+function checkboxListChangeHandler(
+  filter: IFilterCheckboxList,
+  itemId: number,
+  value: boolean
+) {
+  emit('change', {
+    filterName: filter.name,
+    type: FilterTypes.checkboxList,
+    itemId: itemId,
+    res: value
+  })
+}
 
-      break
-    }
-
-    case 'range': {
-      emit('change', {
-        filterName: filter.name,
-        res: { minValue: value.min, maxValue: value.max }
-      })
-
-      break
-    }
-  }
+function rangeChangeHandler(filter: IFilterRange, value: IRangeResult) {
+  emit('change', {
+    filterName: filter.name,
+    type: FilterTypes.range,
+    res: { minValue: value.min, maxValue: value.max }
+  })
 }
 
 function dropdownFiltersMenuStateHandler() {
   dropdownParams.dropdownIsOpen = !dropdownParams.dropdownIsOpen
 }
 
-function dropdownFiltersMenuItemStateHandler(filterName) {
+function dropdownFiltersMenuItemStateHandler(filterName: string) {
   dropdownParams.filters[filterName].isOpen =
     !dropdownParams.filters[filterName].isOpen
 }

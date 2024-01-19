@@ -10,7 +10,7 @@
         <ButtonLink
           class="hero-info__btn"
           type="link"
-          :link-obj="{ name: 'catalog' }"
+          :link="{ name: 'catalog' }"
           style-type="opaque"
           :is-wide-on-mobile="true"
           >View collection</ButtonLink
@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ButtonLink from '@/components/UI/ButtonLink.vue'
 import { breakpoints } from '@/breakpoints'
 </script>

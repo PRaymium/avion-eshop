@@ -1,14 +1,14 @@
 [
   {
     "name": "price",
-    "params": {
+    "value": {
       "min": null,
       "max": null
     }
   },
   {
     "name": "type",
-    "items": [
+    "value": [
       {
         "id": 1,
         "name": "Furniture"
@@ -25,7 +25,7 @@
   },
   {
     "name": "designer",
-    "items": [
+    "value": [
       {
         "id": 1,
         "name": "Robert Smith"

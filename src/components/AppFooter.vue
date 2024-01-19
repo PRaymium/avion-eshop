@@ -56,7 +56,7 @@
   </footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import EmailSignUp from '@/components/EmailSignUp.vue'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconLinkedin from '@/components/icons/IconLinkedin.vue'
@@ -65,8 +65,10 @@ import IconInstagram from '@/components/icons/IconInstagram.vue'
 import IconSkype from '@/components/icons/IconSkype.vue'
 import IconTwitter from '@/components/icons/IconTwitter.vue'
 import IconPinterest from '@/components/icons/IconPinterest.vue'
-import { reactive, computed } from 'vue'
+import { reactive, computed, type Component } from 'vue'
 import { useProductTypesStore } from '@/stores/productTypes'
+
+import type { RouteLocationRaw } from 'vue-router'
 
 const productTypes = useProductTypesStore()
 
@@ -74,15 +76,26 @@ const categories = computed(() =>
   productTypes.items.map((item) => {
     return {
       name: item.name,
-      link: { name: 'catalog', query: { 'filter-type': item.id } }
+      link: {
+        name: 'catalog',
+        query: { 'filter-type': item.id }
+      } as RouteLocationRaw
     }
   })
 )
 
-const lists = reactive({
+interface IMenuList {
+  title: string
+  items: {
+    name: string
+    link: RouteLocationRaw | string
+  }[]
+}
+
+const lists = reactive<Record<string, IMenuList>>({
   categories: {
     title: 'Categories',
-    items: categories
+    items: categories.value
   },
 
   menu: {
@@ -138,7 +151,13 @@ const lists = reactive({
   }
 })
 
-const social = [
+interface ISocialItem {
+  name: string
+  link: string
+  iconComponent: Component
+}
+
+const social: ISocialItem[] = [
   {
     iconComponent: IconLinkedin,
     name: 'linkedIn',

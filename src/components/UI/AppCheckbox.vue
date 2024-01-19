@@ -15,34 +15,25 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue'
 import { uuid } from 'vue3-uuid'
-const props = defineProps({
-  label: {
-    type: String,
-    required: true
-  },
 
-  name: {
-    type: String,
-    required: true
-  },
+interface Props {
+  label: string
+  name: string
+  isDisabled?: boolean
+  isChecked?: boolean
+}
 
-  isDisabled: {
-    type: Boolean,
-    default: false
-  },
-
-  isChecked: {
-    type: Boolean,
-    default: false
-  }
+const props = withDefaults(defineProps<Props>(), {
+  isDisabled: false,
+  isChecked: false
 })
 
-const emit = defineEmits({
-  change: null
-})
+const emit = defineEmits<{
+  change: [checkedState: boolean]
+}>()
 
 const controlId = ref(uuid.v4())
 

@@ -5,15 +5,30 @@
         {{ props.title }}
       </h2>
       <ul class="products-list">
-        <li class="products-item" v-for="product of products" :key="product.id">
-          <ProductCard
-            :id="product.id"
-            :title="product.name"
-            :price="product.price"
-            title-tag="h3"
-            :is-loaded="isLoaded"
-          />
-        </li>
+        <template v-if="!isLoaded">
+          <li
+            class="products-item"
+            v-for="product of ids.length"
+            :key="product"
+          >
+            <ProductCard title-tag="h3" :is-loaded="false" />
+          </li>
+        </template>
+        <template v-else>
+          <li
+            class="products-item"
+            v-for="product of products"
+            :key="product.id"
+          >
+            <ProductCard
+              :id="product.id"
+              :title="product.name"
+              :price="product.price"
+              title-tag="h3"
+              :is-loaded="isLoaded"
+            />
+          </li>
+        </template>
       </ul>
       <ButtonLink
         type="link"
@@ -27,32 +42,37 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ProductCard from '@/components/ProductCard.vue'
 import ButtonLink from '@/components/UI/ButtonLink.vue'
 import { ref } from 'vue'
 import api from '@/api/avion-api.js'
 
-const props = defineProps({
-  title: {
-    type: String,
-    default: ''
-  }
+import type IProduct from '@/models/Product'
+
+interface Props {
+  title?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  title: ''
 })
 
-const ids = [1, 2, 3, 4]
-
-const products = ref([])
+const products = ref<IProduct[]>([])
 
 const isLoaded = ref(false)
 
-ids.forEach((id) => {
-  products.value.push({ id: id, name: 'Title', price: 100 })
-})
+const ids = [1, 2, 3, 4]
 
-api.getProductsByIds(ids).then((data) => {
-  products.value = data
-  isLoaded.value = true
+// ids.forEach((id) => {
+//   products.value.push({ id: id, name: 'Title', price: 100 })
+// })
+
+api.getProductById(ids).then((data) => {
+  if (data) {
+    products.value = data
+    isLoaded.value = true
+  }
 })
 </script>
 

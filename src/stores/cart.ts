@@ -1,47 +1,31 @@
 import { defineStore } from 'pinia'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, type Ref } from 'vue'
+
+type CountMap = Map<number, number>
 
 export const useCartStore = defineStore('cart', () => {
-  /** @type {Map<number, number>} */
-  const _countMap = ref(new Map())
-
-  // _countMap.value.set(7, 2)
-  // _countMap.value.set(8, 4)
+  const _countMap: Ref<CountMap> = ref(new Map())
 
   const localStorageKey = 'cart'
 
-  if (localStorage.getItem(localStorageKey)) {
+  const localStorageString = localStorage.getItem(localStorageKey);
+  if (typeof localStorageString === 'string') {
     _countMap.value = new Map(
-      Object.entries(JSON.parse(localStorage.getItem(localStorageKey))).map(
+      Object.entries<number>(JSON.parse(localStorageString)).map(
         ([key, value]) => [+key, value]
       )
-    )
+    ) as CountMap
   }
 
-  /**
-   * @returns {number}
-   */
   const size = computed(() => _countMap.value.size)
 
-  /**
-   * @returns {[k: string]: number}
-   */
   const items = computed(() => Object.fromEntries(_countMap.value))
 
-  /**
-   *
-   * @param {number} id
-   * @param {number} count
-   */
-  function set(id, count) {
+  function set(id: number, count: number) {
     _countMap.value.set(id, count)
   }
 
-  /**
-   *
-   * @param {number} id
-   */
-  function remove(id) {
+  function remove(id: number) {
     _countMap.value.delete(id)
   }
 

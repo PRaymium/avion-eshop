@@ -8,25 +8,17 @@
   <slot v-else></slot>
 </template>
 
-<script setup>
-const props = defineProps({
-  isLoaded: {
-    type: Boolean,
-    required: true
-  },
+<script setup lang="ts">
+interface Props {
+  isLoaded?: boolean
+  text?: string
+  blockType?: 'block' | 'inline'
+}
 
-  text: {
-    type: String,
-    default: 'Loading...'
-  },
-
-  blockType: {
-    type: String,
-    default: 'block',
-    validator(value) {
-      return ['block', 'inline'].includes(value)
-    }
-  }
+const props = withDefaults(defineProps<Props>(), {
+  text: 'Loading...',
+  blockType: 'block',
+  isLoaded: true
 })
 </script>
 

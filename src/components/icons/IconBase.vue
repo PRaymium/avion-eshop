@@ -14,23 +14,17 @@
   </svg>
 </template>
 
-<script setup>
-const props = defineProps({
-  iconName: {
-    type: String,
-    required: true
-  },
-  width: {
-    type: Number,
-    default: 24
-  },
-  height: {
-    type: Number,
-    default: 24
-  },
-  iconColor: {
-    type: String,
-    default: 'currentColor'
-  }
+<script setup lang="ts">
+interface Props {
+  iconName: string
+  width?: number
+  height?: number
+  iconColor?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  width: 24,
+  height: 24,
+  iconColor: 'currentColor'
 })
 </script>

@@ -16,7 +16,7 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import AppHero from '../components/AppHero.vue'
 import AppFeatures from '../components/AppFeatures.vue'
 import AppProducts from '../components/AppProducts.vue'

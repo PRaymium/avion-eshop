@@ -6,52 +6,40 @@
     <ProductPicture
       :title="props.title"
       :product-id="props.id"
-      :is-loaded="isLoaded"
+      :is-loaded="props.isLoaded"
     />
 
     <component :is="props.titleTag" class="product-card__heading">
-      <ContentLoader :is-loaded="isLoaded">{{ props.title }}</ContentLoader>
+      <ContentLoader :is-loaded="props.isLoaded">{{
+        props.title
+      }}</ContentLoader>
     </component>
     <span class="product-card__price"
-      ><ContentLoader :is-loaded="isLoaded" block-type="inline"
+      ><ContentLoader :is-loaded="props.isLoaded" block-type="inline"
         >£{{ props.price }}
       </ContentLoader></span
     >
   </router-link>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ProductPicture from '@/components/ProductPicture.vue'
 import ContentLoader from '@/components/UI/ContentLoader.vue'
 
-const props = defineProps({
-  id: {
-    type: Number,
-    default: 0
-  },
+interface Props {
+  id?: number
+  title?: string
+  price?: number
+  titleTag?: 'h1' | 'h2' | 'h3' | 'h4'
+  isLoaded?: boolean
+}
 
-  title: {
-    type: String,
-    required: true
-  },
-
-  price: {
-    type: Number,
-    required: true
-  },
-
-  titleTag: {
-    type: String,
-    default: 'h2',
-    validator(value) {
-      return ['h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
-    }
-  },
-
-  isLoaded: {
-    type: Boolean,
-    default: true
-  }
+const props = withDefaults(defineProps<Props>(), {
+  id: 0,
+  title: 'Title',
+  price: 100,
+  titleTag: 'h2',
+  isLoaded: true
 })
 </script>
 

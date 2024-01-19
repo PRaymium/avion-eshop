@@ -82,7 +82,7 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import IconBase from '@/components/icons/IconBase.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
 import IconBurgerMenu from '@/components/icons/IconBurgerMenu.vue'
@@ -92,7 +92,7 @@ import { ref, inject } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import { useProductTypesStore } from '@/stores/productTypes'
 
-const mq = inject('mq')
+const mq: any = inject('mq')
 
 const cart = useCartStore()
 const productTypes = useProductTypesStore()

@@ -38,7 +38,7 @@
                 :options="sortingItemsForSortingComponent"
                 :selected-id="selectedSortId"
                 :constant-header="!mq.lgPlus ? 'Sorting' : ''"
-                aria-label="Sorting"
+                ar-label="Sorting"
                 @input="sortInputHandler"
               />
             </div>
@@ -98,26 +98,36 @@
   </div>
 </template>
 
-<script setup>
-import CatalogFilters from '../components/CatalogFilters.vue'
-import ProductCard from '../components/ProductCard.vue'
-import ButtonLink from '../components/UI/ButtonLink.vue'
-import AppSelect from '../components/UI/AppSelect.vue'
+<script setup lang="ts">
+import CatalogFilters, {
+  type FilterChange
+} from '@/components/CatalogFilters.vue'
+import ProductCard from '@/components/ProductCard.vue'
+import ButtonLink from '@/components/UI/ButtonLink.vue'
+import AppSelect from '@/components/UI/AppSelect.vue'
 import { ref, computed, reactive, inject, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/avion-api.js'
 
-const mq = inject('mq')
+import {
+  FilterTypes,
+  type Filter,
+  type IFilterRangeValue
+} from '@/models/Filter'
+import type IProduct from '@/models/Product'
+import { SortingName, type ISorting } from '@/models/Sorting'
+
+const mq: any = inject('mq')
 
 const router = useRouter()
 const route = useRoute()
 
-const filters = reactive([
+const filters = reactive<Filter[]>([
   {
     title: 'Price',
     name: 'price',
-    type: 'range',
-    params: {
+    type: FilterTypes.range,
+    value: {
       min: undefined,
       max: undefined,
       minValue: undefined,
@@ -127,33 +137,36 @@ const filters = reactive([
   {
     title: 'Product type',
     name: 'type',
-    type: 'checkboxList',
-    items: []
+    type: FilterTypes.checkboxList,
+    value: [],
+    checkedIds: new Set<number>()
   },
   {
     title: 'Designer',
     name: 'designer',
-    type: 'checkboxList',
-    items: []
+    type: FilterTypes.checkboxList,
+    value: [],
+    checkedIds: new Set<number>()
   }
 ])
 
 const filtersIsLoaded = ref(false)
 
-// setup filters:
-// checkboxList - filterName: [itemsId],
-// range - filterName: {min, max, minValue, maxValue}
-const defaultFiltersState = {
-  //price: { minValue: 150, maxValue: 400 }
-  // type: [1]
+interface IDefaultFiltersState {
+  [filterName: string]: Set<number> | IFilterRangeValue
 }
 
+const defaultFiltersStates: IDefaultFiltersState = {}
+
 filtersInit().then(() => {
-  parseUrlToFilters()
+  defaultFiltersStatesInit()
 
   if (!route.query.filtersEdited) {
-    filtersInitFromDefaultFilters()
-    filterStateWriteToUrl(false)
+    parseUrlToFilters()
+    filterStatesWriteToUrl(false)
+  } else {
+    filtersResetValues()
+    parseUrlToFilters()
   }
 
   filtersIsLoaded.value = true
@@ -163,29 +176,13 @@ filtersInit().then(() => {
 async function filtersInit() {
   const data = await api.getCatalogFilters()
 
+  if (!data) return
+
   data.forEach((dataFilter) => {
     const filter = filters.find((item) => item.name === dataFilter.name)
 
-    switch (filter.type) {
-      case 'checkboxList': {
-        dataFilter.items.forEach((dataFilterItem) => {
-          filter.items.push({ isChecked: false, ...dataFilterItem })
-        })
-        break
-      }
-
-      case 'range': {
-        Object.keys(dataFilter.params).forEach((dataFilterParamKey) => {
-          filter.params[dataFilterParamKey] =
-            dataFilter.params[dataFilterParamKey] ?? undefined
-        })
-        break
-      }
-
-      default: {
-        throw new Error('Filter type not defined!')
-      }
-    }
+    if (!filter) return
+    filter.value = dataFilter.value
   })
 }
 
@@ -194,19 +191,23 @@ function parseUrlToFilters() {
     if (key.includes('filter-')) {
       const filterName = key.split('-')[1]
       const filter = filters.find((filter) => filter.name === filterName)
+      if (!filter) return
+
+      const valueString = value?.toString()
+      if (!valueString) return
 
       switch (filter.type) {
-        case 'checkboxList': {
-          value.split('-').forEach((val) => {
-            filter.items.find((item) => item.id === +val).isChecked = true
-          })
+        case FilterTypes.checkboxList: {
+          valueString.split('-').forEach((val) => filter.checkedIds.add(+val))
+
           break
         }
 
-        case 'range': {
-          const values = value.split('-')
-          filter.params.minValue = +values[0]
-          filter.params.maxValue = +values[1]
+        case FilterTypes.range: {
+          const values = valueString.split('-')
+          filter.value.minValue = +values[0]
+          filter.value.maxValue = +values[1]
+
           break
         }
 
@@ -218,26 +219,51 @@ function parseUrlToFilters() {
   })
 }
 
+function defaultFiltersStatesInit() {
+  filters.forEach((filter) => {
+    switch (filter.type) {
+      case FilterTypes.checkboxList: {
+        defaultFiltersStates[filter.name] = new Set<number>([
+          ...filter.checkedIds
+        ])
+
+        break
+      }
+
+      case FilterTypes.range: {
+        defaultFiltersStates[filter.name] = { ...filter.value }
+
+        break
+      }
+
+      default: {
+        throw new Error('Filter type not defined!')
+      }
+    }
+  })
+}
+
 function filtersInitFromDefaultFilters() {
-  if (Object.keys(defaultFiltersState).length === 0) return
+  if (Object.keys(defaultFiltersStates).length === 0) return
   else {
-    Object.entries(defaultFiltersState).forEach(([key, values]) => {
+    Object.entries(defaultFiltersStates).forEach(([key, value]) => {
       const filter = filters.find((filter) => filter.name === key)
+      if (!filter) return
 
       switch (filter.type) {
-        case 'checkboxList': {
-          values.forEach((defaultFilterValue) => {
-            filter.items.find(
-              (item) => item.id === defaultFilterValue
-            ).isChecked = true
-          })
+        case FilterTypes.checkboxList: {
+          filter.checkedIds = new Set<number>([
+            ...(value as typeof filter.checkedIds)
+          ])
+
           break
         }
 
-        case 'range': {
-          Object.entries(values).forEach(([rangeKey, rangeValue]) => {
-            filter.params[rangeKey] = rangeValue
-          })
+        case FilterTypes.range: {
+          const valueRange = { ...(value as typeof filter.value) }
+          filter.value.minValue = valueRange.minValue
+          filter.value.maxValue = valueRange.maxValue
+
           break
         }
 
@@ -249,33 +275,33 @@ function filtersInitFromDefaultFilters() {
   }
 }
 
-function filterStateWriteToUrl(isFiltersEdited = true) {
-  let resultObj = {
+function filterStatesWriteToUrl(isFiltersEdited = true) {
+  const resultObj: Record<string, any> = {
     filtersEdited: isFiltersEdited || undefined
   }
 
   filters.forEach((filter) => {
-    switch (filter.type) {
-      case 'checkboxList': {
-        const checkedIds = filter.items
-          .filter((item) => item.isChecked)
-          .map(({ id }) => id)
+    const filterUrlTemplate = `filter-${filter.name}`
 
-        if (checkedIds.length > 0) {
-          resultObj[`filter-${filter.name}`] = checkedIds.join('-')
-        } else resultObj[`filter-${filter.name}`] = undefined
+    switch (filter.type) {
+      case FilterTypes.checkboxList: {
+        const checkedIdsArray = [...filter.checkedIds]
+
+        if (checkedIdsArray.length > 0)
+          resultObj[filterUrlTemplate] = checkedIdsArray.join('-')
+        else resultObj[filterUrlTemplate] = undefined
 
         break
       }
 
-      case 'range': {
-        if (filter.params.minValue && filter.params.maxValue) {
-          resultObj[`filter-${filter.name}`] = [
-            filter.params.minValue,
-            filter.params.maxValue
+      case FilterTypes.range: {
+        if (filter.value.minValue && filter.value.maxValue) {
+          resultObj[filterUrlTemplate] = [
+            filter.value.minValue,
+            filter.value.maxValue
           ].join('-')
         } else {
-          resultObj[`filter-${filter.name}`] = undefined
+          resultObj[filterUrlTemplate] = undefined
         }
 
         break
@@ -287,12 +313,11 @@ function filterStateWriteToUrl(isFiltersEdited = true) {
     }
   })
 
-  //useReplaceWithQuery(resultObj)
   replaceWithQuery(resultObj)
 }
 
 function filtersRemoveFromUrl() {
-  const removeNamesObj = {}
+  const removeNamesObj: Record<string, undefined> = {}
 
   Object.keys(route.query).forEach((key) => {
     if (key.includes('filter-')) {
@@ -307,14 +332,14 @@ function filtersRemoveFromUrl() {
 function filtersResetValues() {
   filters.forEach((filter) => {
     switch (filter.type) {
-      case 'checkboxList': {
-        filter.items.forEach((item) => (item.isChecked = false))
+      case FilterTypes.checkboxList: {
+        filter.checkedIds.clear()
         break
       }
 
-      case 'range': {
-        filter.params.minValue = undefined
-        filter.params.maxValue = undefined
+      case FilterTypes.range: {
+        filter.value.minValue = undefined
+        filter.value.maxValue = undefined
         break
       }
 
@@ -325,12 +350,8 @@ function filtersResetValues() {
   })
 }
 
-function applyFiltersHandler(event, isReset = false) {
-  if (isReset) {
-    filterStateWriteToUrl(false)
-  } else {
-    filterStateWriteToUrl()
-  }
+function applyFiltersHandler() {
+  filterStatesWriteToUrl()
   preparingProducts()
 }
 
@@ -338,52 +359,56 @@ function resetFiltersHandler() {
   filtersRemoveFromUrl()
   filtersResetValues()
   filtersInitFromDefaultFilters()
-  applyFiltersHandler(null, true)
+  filterStatesWriteToUrl(false)
+  preparingProducts()
 }
 
-function filtersChangeHandler(value) {
+function filtersChangeHandler(value: FilterChange) {
   const filter = filters.find((filter) => filter.name === value.filterName)
+  if (!filter) return
+
   switch (filter.type) {
-    case 'checkboxList': {
-      filter.items.find((item) => item.id === value.itemId).isChecked =
-        value.res
+    case FilterTypes.checkboxList: {
+      if (value.res === true) filter.checkedIds.add(value.itemId)
+      else if (value.res === false) filter.checkedIds.delete(value.itemId)
 
       break
     }
 
-    case 'range': {
-      Object.entries(value.res).forEach(([key, values]) => {
-        filter.params[key] = +values
-      })
+    case FilterTypes.range: {
+      if (typeof value.res != 'boolean') {
+        filter.value.minValue = value.res.minValue
+        filter.value.maxValue = value.res.maxValue
+      }
 
       break
     }
   }
 }
 
-const sorting = reactive([
+const sorting = reactive<ISorting[]>([
   {
     id: 1,
     title: 'Name (A-Z)',
-    name: 'name',
+    name: SortingName.name,
     reverse: false
   },
   {
     id: 2,
     title: 'Name (Z-A)',
-    name: 'name',
+    name: SortingName.name,
     reverse: true
   },
   {
     id: 3,
     title: 'Price (Low to High)',
-    name: 'price',
+    name: SortingName.price,
     reverse: false
   },
   {
     id: 4,
     title: 'Price (High to Low)',
-    name: 'price',
+    name: SortingName.price,
     reverse: true
   }
 ])
@@ -392,8 +417,8 @@ const sorting = reactive([
 const defaultSortId = 1
 const selectedSortId = ref(selectedSortIdInit())
 
-const selectedSortItem = computed(() => {
-  return sorting.find((item) => item.id === selectedSortId.value)
+const selectedSortItem = computed<ISorting>(() => {
+  return sorting.find((item) => item.id === selectedSortId.value) ?? sorting[0]
 })
 
 const sortingItemsForSortingComponent = computed(() => {
@@ -404,45 +429,46 @@ const sortingItemsForSortingComponent = computed(() => {
 })
 
 function selectedSortIdInit() {
-  if (route.query.orderId) {
-    if (!sorting.some((item) => item.id === +route.query.orderId)) {
+  const orderId = +!route.query.orderId
+  if (orderId) {
+    if (!sorting.some((item) => item.id === orderId)) {
       return defaultSortId
     } else {
-      return +route.query.orderId
+      return orderId
     }
   } else return defaultSortId
 }
 
-function sortInputHandler(id) {
+function sortInputHandler(id: number) {
   selectedSortId.value = id
   if (id === defaultSortId) replaceWithQuery({ orderId: undefined })
   else replaceWithQuery({ orderId: id })
   preparingProducts()
 }
 
-const preparedProducts = ref([])
+const preparedProducts = ref<IProduct[]>([])
 
 const productsIsLoaded = ref(false)
 
 async function preparingProducts() {
-  let data = await api.getPreparedProductsWithFiltersInfo(
+  const data = await api.getPreparedProductsWithFiltersInfo(
     filters,
     selectedSortItem.value
   )
 
+  if (!data) return
   //  check filtersInfo
   if (Object.keys(data.filtersInfo).length != 0) {
     Object.keys(data.filtersInfo).forEach((filterName) => {
       const filter = filters.find((filter) => filter.name === filterName)
+      if (!filter) return
+
       switch (filter.type) {
-        case 'range': {
+        case FilterTypes.range: {
           Object.keys(data.filtersInfo[filterName]).forEach(
             (filtersInfoItem) => {
-              if (
-                data.filtersInfo[filterName][filtersInfoItem] &&
-                !filter.params[filtersInfoItem]
-              ) {
-                filter.params[filtersInfoItem] ??=
+              if (data.filtersInfo[filterName][filtersInfoItem]) {
+                filter.value[filtersInfoItem] ??=
                   data.filtersInfo[filterName][filtersInfoItem]
               }
             }
@@ -464,7 +490,7 @@ async function preparingProducts() {
   currentPage.value = 1
 }
 
-function replaceWithQuery(query) {
+function replaceWithQuery(query: {}) {
   router.replace({
     query: {
       ...route.query,
@@ -501,7 +527,7 @@ async function loadMoreHandler() {
   const elemIdx = (currentPage.value - 1) * PAGE_SIZE
   const firstOfNewItems = document.querySelectorAll(
     '.catalog-items-list__item-card'
-  )[elemIdx]
+  )[elemIdx] as HTMLLinkElement
 
   firstOfNewItems.focus()
 }

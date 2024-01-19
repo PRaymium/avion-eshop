@@ -14,12 +14,12 @@
               <div class="product-info-heading">
                 <h1 class="product-info-heading__name">
                   <ContentLoader :is-loaded="isLoaded">{{
-                    product.name
+                    product?.name
                   }}</ContentLoader>
                 </h1>
                 <span class="h3 product-info-heading__price">
                   <ContentLoader :is-loaded="isLoaded" block-type="inline">{{
-                    `£${product.price}`
+                    `£${product?.price}`
                   }}</ContentLoader>
                 </span>
               </div>
@@ -34,7 +34,7 @@
                   title="product.description"
                 >
                   <ContentLoader :is-loaded="isLoaded">{{
-                    product.description
+                    product?.description
                   }}</ContentLoader>
                 </p>
               </div>
@@ -56,7 +56,7 @@
                         :is-loaded="isLoaded"
                         block-type="inline"
                         >{{
-                          `${product.dimensions.height} ${product.dimensions.unit}`
+                          `${product?.dimensions.height} ${product?.dimensions.unit}`
                         }}</ContentLoader
                       >
                     </span>
@@ -73,7 +73,7 @@
                       block-type="inline"
                     >
                       <ContentLoader :is-loaded="isLoaded">{{
-                        `${product.dimensions.width} ${product.dimensions.unit}`
+                        `${product?.dimensions.width} ${product?.dimensions.unit}`
                       }}</ContentLoader>
                     </span>
                   </li>
@@ -89,7 +89,7 @@
                       block-type="inline"
                     >
                       <ContentLoader :is-loaded="isLoaded">{{
-                        `${product.dimensions.depth} ${product.dimensions.unit}`
+                        `${product?.dimensions.depth} ${product?.dimensions.unit}`
                       }}</ContentLoader></span
                     >
                   </li>
@@ -152,7 +152,7 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import ProductPicture from '@/components/ProductPicture.vue'
 import AppStepper from '@/components/UI/AppStepper.vue'
 import ButtonLink from '@/components/UI/ButtonLink.vue'
@@ -161,12 +161,14 @@ import AppFeatures from '@/components/AppFeatures.vue'
 import AppJoin from '@/components/AppJoin.vue'
 import IconBase from '@/components/icons/IconBase.vue'
 import IconTrashcan from '@/components/icons/IconTrashcan.vue'
+import ContentLoader from '@/components/UI/ContentLoader.vue'
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 import api from '@/api/avion-api.js'
 import { useCartStore } from '@/stores/cart'
-import ContentLoader from '@/components/UI/ContentLoader.vue'
+
+import type IProduct from '@/models/Product'
 
 const appProductsTitle = 'You might also like'
 
@@ -175,25 +177,30 @@ const router = useRouter()
 
 const cart = useCartStore()
 
-const id = ref(+route.params.id)
-const product = ref(getProduct(id.value))
+const id = ref<number>(+route.params.id)
+const product = ref<IProduct>()
 const isLoaded = ref(false)
 
 const countWithoutCart = ref(1)
-const countInCart = computed(() => cart.items[id.value])
 
-function getProduct(id) {
+const countInCart = computed<number | undefined>(() => cart.items[id.value])
+
+getProduct(id.value)
+
+function getProduct(id: number) {
   api.getProductById(id).then((data) => {
-    product.value = data
-    isLoaded.value = true
+    if (data) {
+      product.value = data[0]
+      isLoaded.value = true
+    }
   })
 }
 
-function stepperHandler(value) {
-  countWithoutCart.value = value.value
+function stepperHandler(value: number) {
+  countWithoutCart.value = value
 
   if (countInCart.value) {
-    cart.set(id.value, value.value)
+    cart.set(id.value, value)
   }
 }
 

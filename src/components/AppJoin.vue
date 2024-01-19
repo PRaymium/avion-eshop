@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import IconBase from '@/components/icons/IconBase.vue'
 import IconCheckmark from '@/components/icons/IconCheckmark.vue'
 import EmailSignUp from '@/components/EmailSignUp.vue'
