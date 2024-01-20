@@ -72,7 +72,7 @@ import type { RouteLocationRaw } from 'vue-router'
 
 const productTypes = useProductTypesStore()
 
-const categories = computed(() =>
+const categories = computed<IMenuItem[]>(() =>
   productTypes.items.map((item) => {
     return {
       name: item.name,
@@ -84,18 +84,20 @@ const categories = computed(() =>
   })
 )
 
+interface IMenuItem {
+  name: string
+  link: RouteLocationRaw | string
+}
+
 interface IMenuList {
   title: string
-  items: {
-    name: string
-    link: RouteLocationRaw | string
-  }[]
+  items: IMenuItem[]
 }
 
 const lists = reactive<Record<string, IMenuList>>({
   categories: {
     title: 'Categories',
-    items: categories.value
+    items: categories as unknown as IMenuItem[]
   },
 
   menu: {

@@ -88,7 +88,7 @@ import IconSearch from '@/components/icons/IconSearch.vue'
 import IconBurgerMenu from '@/components/icons/IconBurgerMenu.vue'
 import IconShopcart from '@/components/icons/IconShopcart.vue'
 import IconClose from '@/components/icons/IconClose.vue'
-import { ref, inject } from 'vue'
+import { ref, inject, watch } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import { useProductTypesStore } from '@/stores/productTypes'
 
@@ -100,10 +100,28 @@ const productTypes = useProductTypesStore()
 const navItems = productTypes.items
 
 const menuIsHide = ref(true)
+
+watch(
+  () => menuIsHide.value,
+  (val) => {
+    if (!val) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = 'auto'
+  }
+)
+
+// watch breakpoint that changes header menu type
+watch(
+  () => mq.mdPlus,
+  () => {
+    menuIsHide.value = true
+  }
+)
 </script>
 
 <style lang="scss">
 .header {
+  background-color: $white;
+
   &-btn-list {
     display: flex;
     column-gap: 20px;
@@ -111,7 +129,7 @@ const menuIsHide = ref(true)
 
   &-row {
     display: flex;
-    padding: 20px 0px;
+    padding: 15px 0px;
 
     &-top {
       justify-content: space-between;
@@ -162,7 +180,7 @@ const menuIsHide = ref(true)
       padding: 0;
 
       @media screen and (min-width: $md) {
-        padding: 20px 0;
+        padding: 15px 0;
       }
     }
   }
@@ -208,7 +226,7 @@ const menuIsHide = ref(true)
     bottom: 0;
     display: flex;
     flex-direction: column;
-    padding: 20px 24px;
+    padding: 15px 24px;
     font-size: $nav-menu-font-size;
     background-color: $white;
     transform: translateX(0);
@@ -223,7 +241,7 @@ const menuIsHide = ref(true)
     }
 
     @media screen and (min-width: $sm) {
-      padding: 20px 48px;
+      padding: 15px 48px;
     }
 
     @media screen and (min-width: $md) {

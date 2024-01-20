@@ -3,140 +3,152 @@
     <div class="product">
       <div class="container container--product-padding">
         <div class="product__container">
-          <ProductPicture
-            class="product-picture"
-            :product-id="id"
-            :for-product-info="true"
-          />
+          <h1 v-if="isLoaded && !product">Product not found</h1>
+          <template v-else>
+            <div class="product-img">
+              <ProductPicture
+                class="product-img__picture"
+                :style="{ top: useHeaderHeight().value + 20 + 'px' }"
+                :product-id="id"
+                :for-product-info="true"
+              />
+            </div>
 
-          <div class="product-info">
-            <div class="container container--product-info-padding">
-              <div class="product-info-heading">
-                <h1 class="product-info-heading__name">
-                  <ContentLoader :is-loaded="isLoaded">{{
-                    product?.name
-                  }}</ContentLoader>
-                </h1>
-                <span class="h3 product-info-heading__price">
-                  <ContentLoader :is-loaded="isLoaded" block-type="inline">{{
-                    `£${product?.price}`
-                  }}</ContentLoader>
-                </span>
-              </div>
-              <div class="product-info-description">
-                <span class="product-info-description__title">
-                  <ContentLoader :is-loaded="isLoaded" block-type="inline">
-                    Product description
-                  </ContentLoader></span
-                >
-                <p
-                  class="product-info-description__info"
-                  title="product.description"
-                >
-                  <ContentLoader :is-loaded="isLoaded">{{
-                    product?.description
-                  }}</ContentLoader>
-                </p>
-              </div>
-              <div class="product-info-dimensions">
-                <span class="product-info-dimensions__title"
-                  ><ContentLoader :is-loaded="isLoaded" block-type="inline">
-                    Dimensions
-                  </ContentLoader></span
-                >
-                <ul class="product-info-dimensions__list">
-                  <li class="product-info-dimensions__item">
-                    <span class="product-info-dimensions__item-title"
-                      ><ContentLoader :is-loaded="isLoaded" block-type="inline">
-                        Height
-                      </ContentLoader></span
-                    >
-                    <span class="product-info-dimensions__item-value">
-                      <ContentLoader
-                        :is-loaded="isLoaded"
-                        block-type="inline"
-                        >{{
-                          `${product?.dimensions.height} ${product?.dimensions.unit}`
-                        }}</ContentLoader
-                      >
-                    </span>
-                  </li>
-                  <li class="product-info-dimensions__separator"></li>
-                  <li class="product-info-dimensions__item">
-                    <span class="product-info-dimensions__item-title"
-                      ><ContentLoader :is-loaded="isLoaded" block-type="inline">
-                        Width
-                      </ContentLoader></span
-                    >
-                    <span
-                      class="product-info-dimensions__item-value"
-                      block-type="inline"
-                    >
-                      <ContentLoader :is-loaded="isLoaded">{{
-                        `${product?.dimensions.width} ${product?.dimensions.unit}`
-                      }}</ContentLoader>
-                    </span>
-                  </li>
-                  <li class="product-info-dimensions__separator"></li>
-                  <li class="product-info-dimensions__item">
-                    <span class="product-info-dimensions__item-title"
-                      ><ContentLoader :is-loaded="isLoaded" block-type="inline">
-                        Depth
-                      </ContentLoader></span
-                    >
-                    <span
-                      class="product-info-dimensions__item-value"
-                      block-type="inline"
-                    >
-                      <ContentLoader :is-loaded="isLoaded">{{
-                        `${product?.dimensions.depth} ${product?.dimensions.unit}`
-                      }}</ContentLoader></span
-                    >
-                  </li>
-                </ul>
-              </div>
-              <div class="product-info-controls">
-                <div class="product-info-controls-amount">
-                  <span class="product-info-controls-amount__title"
-                    >Amount</span
-                  >
-                  <AppStepper
-                    class="product-info-controls-amount__stepper"
-                    style-type="white"
-                    :is-wide-on-mobile="true"
-                    :start="countInCart ?? countWithoutCart"
-                    :max="product?.inStock ?? 999"
-                    @change="stepperHandler"
-                  ></AppStepper>
+            <div class="product-info">
+              <div class="container product-info__container">
+                <div class="product-info-heading">
+                  <h1 class="product-info-heading__name">
+                    <ContentLoader :is-loaded="isLoaded">{{
+                      product?.name
+                    }}</ContentLoader>
+                  </h1>
+                  <span class="h3 product-info-heading__price">
+                    <ContentLoader :is-loaded="isLoaded" block-type="inline">{{
+                      `£${product?.price}`
+                    }}</ContentLoader>
+                  </span>
                 </div>
-                <div class="product-info-controls-buttons">
-                  <Transition name="show">
-                    <ButtonLink
-                      class="product-info-controls-buttons__delete"
-                      v-if="countInCart"
-                      size="small"
-                      :is-wide-on-mobile="true"
-                      style-type="secondary-border"
-                      aria-label="Remove from cart"
-                      @click="removeFromCart"
+                <div class="product-info-description">
+                  <span class="product-info-description__title">
+                    <ContentLoader :is-loaded="isLoaded" block-type="inline">
+                      Product description
+                    </ContentLoader></span
+                  >
+                  <p class="product-info-description__info">
+                    <ContentLoader :is-loaded="isLoaded">{{
+                      product?.description
+                    }}</ContentLoader>
+                  </p>
+                </div>
+                <div class="product-info-dimensions">
+                  <span class="product-info-dimensions__title"
+                    ><ContentLoader :is-loaded="isLoaded" block-type="inline">
+                      Dimensions
+                    </ContentLoader></span
+                  >
+                  <ul class="product-info-dimensions__list">
+                    <li class="product-info-dimensions__item">
+                      <span class="product-info-dimensions__item-title"
+                        ><ContentLoader
+                          :is-loaded="isLoaded"
+                          block-type="inline"
+                        >
+                          Height
+                        </ContentLoader></span
+                      >
+                      <span class="product-info-dimensions__item-value">
+                        <ContentLoader
+                          :is-loaded="isLoaded"
+                          block-type="inline"
+                          >{{
+                            `${product?.dimensions.height} ${product?.dimensions.unit}`
+                          }}</ContentLoader
+                        >
+                      </span>
+                    </li>
+                    <li class="product-info-dimensions__separator"></li>
+                    <li class="product-info-dimensions__item">
+                      <span class="product-info-dimensions__item-title"
+                        ><ContentLoader
+                          :is-loaded="isLoaded"
+                          block-type="inline"
+                        >
+                          Width
+                        </ContentLoader></span
+                      >
+                      <span
+                        class="product-info-dimensions__item-value"
+                        block-type="inline"
+                      >
+                        <ContentLoader :is-loaded="isLoaded">{{
+                          `${product?.dimensions.width} ${product?.dimensions.unit}`
+                        }}</ContentLoader>
+                      </span>
+                    </li>
+                    <li class="product-info-dimensions__separator"></li>
+                    <li class="product-info-dimensions__item">
+                      <span class="product-info-dimensions__item-title"
+                        ><ContentLoader
+                          :is-loaded="isLoaded"
+                          block-type="inline"
+                        >
+                          Depth
+                        </ContentLoader></span
+                      >
+                      <span
+                        class="product-info-dimensions__item-value"
+                        block-type="inline"
+                      >
+                        <ContentLoader :is-loaded="isLoaded">{{
+                          `${product?.dimensions.depth} ${product?.dimensions.unit}`
+                        }}</ContentLoader></span
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="product-info-controls">
+                  <div class="product-info-controls-amount">
+                    <span class="product-info-controls-amount__title"
+                      >Amount</span
                     >
-                      <IconBase :width="24" :height="24" icon-name="trashcan"
-                        ><IconTrashcan
-                      /></IconBase>
-                    </ButtonLink>
-                  </Transition>
+                    <AppStepper
+                      class="product-info-controls-amount__stepper"
+                      style-type="white"
+                      :is-wide-on-mobile="true"
+                      :start="countInCart ?? countWithoutCart"
+                      :max="product?.inStock ?? 999"
+                      @change="stepperHandler"
+                    ></AppStepper>
+                  </div>
+                  <div class="product-info-controls-buttons">
+                    <Transition name="show">
+                      <ButtonLink
+                        class="product-info-controls-buttons__delete"
+                        v-if="countInCart"
+                        size="small"
+                        :is-wide-on-mobile="true"
+                        style-type="secondary-border"
+                        aria-label="Remove from cart"
+                        @click="removeFromCart"
+                      >
+                        <IconBase :width="24" :height="24" icon-name="trashcan"
+                          ><IconTrashcan
+                        /></IconBase>
+                      </ButtonLink>
+                    </Transition>
 
-                  <ButtonLink
-                    class="product-info-controls-buttons__add"
-                    :is-wide-on-mobile="true"
-                    :aria-label="countInCart ? 'Go to cart' : 'Add to cart'"
-                    @click="addToCart"
-                    >{{ countInCart ? 'Go to cart' : 'Add to cart' }}
-                  </ButtonLink>
+                    <ButtonLink
+                      class="product-info-controls-buttons__add"
+                      :is-wide-on-mobile="true"
+                      :aria-label="countInCart ? 'Go to cart' : 'Add to cart'"
+                      @click="addToCart"
+                      >{{ countInCart ? 'Go to cart' : 'Add to cart' }}
+                    </ButtonLink>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -167,6 +179,7 @@ import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 import api from '@/api/avion-api.js'
 import { useCartStore } from '@/stores/cart'
+import { useHeaderHeight } from '@/composables/headerHeight'
 
 import type IProduct from '@/models/Product'
 
@@ -264,12 +277,6 @@ watch(
       padding: 0;
     }
   }
-
-  &--product-info-padding {
-    @media screen and (min-width: $md) {
-      padding: 0;
-    }
-  }
 }
 
 .product {
@@ -278,7 +285,6 @@ watch(
   &__container {
     @media screen and (min-width: $md) {
       display: flex;
-      align-items: center;
       padding: 30px 0;
       column-gap: 30px;
     }
@@ -289,22 +295,30 @@ watch(
     }
   }
 
-  &-picture {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  &-img {
     max-width: $sm;
     margin: 0 auto;
 
     @media screen and (min-width: $md) {
-      max-height: 750px;
       flex: 1 1 50%;
+    }
+
+    &__picture {
+      position: sticky;
     }
   }
 
   &-info {
+    display: flex;
     padding: 30px 0;
     flex: 1 1 50%;
+    align-items: center;
+
+    &__container {
+      @media screen and (min-width: $md) {
+        padding: 0;
+      }
+    }
 
     &-heading {
       border-bottom: 1px solid $border-gray;
@@ -333,10 +347,10 @@ watch(
 
       &__info {
         font-size: $body-font-size-sm;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        // display: -webkit-box;
+        // -webkit-line-clamp: 3;
+        // -webkit-box-orient: vertical;
+        // overflow: hidden;
 
         @media screen and (min-width: $md) {
           margin-top: 14px;
@@ -398,10 +412,14 @@ watch(
     }
 
     &-controls {
+      position: sticky;
+      bottom: 0;
       display: flex;
       flex-direction: column;
-      margin-top: 32px;
+      margin-top: 16px;
+      padding: 16px 0;
       gap: 16px 48px;
+      background-color: $light-gray;
 
       @media screen and (min-width: $md) {
         flex-direction: row;

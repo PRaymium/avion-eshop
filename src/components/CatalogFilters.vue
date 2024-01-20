@@ -227,6 +227,7 @@ function resetHandler() {
   rangeFiltersRefs.value?.forEach((ref) => {
     ref.reset()
   })
+  dropdownFiltersMenuStateHandler()
 }
 
 function checkboxListChangeHandler(

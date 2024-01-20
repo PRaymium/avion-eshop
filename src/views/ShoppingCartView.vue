@@ -339,13 +339,15 @@ function removeHandler(id: number) {
       }
     }
 
+    $column-gap: 30px;
+
     &__titles {
       display: none;
       margin-bottom: 15px;
 
       @media screen and (min-width: $md) {
         display: flex;
-        column-gap: 20px;
+        column-gap: $column-gap;
       }
     }
 
@@ -363,7 +365,7 @@ function removeHandler(id: number) {
       display: flex;
 
       @media screen and (min-width: $md) {
-        column-gap: 30px;
+        column-gap: $column-gap;
       }
 
       &-column {
@@ -427,7 +429,7 @@ function removeHandler(id: number) {
 
         @media screen and (min-width: $xs) {
           display: -webkit-box;
-          -webkit-line-clamp: 3;
+          -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
           margin: 8px 0;

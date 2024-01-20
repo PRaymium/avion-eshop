@@ -8,7 +8,10 @@
     <div class="catalog-main">
       <div class="container catalog-main__container">
         <div class="catalog-aside" v-if="mq.lgPlus">
-          <div class="catalog-filters">
+          <div
+            class="catalog-filters"
+            :style="{ top: useHeaderHeight().value + 15 + 'px' }"
+          >
             <CatalogFilters
               :filters="filters"
               :is-loaded="filtersIsLoaded"
@@ -108,6 +111,7 @@ import AppSelect from '@/components/UI/AppSelect.vue'
 import { ref, computed, reactive, inject, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/avion-api.js'
+import { useHeaderHeight } from '@/composables/headerHeight'
 
 import {
   FilterTypes,
@@ -586,7 +590,7 @@ async function loadMoreHandler() {
 
   &-filters {
     position: sticky;
-    top: 15px;
+    //top: 15px;
   }
 
   &-sorting {
