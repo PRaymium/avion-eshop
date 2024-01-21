@@ -324,9 +324,6 @@ function dropdownFiltersMenuItemStateHandler(filterName: string) {
         }
 
         &-icon {
-          // width: 16px;
-          // height: 16px;
-
           &.active {
             transform: rotate(180deg);
           }

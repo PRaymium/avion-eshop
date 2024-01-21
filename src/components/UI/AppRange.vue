@@ -61,7 +61,6 @@ const emit = defineEmits<{
 }>()
 
 interface IResult {
-  // [key: string]: number | undefined
   min: number | undefined
   max: number | undefined
 }
@@ -93,27 +92,6 @@ function changeHandler(type: 'min' | 'max') {
       }
     }
   }
-
-  //   if (result.min < props.min) result.min = props.min
-  //   else if (result.min > props.max) result.min = props.min
-  //   else if (result.max && result.min > result.max) result.min = props.min
-  // } else if (result.max) {
-  //   if (result.max > props.max) result.max = props.max
-  //   else if (result.max < props.min) result.max = props.max
-  //   else if (result.min && result.max < result.min) result.max = props.max
-  // }
-
-  // if (result[type]) {
-  //   if (type === 'min') {
-  //     if (result!.min > result.max) result.min = result.max
-  //     if (result!.min < props.min) result.min = props.min
-  //     if (result.min > props.max) result.min = props.max
-  //   } else {
-  //     if (result.max < result.min) result.max = result.min
-  //     if (result.max > props.max) result.max = props.max
-  //     if (result.max < props.min) result.max = props.min
-  //   }
-  // }
 
   const res = {
     min: result.min ?? props.min,

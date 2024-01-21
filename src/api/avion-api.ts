@@ -73,12 +73,6 @@ class AvionApi {
       }
 
       return products
-
-      // return new Promise(function (resolve) {
-      //   setTimeout(() => {
-      //     resolve(products)
-      //   }, 500)
-      // })
     } catch (e) {
       console.log(e)
       return undefined

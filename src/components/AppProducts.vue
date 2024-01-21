@@ -32,7 +32,7 @@
       </ul>
       <ButtonLink
         type="link"
-        :link-obj="{ name: 'catalog' }"
+        :link="{ name: 'catalog' }"
         style-type="secondary"
         :is-wide-on-mobile="true"
         class="products-link"

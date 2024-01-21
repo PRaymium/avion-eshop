@@ -242,9 +242,6 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.test {
-  background-color: grey;
-}
 .section {
   &-products {
     margin-top: 50px;

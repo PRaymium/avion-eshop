@@ -24,8 +24,6 @@ function scrollToTop() {
 }
 
 function onScroll() {
-  // setTimeout(() => {
-  // }, 500)
   window.scrollY > 400 ? (isVisible.value = true) : (isVisible.value = false)
 }
 
