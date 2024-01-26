@@ -78,7 +78,7 @@ const categories = computed<IMenuItem[]>(() =>
       name: item.name,
       link: {
         name: 'catalog',
-        query: { 'filter-type': item.id }
+        query: { 'filter-type': item.id, fromOutside: `type-${item.id}` }
       } as RouteLocationRaw
     }
   })

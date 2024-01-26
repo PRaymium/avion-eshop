@@ -108,7 +108,7 @@ import CatalogFilters, {
 import ProductCard from '@/components/ProductCard.vue'
 import ButtonLink from '@/components/UI/ButtonLink.vue'
 import AppSelect from '@/components/UI/AppSelect.vue'
-import { ref, computed, reactive, inject, nextTick } from 'vue'
+import { ref, computed, reactive, inject, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api/avion-api.js'
 import { useHeaderHeight } from '@/composables/headerHeight'
@@ -176,6 +176,23 @@ filtersInit().then(() => {
   filtersIsLoaded.value = true
   preparingProducts()
 })
+
+watch(
+  () => route.query.fromOutside,
+  (val) => {
+    if (val) {
+      filtersChangeFromOutside()
+    }
+  }
+)
+
+function filtersChangeFromOutside() {
+  filtersResetValues()
+  filtersInitFromDefaultFilters()
+  parseUrlToFilters()
+  filterStatesWriteToUrl(false)
+  preparingProducts()
+}
 
 async function filtersInit() {
   const data = await api.getCatalogFilters()
@@ -495,6 +512,7 @@ async function preparingProducts() {
 }
 
 function replaceWithQuery(query: {}) {
+  console.log(23)
   router.replace({
     query: {
       ...route.query,

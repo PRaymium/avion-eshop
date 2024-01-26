@@ -69,7 +69,13 @@
               >
                 <router-link
                   class="header-nav__link"
-                  :to="{ name: 'catalog', query: { 'filter-type': item.id } }"
+                  :to="{
+                    name: 'catalog',
+                    query: {
+                      'filter-type': item.id,
+                      fromOutside: `type-${item.id}`
+                    }
+                  }"
                   @click="menuIsHide = true"
                   >{{ item.name }}</router-link
                 >
